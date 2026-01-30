@@ -475,6 +475,30 @@ const componentCategories = [
     icon: Sparkles,
     description: "Particles, beams, animations",
   },
+  {
+    id: "interactive-fx",
+    label: "Interactive Effects",
+    icon: Sparkles,
+    description: "Ripple, magnetic, 3D tilt effects",
+  },
+  {
+    id: "text-fx",
+    label: "Text Animations",
+    icon: FileText,
+    description: "Typewriter, reveal, morphing text",
+  },
+  {
+    id: "background-fx",
+    label: "Background Effects",
+    icon: Layers,
+    description: "Aurora, gradients, patterns",
+  },
+  {
+    id: "ui-patterns",
+    label: "UI Patterns",
+    icon: Boxes,
+    description: "Marquee, tabs, carousels",
+  },
 ];
 
 export default function ComponentShowcase() {
