@@ -284,7 +284,7 @@ import { MessageEditor, EditableMessage } from "@/components/ai/message-editor";
 import { MessageReactions, ReactionPicker, ReactionList, QuickReactionBar } from "@/components/ai/reactions";
 import { MessageStatusIndicator, ReadReceiptAvatars, TypingStatus, OnlineStatusIndicator } from "@/components/ai/read-receipts";
 import { ThreadReply, ThreadView, ReplyInput } from "@/components/ai/thread-replies";
-import { PinnedMessage, PinnedList, PinButton } from "@/components/ai/pinned-messages";
+import { PinnedMessage, PinnedMessagesList, PinnedMessageBanner } from "@/components/ai/pinned-messages";
 import { SearchInput, SearchResults, HighlightedText } from "@/components/ai/search-messages";
 import { MentionInput, MentionList, MentionBadge } from "@/components/ai/mentions";
 import { ImageGenerationCard, ImageGenerationPreview, ImageGenerationProgress } from "@/components/ai/image-generation";
