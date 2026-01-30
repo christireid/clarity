@@ -3357,6 +3357,485 @@ function VisualEffectsComponents() {
   );
 }
 
+// =============================================================================
+// NEW ENHANCED ANIMATED COMPONENTS SECTIONS
+// =============================================================================
+
+// Component Section: Interactive Effects
+function InteractiveFxComponents() {
+  const [showConfetti, setShowConfetti] = React.useState(false);
+
+  return (
+    <div className="space-y-8">
+      <ComponentCard
+        title="Ripple Effect"
+        description="Animated ripple on hover and click"
+      >
+        <div className="flex justify-center">
+          <Ripple className="w-64 h-64 rounded-full bg-accent/10 flex items-center justify-center">
+            <span className="text-lg font-semibold">Hover Here</span>
+          </Ripple>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Magnetic Element"
+        description="Elements that follow your cursor"
+      >
+        <div className="flex justify-center gap-8">
+          <Magnetic>
+            <div className="w-24 h-24 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-semibold">
+              Drag Me
+            </div>
+          </Magnetic>
+          <Magnetic intensity={0.5}>
+            <div className="w-24 h-24 rounded-lg bg-secondary flex items-center justify-center text-secondary-foreground font-semibold">
+              Pull Me
+            </div>
+          </Magnetic>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="3D Card Tilt"
+        description="Interactive 3D perspective card with glare"
+      >
+        <div className="flex justify-center">
+          <CardTilt className="w-80">
+            <div className="h-48 rounded-lg bg-gradient-to-br from-primary via-accent to-secondary p-6 text-primary-foreground">
+              <h3 className="text-xl font-bold mb-2">3D Card</h3>
+              <p className="text-sm opacity-90">Move your mouse over this card to see the 3D tilt effect with realistic lighting.</p>
+            </div>
+          </CardTilt>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Liquid Button"
+        description="Morphing liquid hover effects"
+      >
+        <div className="flex gap-4 flex-wrap justify-center">
+          <LiquidButton variant="primary">Primary Button</LiquidButton>
+          <LiquidButton variant="secondary">Secondary Button</LiquidButton>
+          <LiquidButton variant="ghost">Ghost Button</LiquidButton>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Dock Animation"
+        description="macOS-style dock with magnification"
+      >
+        <div className="flex justify-center">
+          <Dock
+            items={[
+              { icon: <Bot className="w-6 h-6" />, label: "AI Assistant" },
+              { icon: <Code className="w-6 h-6" />, label: "Code Editor" },
+              { icon: <FileText className="w-6 h-6" />, label: "Documents" },
+              { icon: <Settings className="w-6 h-6" />, label: "Settings" },
+              { icon: <MessageSquare className="w-6 h-6" />, label: "Messages" },
+            ]}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Gooey Effect"
+        description="Blob morphing effect"
+      >
+        <div className="flex justify-center">
+          <Gooey blur={15}>
+            <div className="flex gap-4">
+              <div className="w-16 h-16 rounded-full bg-primary animate-float" />
+              <div className="w-16 h-16 rounded-full bg-accent animate-float" style={{ animationDelay: "0.5s" }} />
+              <div className="w-16 h-16 rounded-full bg-secondary animate-float" style={{ animationDelay: "1s" }} />
+            </div>
+          </Gooey>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Confetti"
+        description="Celebration confetti animation"
+      >
+        <div className="flex justify-center">
+          <Button onClick={() => setShowConfetti(!showConfetti)}>
+            {showConfetti ? "🎉 Celebrating!" : "Celebrate 🎉"}
+          </Button>
+          <Confetti active={showConfetti} />
+        </div>
+      </ComponentCard>
+    </div>
+  );
+}
+
+// Component Section: Text Animations
+function TextFxComponents() {
+  return (
+    <div className="space-y-8">
+      <ComponentCard
+        title="Typewriter"
+        description="Classic typewriter effect"
+      >
+        <div className="text-2xl">
+          <Typewriter
+            text={["Hello, World!", "Welcome to the showcase.", "Enjoy the animations!"]}
+            speed={100}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Text Reveal"
+        description="Text reveals word by word"
+      >
+        <div className="space-y-4">
+          <div className="text-lg">
+            <TextReveal variant="fade">
+              This text fades in word by word creating a smooth reveal effect.
+            </TextReveal>
+          </div>
+          <div className="text-lg">
+            <TextReveal variant="slide">
+              This text slides up word by word for a dynamic entrance.
+            </TextReveal>
+          </div>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Flip Text"
+        description="Text that flips between multiple states"
+      >
+        <div className="text-3xl font-bold text-center">
+          Building{" "}
+          <FlipText
+            words={["Amazing", "Beautiful", "Creative", "Dynamic"]}
+            duration={2000}
+            className="text-accent"
+          />{" "}
+          Experiences
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Scramble Text"
+        description="Text scrambling effect"
+      >
+        <div className="text-2xl font-bold text-center">
+          <ScrambleText text="DECODING MESSAGE" speed={30} />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Animated Gradient Text"
+        description="Text with flowing gradient"
+      >
+        <div className="text-4xl font-bold text-center">
+          <AnimatedGradientText>
+            Gradient Animation
+          </AnimatedGradientText>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Split Text"
+        description="Character-by-character animation"
+      >
+        <div className="space-y-4">
+          <div className="text-xl">
+            <SplitText variant="fade">Fading characters</SplitText>
+          </div>
+          <div className="text-xl">
+            <SplitText variant="scale">Scaling characters</SplitText>
+          </div>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Number Ticker"
+        description="Animated counting numbers"
+      >
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <NumberTicker value={1000} duration={2} className="text-4xl font-bold" suffix="+" />
+            <p className="text-sm text-muted-foreground mt-2">Users</p>
+          </div>
+          <div>
+            <NumberTicker value={99.9} duration={2} className="text-4xl font-bold" decimalPlaces={1} suffix="%" />
+            <p className="text-sm text-muted-foreground mt-2">Uptime</p>
+          </div>
+          <div>
+            <NumberTicker value={50} duration={2} className="text-4xl font-bold" prefix="$" suffix="M" />
+            <p className="text-sm text-muted-foreground mt-2">Revenue</p>
+          </div>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Morphing Text"
+        description="Text that morphs between states"
+      >
+        <div className="text-3xl font-bold text-center">
+          <MorphingText
+            texts={["Innovation", "Excellence", "Creativity", "Success"]}
+            duration={2500}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Glitch Text"
+        description="Cyberpunk glitch effect"
+      >
+        <div className="text-4xl font-bold text-center">
+          <GlitchText>SYSTEM ERROR</GlitchText>
+        </div>
+      </ComponentCard>
+    </div>
+  );
+}
+
+// Component Section: Background Effects
+function BackgroundFxComponents() {
+  return (
+    <div className="space-y-8">
+      <ComponentCard
+        title="Aurora Background"
+        description="Northern lights effect"
+      >
+        <AuroraBackground className="h-64 rounded-lg">
+          <div className="flex items-center justify-center h-full">
+            <h2 className="text-4xl font-bold text-white">Aurora Borealis</h2>
+          </div>
+        </AuroraBackground>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Gradient Mesh"
+        description="Animated mesh gradient with moving orbs"
+      >
+        <GradientMesh className="h-64 rounded-lg">
+          <div className="flex items-center justify-center h-full">
+            <h2 className="text-4xl font-bold text-white">Mesh Gradient</h2>
+          </div>
+        </GradientMesh>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Noise Texture"
+        description="Animated noise background"
+      >
+        <NoiseTexture className="h-64 rounded-lg bg-gradient-to-br from-primary to-accent">
+          <div className="flex items-center justify-center h-full">
+            <h2 className="text-4xl font-bold text-white">Noise Effect</h2>
+          </div>
+        </NoiseTexture>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Animated Waves"
+        description="Layered wave animation"
+      >
+        <div className="relative h-64 rounded-lg overflow-hidden bg-gradient-to-b from-blue-950 to-blue-900">
+          <AnimatedWaves />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Radial Gradient"
+        description="Animated radial gradient"
+      >
+        <RadialGradient className="h-64 rounded-lg">
+          <div className="flex items-center justify-center h-full">
+            <h2 className="text-4xl font-bold text-white">Radial Glow</h2>
+          </div>
+        </RadialGradient>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Spotlight Grid"
+        description="Interactive spotlight on grid"
+      >
+        <SpotlightGrid className="h-64 rounded-lg bg-background">
+          <div className="flex items-center justify-center h-full">
+            <h2 className="text-2xl font-bold">Move your mouse</h2>
+          </div>
+        </SpotlightGrid>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Animated Grid"
+        description="Moving grid background"
+      >
+        <AnimatedGrid className="h-64 rounded-lg bg-background">
+          <div className="flex items-center justify-center h-full">
+            <h2 className="text-2xl font-bold">Animated Grid</h2>
+          </div>
+        </AnimatedGrid>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Retro Grid"
+        description="Cyberpunk style grid"
+      >
+        <div className="relative h-64 rounded-lg overflow-hidden bg-gradient-to-b from-background to-accent/20">
+          <RetroGrid />
+          <div className="relative z-10 flex items-center justify-center h-full">
+            <h2 className="text-3xl font-bold">Retro Cyberpunk</h2>
+          </div>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Starfield"
+        description="Animated 3D starfield"
+      >
+        <div className="relative h-64 rounded-lg overflow-hidden bg-black">
+          <Starfield starCount={150} speedFactor={0.05} />
+        </div>
+      </ComponentCard>
+    </div>
+  );
+}
+
+// Component Section: UI Patterns
+function UIPatternsComponents() {
+  return (
+    <div className="space-y-8">
+      <ComponentCard
+        title="Marquee"
+        description="Infinite scrolling content"
+      >
+        <Marquee speed="normal" pauseOnHover>
+          <div className="flex gap-8 px-4">
+            {["React", "Next.js", "TypeScript", "Tailwind", "Framer Motion", "Three.js"].map((tech) => (
+              <div key={tech} className="px-6 py-3 rounded-lg bg-accent/10 font-semibold whitespace-nowrap">
+                {tech}
+              </div>
+            ))}
+          </div>
+        </Marquee>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Scroll Progress"
+        description="Linear and circular progress indicators"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Scroll the page to see the progress indicators (top bar and bottom-right circle)
+          </p>
+          <ScrollProgress variant="linear" />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Animated Tabs"
+        description="Tabs with smooth indicator animation"
+      >
+        <AnimatedTabs
+          tabs={[
+            {
+              id: "overview",
+              label: "Overview",
+              content: <div className="p-4">Overview content goes here with smooth transitions.</div>,
+            },
+            {
+              id: "analytics",
+              label: "Analytics",
+              content: <div className="p-4">Analytics dashboard with beautiful charts and metrics.</div>,
+            },
+            {
+              id: "settings",
+              label: "Settings",
+              content: <div className="p-4">Configure your preferences and settings here.</div>,
+            },
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Infinite Carousel"
+        description="Auto-scrolling carousel"
+      >
+        <InfiniteCarousel
+          speed={20}
+          items={[
+            <div key="1" className="w-64 h-40 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+              Slide 1
+            </div>,
+            <div key="2" className="w-64 h-40 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
+              Slide 2
+            </div>,
+            <div key="3" className="w-64 h-40 rounded-lg bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-white font-bold">
+              Slide 3
+            </div>,
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Reveal on Scroll"
+        description="Elements reveal when scrolled into view"
+      >
+        <div className="space-y-4">
+          <RevealOnScroll direction="up">
+            <div className="p-6 rounded-lg bg-accent/10">Slides up on scroll</div>
+          </RevealOnScroll>
+          <RevealOnScroll direction="left" delay={100}>
+            <div className="p-6 rounded-lg bg-accent/10">Slides from left on scroll</div>
+          </RevealOnScroll>
+          <RevealOnScroll direction="zoom" delay={200}>
+            <div className="p-6 rounded-lg bg-accent/10">Zooms in on scroll</div>
+          </RevealOnScroll>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Bento Grid"
+        description="Animated bento grid layout"
+      >
+        <BentoGrid>
+          <div className="md:col-span-2">
+            <h3 className="font-bold mb-2">Feature 1</h3>
+            <p className="text-sm text-muted-foreground">Amazing feature description</p>
+          </div>
+          <div>
+            <h3 className="font-bold mb-2">Feature 2</h3>
+            <p className="text-sm text-muted-foreground">Another great feature</p>
+          </div>
+          <div>
+            <h3 className="font-bold mb-2">Feature 3</h3>
+            <p className="text-sm text-muted-foreground">More awesome features</p>
+          </div>
+          <div className="md:col-span-2">
+            <h3 className="font-bold mb-2">Feature 4</h3>
+            <p className="text-sm text-muted-foreground">Even more features to explore</p>
+          </div>
+        </BentoGrid>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Parallax"
+        description="Smooth parallax scrolling"
+      >
+        <div className="h-96 overflow-y-scroll border border-border rounded-lg">
+          <div className="h-[200vh] relative">
+            <Parallax speed={0.5} className="absolute top-20 left-1/2 -translate-x-1/2">
+              <div className="w-64 h-64 rounded-lg bg-gradient-to-br from-accent to-primary flex items-center justify-center text-white font-bold">
+                Parallax Effect
+              </div>
+            </Parallax>
+            <div className="absolute top-0 left-0 right-0 p-8 text-center">
+              <p className="text-lg font-semibold">Scroll down to see parallax</p>
+            </div>
+          </div>
+        </div>
+      </ComponentCard>
+    </div>
+  );
+}
+
 // Helper Component
 function ComponentCard({
   title,
