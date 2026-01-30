@@ -649,6 +649,10 @@ export default function ComponentShowcase() {
   {activeCategory === "messaging" && <AdvancedMessagingComponents />}
   {activeCategory === "voice" && <VoiceComponents />}
   {activeCategory === "visual" && <VisualEffectsComponents />}
+  {activeCategory === "interactive-fx" && <InteractiveFxComponents />}
+  {activeCategory === "text-fx" && <TextFxComponents />}
+  {activeCategory === "background-fx" && <BackgroundFxComponents />}
+  {activeCategory === "ui-patterns" && <UIPatternsComponents />}
   </div>
         </div>
       </main>
