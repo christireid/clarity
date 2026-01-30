@@ -236,6 +236,50 @@ import { VoiceButton, VoiceRecorder, TextToSpeechButton, VoiceVisualizer, VoiceI
 import { AudioPlayer as AudioPlayerNew, AudioActionButton } from "@/components/ai/audio-player";
 import { Particles, Sparkles as SparklesParticle, Meteors, GridPattern, DotPattern, FloatingParticles } from "@/components/ai/particles";
 import { MessageActionsBar, ActionButton as ActionBtn } from "@/components/ai/message-actions";
+
+// NEW Enhanced Animated Components
+import {
+  Ripple,
+  Magnetic,
+  CardTilt,
+  LiquidButton,
+  Dock,
+  MouseTrail,
+  Gooey,
+} from "@/components/ai/interactive-animations";
+import {
+  Typewriter,
+  TextReveal,
+  FlipText,
+  ScrambleText,
+  AnimatedGradientText,
+  SplitText,
+  NumberTicker,
+  MorphingText,
+  GlitchText,
+} from "@/components/ai/text-animations";
+import {
+  AuroraBackground,
+  GradientMesh,
+  NoiseTexture,
+  AnimatedWaves,
+  RadialGradient,
+  SpotlightGrid,
+  AnimatedGrid,
+  RetroGrid,
+  Starfield,
+} from "@/components/ai/background-animations";
+import {
+  Marquee,
+  Confetti,
+  ScrollProgress,
+  Parallax,
+  StackedCards,
+  AnimatedTabs,
+  InfiniteCarousel,
+  RevealOnScroll,
+  BentoGrid,
+} from "@/components/ai/ui-pattern-animations";
 import { MessageEditor, EditableMessage } from "@/components/ai/message-editor";
 import { MessageReactions, ReactionPicker, ReactionList, QuickReactionBar } from "@/components/ai/reactions";
 import { MessageStatusIndicator, ReadReceiptAvatars, TypingStatus, OnlineStatusIndicator } from "@/components/ai/read-receipts";
