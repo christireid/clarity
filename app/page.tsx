@@ -285,7 +285,7 @@ import { MessageReactions, ReactionPicker, ReactionList, QuickReactionBar } from
 import { MessageStatusIndicator, ReadReceiptAvatars, TypingStatus, OnlineStatusIndicator } from "@/components/ai/read-receipts";
 import { ThreadReply, ThreadView, ReplyInput } from "@/components/ai/thread-replies";
 import { PinnedMessage, PinnedMessagesList, PinnedMessageBanner } from "@/components/ai/pinned-messages";
-import { SearchInput, SearchResults, HighlightedText } from "@/components/ai/search-messages";
+import { SearchBar, SearchResultsList, HighlightedText } from "@/components/ai/search-messages";
 import { MentionInput, MentionList, MentionBadge } from "@/components/ai/mentions";
 import { ImageGenerationCard, ImageGenerationPreview, ImageGenerationProgress } from "@/components/ai/image-generation";
 import { QuickReplyBar, QuickReplyChip, QuickReplyEditor } from "@/components/ai/quick-replies";
