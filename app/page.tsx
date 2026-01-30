@@ -296,7 +296,7 @@ import { ChatErrorBoundary, ErrorFallback, RetryableError, NetworkErrorCard } fr
 import { MessageGroup, DateSeparator, UnreadDivider, TimeGroup } from "@/components/ai/message-grouping";
 import { RetryButton, RetryableRequest, OfflineIndicator, PendingQueue } from "@/components/ai/retry-logic";
 import { TranslationBadge, LanguageSelector, TranslatedContent } from "@/components/ai/translation";
-import { UnreadCounter, UnreadBanner, JumpToUnreadButton } from "@/components/ai/unread-indicator";
+import { UnreadBadge, NewMessagesBanner, JumpToUnread } from "@/components/ai/unread-indicator";
 
 const componentCategories = [
   {
