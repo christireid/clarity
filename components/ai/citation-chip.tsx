@@ -140,7 +140,7 @@ export function CitationChip({
               {citation.snippet}
             </p>
           )}
-          <p className="text-xs text-ai-user truncate">{citation.url}</p>
+          <p className="text-xs text-ai-user truncate">{url}</p>
         </div>
       </HoverCardContent>
     </HoverCard>
