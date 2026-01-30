@@ -777,7 +777,7 @@ This implementation has O(n log n) average time complexity.`,
         <div className="space-y-4">
           <p className="text-foreground">
             According to recent studies <CitationChip index={1} title="AI Research 2024" url="https://example.com" />,
-            large language models have shown significant improvements in reasoning tasks <CitationChip index={2} title="LLM Benchmarks" />.
+            large language models have shown significant improvements in reasoning tasks <CitationChip index={2} title="LLM Benchmarks" url="https://example.com/benchmarks" />.
           </p>
           <div className="flex gap-4 flex-wrap">
             <SourceCard
