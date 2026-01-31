@@ -96,7 +96,7 @@ interface QuickRepliesBarProps {
   className?: string;
 }
 
-export function QuickRepliesBar({
+export function QuickReplyBar({
   replies,
   onSelect,
   maxVisible = 5,
