@@ -3867,6 +3867,204 @@ function UIPatternsComponents() {
   );
 }
 
+// =============================================================================
+// ADVANCED EFFECTS COMPONENTS SECTION
+// =============================================================================
+
+function AdvancedFxComponents() {
+  const [burstActive, setBurstActive] = React.useState(false);
+  const [shakeActive, setShakeActive] = React.useState(false);
+
+  return (
+    <div className="space-y-8">
+      <ComponentCard
+        title="Floating Element"
+        description="Physics-based floating animation"
+      >
+        <div className="flex justify-center gap-8">
+          <FloatingElement speed={2} distance={15}>
+            <div className="w-24 h-24 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold shadow-lg">
+              Float 1
+            </div>
+          </FloatingElement>
+          <FloatingElement speed={3} distance={20}>
+            <div className="w-24 h-24 rounded-lg bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-white font-semibold shadow-lg">
+              Float 2
+            </div>
+          </FloatingElement>
+          <FloatingElement speed={4} distance={25}>
+            <div className="w-24 h-24 rounded-lg bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center text-white font-semibold shadow-lg">
+              Float 3
+            </div>
+          </FloatingElement>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Spotlight Cursor"
+        description="Advanced cursor spotlight effect"
+      >
+        <SpotlightCursor className="h-64 rounded-lg bg-gradient-to-br from-gray-900 to-gray-800">
+          <div className="flex items-center justify-center h-full">
+            <h2 className="text-3xl font-bold text-white">Move your mouse</h2>
+          </div>
+        </SpotlightCursor>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Morph Blob"
+        description="SVG morphing blob animation"
+      >
+        <div className="flex justify-center gap-8">
+          <MorphBlob size={150} colors={["#3B82F6", "#8B5CF6"]} duration={8} />
+          <MorphBlob size={150} colors={["#EC4899", "#F59E0B"]} duration={6} />
+          <MorphBlob size={150} colors={["#10B981", "#06B6D4"]} duration={10} />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Particle Burst"
+        description="Particle explosion effect"
+      >
+        <div className="flex justify-center">
+          <Button onClick={() => setBurstActive(!burstActive)}>
+            Trigger Particle Burst
+          </Button>
+          <ParticleBurst active={burstActive} count={40} />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="3D Flip Card"
+        description="Card that flips in 3D space"
+      >
+        <div className="flex justify-center">
+          <FlipCard3D className="w-64 h-40">
+            <div className="w-full h-full rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 p-6 text-white flex items-center justify-center">
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-2">Front Side</h3>
+                <p className="text-sm">Click to flip!</p>
+              </div>
+            </div>
+            <div className="w-full h-full rounded-lg bg-gradient-to-br from-pink-500 to-orange-500 p-6 text-white flex items-center justify-center">
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-2">Back Side</h3>
+                <p className="text-sm">Click to flip back!</p>
+              </div>
+            </div>
+          </FlipCard3D>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Wave Text"
+        description="Text with wave animation"
+      >
+        <div className="text-center">
+          <WaveText className="text-4xl font-bold">
+            Hello World!
+          </WaveText>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Shimmer Border"
+        description="Animated border shimmer effect"
+      >
+        <div className="flex justify-center gap-4">
+          <ShimmerBorder color="#3B82F6" duration={2}>
+            <div className="w-48 h-32 flex items-center justify-center">
+              <p className="font-semibold">Blue Shimmer</p>
+            </div>
+          </ShimmerBorder>
+          <ShimmerBorder color="#EC4899" duration={1.5}>
+            <div className="w-48 h-32 flex items-center justify-center">
+              <p className="font-semibold">Pink Shimmer</p>
+            </div>
+          </ShimmerBorder>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Breath Effect"
+        description="Pulsing breath animation"
+      >
+        <div className="flex justify-center">
+          <BreathEffect duration={3} scale={1.1}>
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-lg">
+              Breathe
+            </div>
+          </BreathEffect>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Shake Animation"
+        description="Shake effect on trigger"
+      >
+        <div className="flex justify-center gap-4">
+          <Shake active={shakeActive} intensity={10}>
+            <div className="w-32 h-32 rounded-lg bg-accent flex items-center justify-center">
+              <p className="font-semibold">Shake Me!</p>
+            </div>
+          </Shake>
+          <Button onClick={() => setShakeActive(!shakeActive)}>
+            Trigger Shake
+          </Button>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Bounce In"
+        description="Bounce entrance animation"
+      >
+        <div className="space-y-4">
+          <BounceIn delay={0}>
+            <div className="p-4 rounded-lg bg-accent">Bounce in immediately</div>
+          </BounceIn>
+          <BounceIn delay={200}>
+            <div className="p-4 rounded-lg bg-accent">Bounce in after 200ms</div>
+          </BounceIn>
+          <BounceIn delay={400}>
+            <div className="p-4 rounded-lg bg-accent">Bounce in after 400ms</div>
+          </BounceIn>
+        </div>
+      </ComponentCard>
+    </div>
+  );
+}
+
+// =============================================================================
+// CHAT CLONES EXTENDED COMPONENTS SECTION
+// =============================================================================
+
+function ChatClonesExtendedComponents() {
+  return (
+    <div className="space-y-8">
+      <ComponentCard
+        title="Manus Chat"
+        description="Minimalist, dev-focused chat interface"
+      >
+        <ManusChat />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Emergent Chat"
+        description="Professional, agent-focused chat with tool calling"
+      >
+        <EmergentChat />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Loveable Chat"
+        description="Friendly, creative chat with beautiful gradients"
+      >
+        <LoveableChat />
+      </ComponentCard>
+    </div>
+  );
+}
+
 // Helper Component
 function ComponentCard({
   title,
