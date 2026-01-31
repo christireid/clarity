@@ -35,9 +35,9 @@ export function ObservabilityComponents() {
       >
         <TraceList 
           traces={[
-            { id: "t1", name: "Generate Report", timestamp: new Date(), duration: 1200, status: "success" },
-            { id: "t2", name: "Code Analysis", timestamp: new Date(Date.now() - 60000), duration: 4500, status: "error" },
-            { id: "t3", name: "Summarization", timestamp: new Date(Date.now() - 120000), duration: 800, status: "success" }
+            { id: "t1", name: "Generate Report", timestamp: new Date("2024-01-01T10:00:00"), duration: 1200, status: "success" },
+            { id: "t2", name: "Code Analysis", timestamp: new Date("2024-01-01T09:59:00"), duration: 4500, status: "error" },
+            { id: "t3", name: "Summarization", timestamp: new Date("2024-01-01T09:58:00"), duration: 800, status: "success" }
           ]}
           onSelect={(id) => console.log("Selected trace:", id)}
         />
