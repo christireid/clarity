@@ -120,18 +120,21 @@ export function useAdvancedChat({
       // In real app: fetch(api).body.pipeTo(...)
       
       const mockStream = async () => {
+        const isChart = userMessage.content.toLowerCase().includes('chart');
+        
         // 1. Text chunks
-        const chunks = userMessage.content.toLowerCase().includes('chart') 
+        const chunks = isChart
            ? ['Here ', 'is ', 'the ', 'chart ', 'you ', 'requested.']
            : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response.'];
 
         for (const chunk of chunks) {
+          if (abortControllerRef.current?.signal.aborted) break;
           await new Promise(r => setTimeout(r, 100)); // Network delay
           parserRef.current.feed(`0:${chunk}\n`);
         }
 
         // 2. Data/UI chunks
-        if (userMessage.content.toLowerCase().includes('chart')) {
+        if (isChart && !abortControllerRef.current?.signal.aborted) {
            await new Promise(r => setTimeout(r, 500));
            const chartData = {
              component: 'Chart',
@@ -140,9 +143,11 @@ export function useAdvancedChat({
            parserRef.current.feed(`7:${JSON.stringify(chartData)}\n`);
         }
 
-        unsubscribe();
-        setIsLoading(false);
-        setMessages(prev => prev.map(m => m.id === aiResponseId ? { ...m, status: 'sent' } : m));
+        if (!abortControllerRef.current?.signal.aborted) {
+          unsubscribe();
+          setIsLoading(false);
+          setMessages(prev => prev.map(m => m.id === aiResponseId ? { ...m, status: 'sent' } : m));
+        }
       };
 
       await mockStream();
@@ -150,7 +155,9 @@ export function useAdvancedChat({
     } catch (error) {
       console.error(error);
     } finally {
-      setIsLoading(false);
+      if (!abortControllerRef.current?.signal.aborted) {
+        setIsLoading(false);
+      }
       abortControllerRef.current = null;
     }
   };
@@ -177,12 +184,29 @@ export function useAdvancedChat({
   };
 
   const reload = async () => {
-    // Logic to reload last message
+    if (messages.length === 0) return;
+    
+    // Find last user message
+    let lastUserIndex = messages.length - 1;
+    while (lastUserIndex >= 0 && messages[lastUserIndex].role !== 'user') {
+      lastUserIndex--;
+    }
+
+    if (lastUserIndex >= 0) {
+      const lastUserMessage = messages[lastUserIndex];
+      // Keep everything up to that user message
+      const newHistory = messages.slice(0, lastUserIndex + 1);
+      setMessages(newHistory);
+      await processMessage(lastUserMessage);
+    }
   };
 
   const stop = () => {
-    abortControllerRef.current?.abort();
-    setIsLoading(false);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      setIsLoading(false);
+      setStreamLogs(prev => [...prev, 'Stream aborted by user']);
+    }
   };
 
   return {
