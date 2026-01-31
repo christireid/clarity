@@ -174,7 +174,7 @@ interface GroupedMessageListProps {
   className?: string;
 }
 
-export function GroupedMessageList({
+export function MessageGroup({
   messages,
   renderMessage,
   groupingThreshold = 5,
