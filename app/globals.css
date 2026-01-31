@@ -103,13 +103,13 @@
     --input: 20 6% 90%;
     --ring: 209 100% 48%;
     
-    /* Glassmorphism Variables */
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-bg-medium: rgba(255, 255, 255, 0.15);
-    --glass-bg-heavy: rgba(255, 255, 255, 0.2);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    --glass-blur: blur(12px);
+    /* Glassmorphism Variables - Enhanced */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-bg-medium: rgba(255, 255, 255, 0.08);
+    --glass-bg-heavy: rgba(255, 255, 255, 0.12);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    --glass-blur: blur(20px);
     
     /* Success/Warning/Error */
     --success: 142 71% 45%;
