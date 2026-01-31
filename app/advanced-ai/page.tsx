@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Zap, Cpu, Activity, StopCircle, RotateCw, Download, FileText, Trash2
+  Zap, Cpu, Activity, StopCircle, RotateCw, Download, FileText, Trash2, Shield
 } from "lucide-react";
 import { SDKDevTools } from "@/components/ai/devtools/SDKDevTools";
 import { Attachment } from "@/components/ai/chat/types";
+import { piiRedactionMiddleware, loggingMiddleware } from "@/components/ai/chat/middleware";
+import { z } from 'zod';
 
 // Initialize Optimizer
 const optimizer = new TokenOptimizer({
@@ -22,19 +24,25 @@ optimizer.rag.addDocument("doc1", "Next.js is a React framework for building ful
 optimizer.rag.addDocument("doc2", "Token optimization reduces AI costs by compressing prompts.", { source: "whitepaper" });
 
 export default function AdvancedAIShowcase() {
+  const [usePII, setUsePII] = React.useState(false);
+
   const { 
     messages, append, isLoading, setMessages, optimizationStats, streamLogs, stop, reload, ragContext, config, setConfig, clear, contextWindow
   } = useAdvancedChat({
     initialMessages: [
-      { id: '1', role: 'assistant', content: 'Ready to optimize! Try asking about "Next.js", type "Show me a chart", or drop an image file.', timestamp: new Date() }
+      { id: '1', role: 'assistant', content: 'Ready! I support PII redaction, Structured Output, and Voice.', timestamp: new Date() }
     ],
-    // Enable Persistence
     persistenceKey: 'advanced-ai-chat-history-v1',
     initialConfig: {
       systemPrompt: 'You are a helpful assistant. Current date is {{date}}.',
       temperature: 0.7,
       model: 'gpt-4o'
-    }
+    },
+    // Middleware injection
+    middleware: [
+      loggingMiddleware,
+      ...(usePII ? [piiRedactionMiddleware] : [])
+    ]
   });
 
   const chatContextValue = {
@@ -53,6 +61,16 @@ export default function AdvancedAIShowcase() {
   };
 
   const handleSend = async (content: string, attachments?: Attachment[]) => {
+    // Check if we need structured output
+    let schema;
+    if (content.toLowerCase().includes('generate profile')) {
+      schema = z.object({
+        name: z.string(),
+        role: z.string(),
+        skills: z.array(z.string())
+      });
+    }
+
     await append({ 
       id: Date.now().toString(),
       role: 'user', 
@@ -60,7 +78,7 @@ export default function AdvancedAIShowcase() {
       timestamp: new Date(),
       status: 'sent',
       attachments 
-    });
+    }, schema);
   };
 
   const handleExport = () => {
@@ -77,7 +95,7 @@ export default function AdvancedAIShowcase() {
   const slashCommands = [
     { id: '1', label: 'optimize', description: 'Force optimization', action: () => {} },
     { id: '2', label: 'chart', description: 'Generate chart', action: () => handleSend('Show me a chart') },
-    { id: '3', label: 'form', description: 'Generate form', action: () => handleSend('Show me a form') },
+    { id: '3', label: 'profile', description: 'Generate Structured Profile', action: () => handleSend('Generate Profile for Alex') },
   ];
 
   return (
@@ -107,6 +125,15 @@ export default function AdvancedAIShowcase() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Button 
+                    variant={usePII ? "default" : "outline"} 
+                    size="sm" 
+                    onClick={() => setUsePII(!usePII)}
+                    title="Toggle PII Middleware"
+                    className="h-8 gap-2"
+                  >
+                    <Shield className="w-4 h-4" /> {usePII ? "PII Safe" : "PII Off"}
+                  </Button>
                   <Button variant="ghost" size="icon" onClick={clear} title="Clear History" className="text-destructive/70 hover:text-destructive">
                     <Trash2 className="w-4 h-4" />
                   </Button>
