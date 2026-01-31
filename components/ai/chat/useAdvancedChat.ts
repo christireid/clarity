@@ -50,7 +50,7 @@ const optimizer = new TokenOptimizer({
 });
 
 export function useAdvancedChat({
-  api = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api/chat/stream` : '/api/chat/stream',
+  api = process.env.NEXT_PUBLIC_BACKEND_URL ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chat/stream` : '/api/chat/stream',
   initialMessages = [],
   optimizerConfig = { enabled: true, contextWindow: 4000 },
   initialConfig = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-5.2' },
