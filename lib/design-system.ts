@@ -283,7 +283,7 @@ export const variants = {
 };
 
 // =============================================================================
-// THEME PRESETS
+// THEME PRESETS - Minimal Neutral
 // =============================================================================
 
 export const themes = {
@@ -292,14 +292,14 @@ export const themes = {
     foreground: colors.neutral[900],
     card: '#ffffff',
     cardForeground: colors.neutral[900],
-    primary: colors.primary[600],
-    primaryForeground: '#ffffff',
-    accent: colors.accent[500],
-    accentForeground: '#ffffff',
+    primary: colors.neutral[900],
+    primaryForeground: colors.neutral[50],
+    accent: colors.neutral[100],
+    accentForeground: colors.neutral[900],
     muted: colors.neutral[100],
-    mutedForeground: colors.neutral[600],
+    mutedForeground: colors.neutral[500],
     border: colors.neutral[200],
-    ring: colors.primary[400],
+    ring: colors.neutral[400],
   },
   
   dark: {
@@ -307,14 +307,14 @@ export const themes = {
     foreground: colors.neutral[50],
     card: colors.neutral[900],
     cardForeground: colors.neutral[50],
-    primary: colors.primary[500],
-    primaryForeground: '#ffffff',
-    accent: colors.accent[500],
-    accentForeground: '#ffffff',
+    primary: colors.neutral[50],
+    primaryForeground: colors.neutral[900],
+    accent: colors.neutral[800],
+    accentForeground: colors.neutral[50],
     muted: colors.neutral[800],
     mutedForeground: colors.neutral[400],
     border: colors.neutral[800],
-    ring: colors.primary[500],
+    ring: colors.neutral[700],
   },
 };
 
