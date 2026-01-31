@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Message } from './types';
 import { TokenOptimizer } from '@/lib/token-optimization';
 import { StreamParser } from '@/lib/streaming/StreamParser';
 import { StreamType } from '@/lib/streaming/StreamProtocol';
+import type { SDKConfig } from '@/components/ai/devtools/SDKDevTools';
 
 interface UseAdvancedChatOptions {
   api?: string;
@@ -13,6 +14,7 @@ interface UseAdvancedChatOptions {
     enabled: boolean;
     contextWindow: number;
   };
+  initialConfig?: SDKConfig; // New: Pass initial config
   onResponse?: (message: Message) => void;
   onFinish?: (messages: Message[]) => void;
 }
@@ -29,6 +31,9 @@ interface UseAdvancedChatResult {
   setMessages: (messages: Message[]) => void;
   optimizationStats?: any;
   streamLogs: string[];
+  ragContext: any[];
+  config: SDKConfig;
+  setConfig: (config: SDKConfig) => void;
 }
 
 const optimizer = new TokenOptimizer({
@@ -48,6 +53,7 @@ export function useAdvancedChat({
   api = '/api/chat',
   initialMessages = [],
   optimizerConfig = { enabled: true, contextWindow: 4000 },
+  initialConfig = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-4o' },
   onResponse,
   onFinish
 }: UseAdvancedChatOptions = {}): UseAdvancedChatResult {
@@ -56,6 +62,8 @@ export function useAdvancedChat({
   const [isLoading, setIsLoading] = useState(false);
   const [optimizationStats, setOptimizationStats] = useState<any>(null);
   const [streamLogs, setStreamLogs] = useState<string[]>([]);
+  const [ragContext, setRagContext] = useState<any[]>([]);
+  const [config, setConfig] = useState<SDKConfig>(initialConfig);
   
   const parserRef = useRef(new StreamParser());
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -65,18 +73,32 @@ export function useAdvancedChat({
   const processMessage = async (userMessage: Message) => {
     setIsLoading(true);
     setStreamLogs([]); // Clear logs for new request
+    setRagContext([]);
     abortControllerRef.current = new AbortController();
 
     try {
       const newMessages = [...messages, userMessage];
       setMessages(newMessages);
 
+      // RAG Retrieval (Mock/Local)
+      // In a real app, this might happen on the server, but for the SDK showcase,
+      // we demonstrate how to pass context explicitly or retrieve it client-side.
+      const retrievedDocs = optimizer.rag.retrieve(userMessage.content);
+      setRagContext(retrievedDocs);
+      if (retrievedDocs.length > 0) {
+        setStreamLogs(prev => [...prev, `RAG: Retrieved ${retrievedDocs.length} docs`]);
+      }
+
       // Token Optimization
+      let contextToSend = newMessages;
       if (optimizerConfig.enabled) {
         const optimized = optimizer.context.optimize(newMessages);
         setOptimizationStats(optimized.stats);
+        contextToSend = optimized.messages; // This is what we WOULD send to the API
         setStreamLogs(prev => [...prev, `Token Optimization: Saved ${optimized.stats.saved} tokens`]);
       }
+
+      setStreamLogs(prev => [...prev, `Config: ${JSON.stringify(config)}`]);
 
       // Simulate Stream Response
       const aiResponseId = generateId();
@@ -117,7 +139,7 @@ export function useAdvancedChat({
       });
 
       // MOCK STREAM GENERATION
-      // In real app: fetch(api).body.pipeTo(...)
+      // In real app: fetch(api, { body: JSON.stringify({ messages: contextToSend, config }) }).body.pipeTo(...)
       
       const mockStream = async () => {
         const isChart = userMessage.content.toLowerCase().includes('chart');
@@ -125,7 +147,7 @@ export function useAdvancedChat({
         // 1. Text chunks
         const chunks = isChart
            ? ['Here ', 'is ', 'the ', 'chart ', 'you ', 'requested.']
-           : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response.'];
+           : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response ', `(Temp: ${config.temperature}).`];
 
         for (const chunk of chunks) {
           if (abortControllerRef.current?.signal.aborted) break;
@@ -220,6 +242,9 @@ export function useAdvancedChat({
     stop,
     setMessages,
     optimizationStats,
-    streamLogs
+    streamLogs,
+    ragContext,
+    config,
+    setConfig
   };
 }
