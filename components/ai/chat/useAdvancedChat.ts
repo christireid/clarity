@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { Message, Attachment } from './types';
+import { Message } from './types';
 import { TokenOptimizer } from '@/lib/token-optimization';
 import { StreamParser } from '@/lib/streaming/StreamParser';
 import { StreamType } from '@/lib/streaming/StreamProtocol';
@@ -10,6 +10,7 @@ import { compilePrompt } from '@/lib/prompt-template';
 import { ChatMiddleware } from './middleware';
 import { z } from 'zod';
 
+// ... (Interfaces remain same) ...
 interface UseAdvancedChatOptions {
   api?: string;
   initialMessages?: Message[];
@@ -49,10 +50,10 @@ const optimizer = new TokenOptimizer({
 });
 
 export function useAdvancedChat({
-  api = '/api/chat',
+  api = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api/chat/stream` : '/api/chat/stream',
   initialMessages = [],
   optimizerConfig = { enabled: true, contextWindow: 4000 },
-  initialConfig = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-4o' },
+  initialConfig = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-5.2' },
   persistenceKey,
   middleware = [],
   onResponse,
@@ -146,7 +147,7 @@ export function useAdvancedChat({
         setContextWindow(newMessages);
       }
 
-      // Simulate Response
+      // Prepare Response Message
       const generateId = () => Math.random().toString(36).substring(7);
       const aiResponseId = generateId();
       let assistantMessage: Message = {
@@ -178,72 +179,57 @@ export function useAdvancedChat({
         }
       });
 
-      // MOCK STREAM GENERATION
-      const mockStream = async () => {
-        const isChart = userMessage.content.toLowerCase().includes('chart');
-        // Ensure schema is respected if provided
-        
-        if (schema) {
-           setStreamLogs(prev => [...prev, `Generating Structured Output...`]);
-           await new Promise(r => setTimeout(r, 1000));
-           const profile = {
-             name: "Alex Chen",
-             role: "Senior Developer",
-             skills: ["React", "TypeScript", "AI"]
-           };
-           try {
-             schema.parse(profile);
-             // Properly format as a text chunk
-             parserRef.current.feed(`0:\`\`\`json\n${JSON.stringify(profile, null, 2)}\n\`\`\`\n`);
-           } catch (e) {
-             parserRef.current.feed(`0:Error: Generated output did not match schema.`);
-           }
-        } else {
-          // Standard Text/UI
-          const chunks = isChart
-             ? ['Here ', 'is ', 'the ', 'chart ', 'you ', 'requested.']
-             : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response.'];
+      // REAL BACKEND CALL
+      const response = await fetch(api, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          messages: contextToSend,
+          config: { ...config, systemPrompt: compiledSystemPrompt }
+        }),
+        signal: abortControllerRef.current.signal
+      });
 
-          for (const chunk of chunks) {
-            if (abortControllerRef.current?.signal.aborted) break;
-            await new Promise(r => setTimeout(r, 100));
-            parserRef.current.feed(`0:${chunk}\n`);
-          }
+      if (!response.body) throw new Error("No response body");
+      const reader = response.body.getReader();
+      
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        parserRef.current.feed(value);
+      }
 
-          if (isChart && !abortControllerRef.current?.signal.aborted) {
-             await new Promise(r => setTimeout(r, 500));
-             const chartData = { component: 'Chart', props: { data: [{ name: 'A', value: 10 }, { name: 'B', value: 20 }] } };
-             parserRef.current.feed(`7:${JSON.stringify(chartData)}\n`);
-          }
+      unsubscribe();
+      setIsLoading(false);
+      
+      // 5. Run Response Middleware
+      let finalMessage = { ...assistantMessage, status: 'sent' as const };
+      for (const mw of middleware) {
+        if (mw.onResponse) {
+          finalMessage = await mw.onResponse(finalMessage);
         }
-
-        if (!abortControllerRef.current?.signal.aborted) {
-          unsubscribe();
-          setIsLoading(false);
-          
-          // 5. Run Response Middleware
-          // We need to fetch the LATEST version of the assistant message from state or accumulator
-          // For simplicity in this mock, we assume 'assistantMessage' content was updated via the parser listener,
-          // but due to closure, 'assistantMessage' here is stale.
-          // In a real implementation, we'd accumulate the full response in a buffer.
-          
-          // Fix: Just mark as sent. Middleware on response would typically happen on the *stream chunks* or *final accumulated data*.
-          // For now, simpler to just mark sent.
-          
-          setMessages(prev => prev.map(m => m.id === aiResponseId ? { ...m, status: 'sent' } : m));
-        }
-      };
-
-      await mockStream();
+      }
+      
+      setMessages(prev => prev.map(m => m.id === aiResponseId ? finalMessage : m));
 
     } catch (error) {
-      console.error(error);
+      if ((error as Error).name !== 'AbortError') {
+        console.error(error);
+        setMessages(prev => [...prev, {
+          id: Math.random().toString(),
+          role: 'assistant',
+          content: `Error: ${(error as Error).message}`,
+          timestamp: new Date(),
+          status: 'error'
+        }]);
+      }
     } finally {
-      if (!abortControllerRef.current?.signal.aborted) setIsLoading(false);
+      setIsLoading(false);
       abortControllerRef.current = null;
     }
   };
 
+  // ... (Keep existing handlers) ...
   const handleSubmit = async (e?: React.FormEvent, metadata?: any) => {
     e?.preventDefault();
     if (!input.trim()) return;
