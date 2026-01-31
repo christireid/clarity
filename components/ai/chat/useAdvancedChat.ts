@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { Message } from './types';
+import { Message, Attachment } from './types';
 import { TokenOptimizer } from '@/lib/token-optimization';
 import { StreamParser } from '@/lib/streaming/StreamParser';
 import { StreamType } from '@/lib/streaming/StreamProtocol';
 import type { SDKConfig } from '@/components/ai/devtools/SDKDevTools';
 
+// ... (Interfaces remain same) ...
 interface UseAdvancedChatOptions {
   api?: string;
   initialMessages?: Message[];
@@ -14,7 +15,7 @@ interface UseAdvancedChatOptions {
     enabled: boolean;
     contextWindow: number;
   };
-  initialConfig?: SDKConfig; // New: Pass initial config
+  initialConfig?: SDKConfig;
   onResponse?: (message: Message) => void;
   onFinish?: (messages: Message[]) => void;
 }
@@ -37,16 +38,8 @@ interface UseAdvancedChatResult {
 }
 
 const optimizer = new TokenOptimizer({
-  contextWindow: {
-    maxTokens: 4000,
-    strategy: 'hybrid',
-    keepSystemMessages: true
-  },
-  memoryConfig: {
-    shortTermSize: 10,
-    longTermSize: 50,
-    compressionThreshold: 100
-  }
+  contextWindow: { maxTokens: 4000, strategy: 'hybrid', keepSystemMessages: true },
+  memoryConfig: { shortTermSize: 10, longTermSize: 50, compressionThreshold: 100 }
 });
 
 export function useAdvancedChat({
@@ -57,6 +50,7 @@ export function useAdvancedChat({
   onResponse,
   onFinish
 }: UseAdvancedChatOptions = {}): UseAdvancedChatResult {
+  // ... (State remains same) ...
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -72,7 +66,7 @@ export function useAdvancedChat({
 
   const processMessage = async (userMessage: Message) => {
     setIsLoading(true);
-    setStreamLogs([]); // Clear logs for new request
+    setStreamLogs([]);
     setRagContext([]);
     abortControllerRef.current = new AbortController();
 
@@ -80,9 +74,13 @@ export function useAdvancedChat({
       const newMessages = [...messages, userMessage];
       setMessages(newMessages);
 
-      // RAG Retrieval (Mock/Local)
-      // In a real app, this might happen on the server, but for the SDK showcase,
-      // we demonstrate how to pass context explicitly or retrieve it client-side.
+      // Handle Attachments
+      if (userMessage.attachments?.length) {
+        setStreamLogs(prev => [...prev, `Processing ${userMessage.attachments?.length} attachments...`]);
+        // Here we would typically upload/optimize images
+      }
+
+      // RAG Retrieval
       const retrievedDocs = optimizer.rag.retrieve(userMessage.content);
       setRagContext(retrievedDocs);
       if (retrievedDocs.length > 0) {
@@ -90,78 +88,58 @@ export function useAdvancedChat({
       }
 
       // Token Optimization
-      let contextToSend = newMessages;
       if (optimizerConfig.enabled) {
         const optimized = optimizer.context.optimize(newMessages);
         setOptimizationStats(optimized.stats);
-        contextToSend = optimized.messages; // This is what we WOULD send to the API
         setStreamLogs(prev => [...prev, `Token Optimization: Saved ${optimized.stats.saved} tokens`]);
       }
 
-      setStreamLogs(prev => [...prev, `Config: ${JSON.stringify(config)}`]);
-
-      // Simulate Stream Response
+      // Simulate Response
       const aiResponseId = generateId();
       const assistantMessage: Message = {
         id: aiResponseId,
         role: 'assistant',
-        content: '', // Start empty
+        content: '',
         timestamp: new Date(),
         status: 'sending'
       };
       
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Subscribe to parser
       const unsubscribe = parserRef.current.subscribe((part) => {
         setStreamLogs(prev => [...prev, `Received chunk type: ${part.type}`]);
-        
         if (part.type === StreamType.TEXT) {
-          setMessages(prev => prev.map(m => 
-            m.id === aiResponseId ? { ...m, content: m.content + part.content } : m
-          ));
+          setMessages(prev => prev.map(m => m.id === aiResponseId ? { ...m, content: m.content + part.content } : m));
         } else if (part.type === StreamType.UI_STREAM) {
-           // Handle UI Streaming (e.g. generative props)
            try {
              const patch = typeof part.content === 'string' ? JSON.parse(part.content) : part.content;
-             setMessages(prev => prev.map(m => 
-               m.id === aiResponseId ? { 
-                 ...m, 
-                 metadata: { 
-                   ...m.metadata, 
-                   component: patch.component,
-                   props: patch.props 
-                 } 
-               } : m
-             ));
+             setMessages(prev => prev.map(m => m.id === aiResponseId ? { ...m, metadata: { ...m.metadata, component: patch.component, props: patch.props } } : m));
            } catch(e) { console.error(e); }
         }
       });
 
-      // MOCK STREAM GENERATION
-      // In real app: fetch(api, { body: JSON.stringify({ messages: contextToSend, config }) }).body.pipeTo(...)
-      
       const mockStream = async () => {
         const isChart = userMessage.content.toLowerCase().includes('chart');
         
-        // 1. Text chunks
+        // Text chunks
         const chunks = isChart
            ? ['Here ', 'is ', 'the ', 'chart ', 'you ', 'requested.']
-           : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response ', `(Temp: ${config.temperature}).`];
+           : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response.'];
+
+        if (userMessage.attachments?.length) {
+           chunks.unshift(`I received your ${userMessage.attachments.length} file(s). `);
+        }
 
         for (const chunk of chunks) {
           if (abortControllerRef.current?.signal.aborted) break;
-          await new Promise(r => setTimeout(r, 100)); // Network delay
+          await new Promise(r => setTimeout(r, 100));
           parserRef.current.feed(`0:${chunk}\n`);
         }
 
-        // 2. Data/UI chunks
+        // Data/UI chunks
         if (isChart && !abortControllerRef.current?.signal.aborted) {
            await new Promise(r => setTimeout(r, 500));
-           const chartData = {
-             component: 'Chart',
-             props: { data: [{ name: 'A', value: 10 }, { name: 'B', value: 20 }] }
-           };
+           const chartData = { component: 'Chart', props: { data: [{ name: 'A', value: 10 }, { name: 'B', value: 20 }] } };
            parserRef.current.feed(`7:${JSON.stringify(chartData)}\n`);
         }
 
@@ -177,9 +155,7 @@ export function useAdvancedChat({
     } catch (error) {
       console.error(error);
     } finally {
-      if (!abortControllerRef.current?.signal.aborted) {
-        setIsLoading(false);
-      }
+      if (!abortControllerRef.current?.signal.aborted) setIsLoading(false);
       abortControllerRef.current = null;
     }
   };
@@ -187,16 +163,7 @@ export function useAdvancedChat({
   const handleSubmit = async (e?: React.FormEvent, metadata?: any) => {
     e?.preventDefault();
     if (!input.trim()) return;
-
-    const userMessage: Message = {
-      id: generateId(),
-      role: 'user',
-      content: input,
-      timestamp: new Date(),
-      status: 'sent',
-      metadata
-    };
-
+    const userMessage: Message = { id: generateId(), role: 'user', content: input, timestamp: new Date(), status: 'sent', metadata };
     setInput('');
     await processMessage(userMessage);
   };
@@ -207,16 +174,10 @@ export function useAdvancedChat({
 
   const reload = async () => {
     if (messages.length === 0) return;
-    
-    // Find last user message
     let lastUserIndex = messages.length - 1;
-    while (lastUserIndex >= 0 && messages[lastUserIndex].role !== 'user') {
-      lastUserIndex--;
-    }
-
+    while (lastUserIndex >= 0 && messages[lastUserIndex].role !== 'user') lastUserIndex--;
     if (lastUserIndex >= 0) {
       const lastUserMessage = messages[lastUserIndex];
-      // Keep everything up to that user message
       const newHistory = messages.slice(0, lastUserIndex + 1);
       setMessages(newHistory);
       await processMessage(lastUserMessage);
@@ -232,19 +193,6 @@ export function useAdvancedChat({
   };
 
   return {
-    messages,
-    input,
-    setInput,
-    isLoading,
-    handleSubmit,
-    append,
-    reload,
-    stop,
-    setMessages,
-    optimizationStats,
-    streamLogs,
-    ragContext,
-    config,
-    setConfig
+    messages, input, setInput, isLoading, handleSubmit, append, reload, stop, setMessages, optimizationStats, streamLogs, ragContext, config, setConfig
   };
 }
