@@ -211,28 +211,28 @@ export const animation = {
 };
 
 // =============================================================================
-// COMPONENT VARIANTS
+// COMPONENT VARIANTS - Minimal with Pastel Accents
 // =============================================================================
 
 export const variants = {
   button: {
     primary: {
-      bg: 'linear-gradient(135deg, var(--primary-500), var(--accent-500))',
-      hover: 'linear-gradient(135deg, var(--primary-600), var(--accent-600))',
-      text: 'white',
-      shadow: glass.shadow.md,
+      bg: 'linear-gradient(135deg, #dbeafe, #e9d5ff)', // pastel blue to purple
+      hover: 'linear-gradient(135deg, #bfdbfe, #d8b4fe)',
+      text: colors.neutral[700],
+      shadow: glass.shadow.sm,
     },
     secondary: {
       bg: glass.bg.light,
       hover: glass.bg.medium,
-      text: 'var(--foreground)',
+      text: colors.neutral[700],
       border: glass.border.medium,
       shadow: glass.shadow.sm,
     },
     ghost: {
       bg: 'transparent',
       hover: glass.bg.subtle,
-      text: 'var(--foreground)',
+      text: colors.neutral[600],
       shadow: 'none',
     },
   },
@@ -245,13 +245,13 @@ export const variants = {
       shadow: glass.shadow.lg,
     },
     elevated: {
-      bg: 'var(--card)',
-      border: '1px solid var(--border)',
-      shadow: glass.shadow.xl,
+      bg: colors.neutral[50],
+      border: `1px solid ${colors.neutral[200]}`,
+      shadow: glass.shadow.sm,
     },
     flat: {
-      bg: 'var(--card)',
-      border: '1px solid var(--border)',
+      bg: colors.neutral[50],
+      border: `1px solid ${colors.neutral[200]}`,
       shadow: 'none',
     },
   },
@@ -260,14 +260,24 @@ export const variants = {
     default: {
       bg: glass.bg.subtle,
       border: glass.border.subtle,
-      focus: glass.border.heavy,
+      focus: `1px solid ${colors.neutral[400]}`,
       shadow: glass.shadow.inner,
     },
     elevated: {
-      bg: 'var(--card)',
-      border: '1px solid var(--border)',
-      focus: '1px solid var(--primary-500)',
+      bg: colors.neutral[50],
+      border: `1px solid ${colors.neutral[200]}`,
+      focus: `1px solid ${colors.neutral[400]}`,
       shadow: glass.shadow.sm,
+    },
+  },
+  
+  badge: {
+    pastel: {
+      pink: `linear-gradient(135deg, ${colors.pastel.pink.from}, ${colors.pastel.pink.to})`,
+      purple: `linear-gradient(135deg, ${colors.pastel.purple.from}, ${colors.pastel.purple.to})`,
+      blue: `linear-gradient(135deg, ${colors.pastel.blue.from}, ${colors.pastel.blue.to})`,
+      mint: `linear-gradient(135deg, ${colors.pastel.mint.from}, ${colors.pastel.mint.to})`,
+      peach: `linear-gradient(135deg, ${colors.pastel.peach.from}, ${colors.pastel.peach.to})`,
     },
   },
 };
