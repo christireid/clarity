@@ -48,8 +48,8 @@ export function PromptToolingComponents() {
       >
         <PromptVersionHistory 
           versions={[
-            { id: "v1", content: "Write code", timestamp: new Date(Date.now() - 86400000), author: "Alice" },
-            { id: "v2", content: "Write efficient React code", timestamp: new Date(), author: "Bob" }
+            { id: "v1", content: "Write code", timestamp: new Date("2024-01-01T09:00:00"), author: "Alice" },
+            { id: "v2", content: "Write efficient React code", timestamp: new Date("2024-01-01T10:00:00"), author: "Bob" }
           ]}
           onSelect={(v) => console.log("Selected:", v)}
         />
