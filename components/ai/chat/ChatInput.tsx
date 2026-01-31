@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Send, Paperclip, Smile, AtSign, Slash } from "lucide-react";
+import { Send, Paperclip, Smile, AtSign, Slash, Mic, MicOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { SlashCommand, Mention } from "./types";
+import { useVoice } from "./useVoice";
 
 /**
- * ChatInput - Advanced input with slash commands and mentions
- * Full keyboard navigation and accessibility
+ * ChatInput - Advanced input with slash commands, mentions, and voice
  */
 
 interface ChatInputProps {
@@ -36,6 +36,30 @@ export function ChatInput({
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const [cursorPosition, setCursorPosition] = React.useState(0);
+
+  // Voice Hook
+  const { isListening, transcript, startListening, stopListening, resetTranscript, isSupported } = useVoice();
+
+  // Sync voice transcript to input
+  React.useEffect(() => {
+    if (transcript) {
+      setValue(prev => {
+        // Simple append for now. A real app might handle cursor position better.
+        return transcript;
+      });
+    }
+  }, [transcript]);
+
+  // Handle Voice Toggle
+  const toggleListening = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      resetTranscript();
+      startListening();
+      inputRef.current?.focus();
+    }
+  };
 
   // Filter slash commands
   const filteredCommands = React.useMemo(() => {
@@ -67,13 +91,11 @@ export function ChatInput({
     const lastSlashIndex = textBeforeCursor.lastIndexOf('/');
     
     if (lastSlashIndex !== -1 && lastSlashIndex === textBeforeCursor.length - 1) {
-      // Just typed "/"
       setShowSlashMenu(true);
       setShowMentionMenu(false);
       setSlashQuery("");
       setSelectedIndex(0);
-    } else if (lastSlashIndex !== -1 && textBeforeCursor[lastSlashIndex - 1] === undefined || textBeforeCursor[lastSlashIndex - 1] === ' ') {
-      // Typing after "/"
+    } else if (lastSlashIndex !== -1 && (textBeforeCursor[lastSlashIndex - 1] === undefined || textBeforeCursor[lastSlashIndex - 1] === ' ')) {
       const query = textBeforeCursor.slice(lastSlashIndex + 1);
       if (!query.includes(' ')) {
         setShowSlashMenu(true);
@@ -129,12 +151,6 @@ export function ChatInput({
       e.preventDefault();
       handleSend();
     }
-
-    // Keyboard shortcuts
-    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault();
-      // Open command palette (handled by parent)
-    }
   };
 
   // Select slash command
@@ -145,8 +161,6 @@ export function ChatInput({
     setValue(newValue);
     setShowSlashMenu(false);
     inputRef.current?.focus();
-    
-    // Execute command action
     command.action(value.slice(lastSlashIndex + 1));
   };
 
@@ -165,6 +179,7 @@ export function ChatInput({
     if (!value.trim() || disabled) return;
     onSend(value.trim());
     setValue("");
+    resetTranscript();
     setShowSlashMenu(false);
     setShowMentionMenu(false);
   };
@@ -179,72 +194,43 @@ export function ChatInput({
 
   return (
     <div className={cn("relative border-t border-border", className)}>
-      {/* Slash Command Menu */}
-      {showSlashMenu && filteredCommands.length > 0 && (
-        <div 
-          className="absolute bottom-full left-0 right-0 mb-2 glass-heavy rounded-lg shadow-lg max-h-64 overflow-y-auto scrollbar-none"
-          role="listbox"
-          aria-label="Slash commands"
-        >
+      {/* Menus */}
+      {(showSlashMenu && filteredCommands.length > 0) && (
+        <div className="absolute bottom-full left-0 right-0 mb-2 glass-heavy rounded-lg shadow-lg max-h-64 overflow-y-auto scrollbar-none z-10" role="listbox">
           {filteredCommands.map((cmd, index) => (
             <button
               key={cmd.id}
               onClick={() => selectSlashCommand(cmd)}
               className={cn(
-                "w-full px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors",
-                "flex items-center gap-3",
+                "w-full px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-3",
                 index === selectedIndex && "bg-neutral-100 dark:bg-neutral-800"
               )}
-              role="option"
-              aria-selected={index === selectedIndex}
             >
-              {cmd.icon && <span className="shrink-0">{cmd.icon}</span>}
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-neutral-900 dark:text-neutral-50">
-                  /{cmd.label}
-                </div>
-                <div className="text-xs text-muted-foreground truncate">
-                  {cmd.description}
-                </div>
+              {cmd.icon}
+              <div>
+                <div className="text-sm font-medium">{cmd.label}</div>
+                <div className="text-xs text-muted-foreground">{cmd.description}</div>
               </div>
             </button>
           ))}
         </div>
       )}
 
-      {/* Mention Menu */}
-      {showMentionMenu && filteredMentions.length > 0 && (
-        <div 
-          className="absolute bottom-full left-0 right-0 mb-2 glass-heavy rounded-lg shadow-lg max-h-64 overflow-y-auto scrollbar-none"
-          role="listbox"
-          aria-label="Mentions"
-        >
+      {(showMentionMenu && filteredMentions.length > 0) && (
+        <div className="absolute bottom-full left-0 right-0 mb-2 glass-heavy rounded-lg shadow-lg max-h-64 overflow-y-auto scrollbar-none z-10" role="listbox">
           {filteredMentions.map((mention, index) => (
             <button
               key={mention.id}
               onClick={() => selectMention(mention)}
               className={cn(
-                "w-full px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors",
-                "flex items-center gap-3",
+                "w-full px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-3",
                 index === selectedIndex && "bg-neutral-100 dark:bg-neutral-800"
               )}
-              role="option"
-              aria-selected={index === selectedIndex}
             >
-              {mention.avatar ? (
-                <img src={mention.avatar} alt="" className="w-6 h-6 rounded-full" />
-              ) : (
-                <div className="w-6 h-6 rounded-full bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center text-xs">
-                  {mention.label[0].toUpperCase()}
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-neutral-900 dark:text-neutral-50 truncate">
-                  @{mention.label}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {mention.type}
-                </div>
+              <div className="w-6 h-6 rounded-full bg-neutral-200 flex items-center justify-center text-xs">@</div>
+              <div>
+                <div className="text-sm font-medium">@{mention.label}</div>
+                <div className="text-xs text-muted-foreground">{mention.type}</div>
               </div>
             </button>
           ))}
@@ -253,81 +239,61 @@ export function ChatInput({
 
       {/* Input Area */}
       <div className="flex items-end gap-2 p-3">
-        {/* Action Buttons */}
+        {/* Left Actions */}
         <div className="flex gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 shrink-0"
-            aria-label="Attach file"
-          >
+          <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
             <Paperclip className="w-4 h-4" />
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 shrink-0"
-            onClick={() => {
-              setValue(value + '/');
-              setShowSlashMenu(true);
-              inputRef.current?.focus();
-            }}
-            aria-label="Insert slash command"
-            title="Insert slash command (/)"
-          >
-            <Slash className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 shrink-0"
-            onClick={() => {
-              setValue(value + '@');
-              setShowMentionMenu(true);
-              inputRef.current?.focus();
-            }}
-            aria-label="Mention user"
-            title="Mention user (@)"
-          >
-            <AtSign className="w-4 h-4" />
-          </Button>
+          {isSupported && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className={cn("h-8 w-8 shrink-0 transition-colors", isListening && "text-red-500 bg-red-50 dark:bg-red-950/20")}
+              onClick={toggleListening}
+              title={isListening ? "Stop listening" : "Start voice input"}
+            >
+              {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            </Button>
+          )}
         </div>
 
         {/* Textarea */}
-        <textarea
-          ref={inputRef}
-          value={value}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          disabled={disabled}
-          className={cn(
-            "flex-1 resize-none bg-transparent",
-            "text-sm text-foreground placeholder:text-muted-foreground",
-            "outline-none focus:outline-none",
-            "min-h-[36px] max-h-[200px]",
-            "scrollbar-none"
+        <div className="flex-1 relative">
+          <textarea
+            ref={inputRef}
+            value={value}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            placeholder={isListening ? "Listening..." : placeholder}
+            disabled={disabled}
+            className={cn(
+              "w-full resize-none bg-transparent",
+              "text-sm text-foreground placeholder:text-muted-foreground",
+              "outline-none focus:outline-none",
+              "min-h-[36px] max-h-[200px]",
+              "scrollbar-none"
+            )}
+            rows={1}
+          />
+          {isListening && (
+            <div className="absolute right-2 bottom-2">
+              <span className="flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+              </span>
+            </div>
           )}
-          rows={1}
-          aria-label="Message input"
-          aria-describedby="chat-input-help"
-        />
+        </div>
 
-        {/* Send Button */}
+        {/* Right Actions */}
         <Button
           onClick={handleSend}
           disabled={!value.trim() || disabled}
           size="icon"
           className="h-8 w-8 shrink-0 gradient-pastel-blue border-0"
-          aria-label="Send message"
         >
           <Send className="w-4 h-4 text-neutral-700" />
         </Button>
-      </div>
-
-      {/* Helper Text */}
-      <div id="chat-input-help" className="sr-only">
-        Type / for commands, @ to mention, Enter to send, Shift+Enter for new line
       </div>
     </div>
   );
