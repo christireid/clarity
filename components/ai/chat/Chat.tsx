@@ -58,9 +58,10 @@ interface ChatProviderProps {
   children: React.ReactNode;
   initialMessages?: Message[];
   onSendMessage?: (content: string) => void | Promise<void>;
+  value?: ChatContextValue;
 }
 
-function ChatProvider({ children, initialMessages = [], onSendMessage }: ChatProviderProps) {
+function ChatProvider({ children, initialMessages = [], onSendMessage, value: externalValue }: ChatProviderProps) {
   const [messages, setMessages] = React.useState<Message[]>(initialMessages);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<Error>();
