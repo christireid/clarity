@@ -13,6 +13,7 @@ import {
   Workflow,
   Zap,
   ChevronRight,
+  ArrowRight,
   Menu,
   X,
   Sun,
