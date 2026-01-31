@@ -4,7 +4,6 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
 import {
   Sparkles,
   Zap,
@@ -17,205 +16,165 @@ import {
 } from "lucide-react";
 
 /**
- * Design System Showcase - Glassmorphism Theme
- * Demonstrates the minimal sophisticated design system
+ * Minimal Design System with Pastel Gradient Accents
+ * Inspired by Ant Design & shadcn aesthetics
  */
 
 export default function DesignSystemShowcase() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-accent-50 to-primary-100 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950">
-      {/* Hero Section - Minimal */}
-      <section className="relative overflow-hidden py-16 px-4">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-accent-500/5" />
-        <div className="max-w-5xl mx-auto relative">
-          <div className="text-center space-y-4">
-            <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1.5 text-sm">
-              <Sparkles className="w-3.5 h-3.5 text-primary-500" />
-              <span className="text-xs font-medium">Design System v2.0</span>
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+      {/* Hero Section - Ultra Minimal */}
+      <section className="relative py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center space-y-6">
+            {/* Pastel Badge - First accent */}
+            <div className="inline-flex items-center gap-2 gradient-pastel-animated rounded-full px-3 py-1 text-xs font-medium text-neutral-700">
+              <Sparkles className="w-3 h-3" />
+              Minimal Design System
             </div>
-            <h1 className="text-5xl font-bold tracking-tight">
-              <span className="gradient-text">Minimal Glassmorphism</span>
+            
+            {/* Neutral Title */}
+            <h1 className="text-5xl font-bold text-neutral-900 dark:text-neutral-50 tracking-tight">
+              Less is More
             </h1>
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-              Refined design system with enhanced glass effects
+            
+            {/* Subdued Description */}
+            <p className="text-neutral-500 dark:text-neutral-400 max-w-md mx-auto text-sm">
+              Ultra-minimal with strategic pastel gradient accents
             </p>
+            
+            {/* Minimal Buttons */}
             <div className="flex gap-3 justify-center pt-2">
-              <Button className="gradient-primary text-white px-6 py-2.5 rounded-lg hover-lift text-sm">
+              <Button className="gradient-pastel-blue text-neutral-700 px-5 py-2 rounded-lg text-sm border-0 hover:opacity-90 transition-opacity">
                 Get Started
               </Button>
-              <Button variant="outline" className="glass-hover px-6 py-2.5 rounded-lg text-sm">
-                Components
+              <Button variant="outline" className="px-5 py-2 rounded-lg text-sm">
+                Documentation
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Design Tokens Section - Minimal */}
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto space-y-8">
-          <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold">Design Tokens</h2>
-            <p className="text-sm text-muted-foreground">
-              Consistent foundation with minimal spacing
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Colors */}
-            <div className="card-glass space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
-                  <Palette className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Colors</h3>
-                  <p className="text-xs text-muted-foreground">Palette</p>
-                </div>
+      {/* Design Philosophy */}
+      <section className="py-16 px-4 border-t border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 text-center">
+            <div className="space-y-2">
+              <div className="w-10 h-10 mx-auto rounded-full glass flex items-center justify-center">
+                <Layout className="w-4 h-4 text-neutral-600" />
               </div>
-              <div className="flex gap-1.5">
-                <div className="w-7 h-7 rounded-md bg-primary-500" />
-                <div className="w-7 h-7 rounded-md bg-accent-500" />
-                <div className="w-7 h-7 rounded-md bg-success-500" />
-                <div className="w-7 h-7 rounded-md bg-warning-500" />
-              </div>
+              <h3 className="font-medium text-sm text-neutral-900 dark:text-neutral-50">Minimal</h3>
+              <p className="text-xs text-neutral-500">Clean & focused</p>
             </div>
-
-            {/* Typography */}
-            <div className="card-glass space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-                  <Type className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Typography</h3>
-                  <p className="text-xs text-muted-foreground">Geist</p>
-                </div>
+            <div className="space-y-2">
+              <div className="w-10 h-10 mx-auto rounded-full glass flex items-center justify-center">
+                <Layers className="w-4 h-4 text-neutral-600" />
               </div>
-              <div className="space-y-0.5">
-                <p className="text-xs">Extra Small</p>
-                <p className="text-sm">Small</p>
-                <p className="text-base font-medium">Base</p>
-              </div>
+              <h3 className="font-medium text-sm text-neutral-900 dark:text-neutral-50">Glass</h3>
+              <p className="text-xs text-neutral-500">Subtle transparency</p>
             </div>
-
-            {/* Spacing */}
-            <div className="card-glass space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                  <Layout className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Spacing</h3>
-                  <p className="text-xs text-muted-foreground">Minimal</p>
-                </div>
+            <div className="space-y-2">
+              <div className="w-10 h-10 mx-auto rounded-full gradient-pastel-purple flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-neutral-700" />
               </div>
-              <div className="space-y-1.5">
-                <div className="h-1.5 bg-primary-500 rounded-full" style={{ width: '4px' }} />
-                <div className="h-1.5 bg-primary-500 rounded-full" style={{ width: '8px' }} />
-                <div className="h-1.5 bg-primary-500 rounded-full" style={{ width: '12px' }} />
-                <div className="h-1.5 bg-primary-500 rounded-full" style={{ width: '16px' }} />
-              </div>
-            </div>
-
-            {/* Radius */}
-            <div className="card-glass space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-                  <Box className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Radius</h3>
-                  <p className="text-xs text-muted-foreground">Corners</p>
-                </div>
-              </div>
-              <div className="flex gap-1.5">
-                <div className="w-8 h-8 bg-accent-500 rounded-sm" />
-                <div className="w-8 h-8 bg-accent-500 rounded-md" />
-                <div className="w-8 h-8 bg-accent-500 rounded-lg" />
-              </div>
+              <h3 className="font-medium text-sm text-neutral-900 dark:text-neutral-50">Accents</h3>
+              <p className="text-xs text-neutral-500">Pastel gradients</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Glassmorphism Components - Enhanced */}
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto space-y-8">
+      {/* Pastel Gradients - Strategic Showcase */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold">Enhanced Glassmorphism</h2>
-            <p className="text-sm text-muted-foreground">
-              Stronger blur with minimal padding
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-50">Pastel Accents</h2>
+            <p className="text-xs text-neutral-500">
+              Use sparingly for emphasis
+            </p>
+          </div>
+
+          <div className="grid grid-cols-5 gap-3">
+            <div className="aspect-square rounded-lg gradient-pastel-pink" />
+            <div className="aspect-square rounded-lg gradient-pastel-purple" />
+            <div className="aspect-square rounded-lg gradient-pastel-blue" />
+            <div className="aspect-square rounded-lg gradient-pastel-mint" />
+            <div className="aspect-square rounded-lg gradient-pastel-peach" />
+          </div>
+
+          {/* Animated Gradient */}
+          <div className="h-24 rounded-lg gradient-pastel-animated flex items-center justify-center">
+            <span className="text-sm font-medium text-neutral-700">Animated Pastel Gradient</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Glassmorphism - Subtle */}
+      <section className="py-16 px-4 bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-950 dark:to-neutral-900">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-50">Glassmorphism</h2>
+            <p className="text-xs text-neutral-500">
+              Ultra-subtle transparency
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-4">
-            {/* Glass Card - Subtle */}
-            <div className="glass rounded-xl p-4 space-y-3">
+            {/* Subtle Glass */}
+            <div className="glass rounded-lg p-4 space-y-2">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-sm">Subtle</h3>
-                <Layers className="w-4 h-4 text-primary-500" />
+                <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Subtle</span>
+                <Layers className="w-3 h-3 text-neutral-400" />
               </div>
-              <p className="text-xs text-muted-foreground">
-                Light glass with enhanced blur
-              </p>
-              <Button variant="ghost" size="sm" className="w-full text-xs h-8">
-                View
-              </Button>
+              <p className="text-xs text-neutral-500">Light frosting</p>
             </div>
 
-            {/* Glass Card - Medium */}
-            <div className="glass-medium rounded-xl p-4 space-y-3">
+            {/* Medium Glass */}
+            <div className="glass-medium rounded-lg p-4 space-y-2">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-sm">Medium</h3>
-                <Layers className="w-4 h-4 text-accent-500" />
+                <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Medium</span>
+                <Layers className="w-3 h-3 text-neutral-400" />
               </div>
-              <p className="text-xs text-muted-foreground">
-                Balanced visibility
-              </p>
-              <Button variant="ghost" size="sm" className="w-full text-xs h-8">
-                View
-              </Button>
+              <p className="text-xs text-neutral-500">Balanced blur</p>
             </div>
 
-            {/* Glass Card - Heavy */}
-            <div className="glass-heavy rounded-xl p-4 space-y-3">
+            {/* Heavy Glass */}
+            <div className="glass-heavy rounded-lg p-4 space-y-2">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-sm">Heavy</h3>
-                <Layers className="w-4 h-4 text-success-500" />
+                <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Heavy</span>
+                <Layers className="w-3 h-3 text-neutral-400" />
               </div>
-              <p className="text-xs text-muted-foreground">
-                Maximum frosted effect
-              </p>
-              <Button variant="ghost" size="sm" className="w-full text-xs h-8">
-                View
-              </Button>
+              <p className="text-xs text-neutral-500">Strong effect</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Interactive Components - Minimal */}
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto space-y-8">
+      {/* Components - Minimal */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold">Interactive Elements</h2>
-            <p className="text-sm text-muted-foreground">
-              Smooth micro-interactions
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-50">Components</h2>
+            <p className="text-xs text-neutral-500">
+              Clean and functional
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
             {/* Buttons */}
-            <div className="glass-medium rounded-xl p-5 space-y-4">
-              <h3 className="text-lg font-semibold">Buttons</h3>
-              <div className="space-y-2.5">
-                <Button className="w-full gradient-primary text-white hover-lift text-sm h-9">
-                  Primary Gradient
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Buttons</h3>
+              <div className="space-y-2">
+                {/* Pastel accent button */}
+                <Button className="w-full gradient-pastel-purple text-neutral-700 border-0 text-sm h-9">
+                  Pastel Accent
                 </Button>
-                <Button variant="outline" className="w-full glass-hover text-sm h-9">
-                  Glass Outline
+                {/* Neutral button */}
+                <Button variant="outline" className="w-full text-sm h-9">
+                  Neutral Outline
                 </Button>
+                {/* Ghost button */}
                 <Button variant="ghost" className="w-full text-sm h-9">
                   Ghost
                 </Button>
@@ -223,22 +182,22 @@ export default function DesignSystemShowcase() {
             </div>
 
             {/* Inputs */}
-            <div className="glass-medium rounded-xl p-5 space-y-4">
-              <h3 className="text-lg font-semibold">Inputs</h3>
-              <div className="space-y-2.5">
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Inputs</h3>
+              <div className="space-y-2">
                 <Input 
-                  placeholder="Glass input" 
-                  className="input-glass text-sm h-9"
+                  placeholder="Minimal input" 
+                  className="text-sm h-9 bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800"
                 />
                 <Input 
                   type="email" 
-                  placeholder="Email" 
-                  className="input-glass text-sm h-9"
+                  placeholder="Email address" 
+                  className="text-sm h-9 bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800"
                 />
                 <Input 
                   type="password" 
                   placeholder="Password" 
-                  className="input-glass text-sm h-9"
+                  className="text-sm h-9 bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800"
                 />
               </div>
             </div>
@@ -246,86 +205,91 @@ export default function DesignSystemShowcase() {
         </div>
       </section>
 
-      {/* Gradient Showcase - Minimal */}
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto space-y-8">
+      {/* Badges & Pills - Strategic Accents */}
+      <section className="py-16 px-4 border-t border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold">
-              <span className="gradient-text">Gradients</span>
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Smooth color transitions
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-50">Strategic Accents</h2>
+            <p className="text-xs text-neutral-500">
+              Use color intentionally
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="h-32 rounded-xl gradient-primary flex items-center justify-center hover-lift">
-              <span className="text-white font-medium text-sm">Primary</span>
-            </div>
-            <div className="h-32 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center hover-lift">
-              <span className="text-white font-medium text-sm">Blue</span>
-            </div>
-            <div className="h-32 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center hover-lift">
-              <span className="text-white font-medium text-sm">Purple</span>
-            </div>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <span className="gradient-pastel-pink px-3 py-1 rounded-full text-xs font-medium text-neutral-700">
+              New
+            </span>
+            <span className="gradient-pastel-purple px-3 py-1 rounded-full text-xs font-medium text-neutral-700">
+              Featured
+            </span>
+            <span className="gradient-pastel-blue px-3 py-1 rounded-full text-xs font-medium text-neutral-700">
+              Popular
+            </span>
+            <span className="gradient-pastel-mint px-3 py-1 rounded-full text-xs font-medium text-neutral-700">
+              Success
+            </span>
+            <span className="gradient-pastel-peach px-3 py-1 rounded-full text-xs font-medium text-neutral-700">
+              Updated
+            </span>
+          </div>
+
+          {/* Animated Badge */}
+          <div className="flex justify-center">
+            <span className="gradient-pastel-animated px-4 py-2 rounded-full text-sm font-medium text-neutral-700">
+              <Sparkles className="w-3 h-3 inline mr-1" />
+              Animated Accent
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Animation Showcase - Minimal */}
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto space-y-8">
-          <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold">Animations</h2>
-            <p className="text-sm text-muted-foreground">
-              Performant micro-animations
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="glass-medium rounded-xl p-4 hover-lift">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 animate-float" />
-              <h4 className="font-semibold mt-3 text-sm">Float</h4>
-              <p className="text-xs text-muted-foreground">Motion</p>
-            </div>
-
-            <div className="glass-medium rounded-xl p-4 hover-lift">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 animate-pulse" />
-              <h4 className="font-semibold mt-3 text-sm">Pulse</h4>
-              <p className="text-xs text-muted-foreground">Beat</p>
-            </div>
-
-            <div className="glass-medium rounded-xl p-4 hover-lift">
-              <div className="w-10 h-10 rounded-lg gradient-primary animate-gradient" />
-              <h4 className="font-semibold mt-3 text-sm">Gradient</h4>
-              <p className="text-xs text-muted-foreground">Flow</p>
-            </div>
-
-            <div className="glass-medium rounded-xl p-4 hover-lift">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 animate-shimmer" />
-              <h4 className="font-semibold mt-3 text-sm">Shimmer</h4>
-              <p className="text-xs text-muted-foreground">Shine</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section - Minimal */}
+      {/* Typography - Minimal */}
       <section className="py-16 px-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="glass-heavy rounded-2xl p-8 text-center space-y-4">
-            <h2 className="text-3xl font-bold">Ready to build?</h2>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Start using the minimal glassmorphism system
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-50">Typography</h2>
+            <p className="text-xs text-neutral-500">
+              Geist Sans - Clean & modern
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="p-4 glass rounded-lg">
+              <h1 className="text-4xl font-bold text-neutral-900 dark:text-neutral-50 mb-2">Heading 1</h1>
+              <p className="text-xs text-neutral-500">3rem / 48px - Bold</p>
+            </div>
+            <div className="p-4 glass rounded-lg">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-50 mb-2">Heading 2</h2>
+              <p className="text-xs text-neutral-500">1.5rem / 24px - Bold</p>
+            </div>
+            <div className="p-4 glass rounded-lg">
+              <p className="text-sm text-neutral-700 dark:text-neutral-300 mb-2">Body text - The quick brown fox jumps over the lazy dog</p>
+              <p className="text-xs text-neutral-500">0.875rem / 14px - Regular</p>
+            </div>
+            <div className="p-4 glass rounded-lg">
+              <p className="text-xs text-neutral-600 dark:text-neutral-400 mb-2">Small text - Supporting information and captions</p>
+              <p className="text-xs text-neutral-500">0.75rem / 12px - Regular</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA - Minimal with Pastel Accent */}
+      <section className="py-20 px-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="glass-heavy rounded-xl p-8 text-center space-y-4">
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-50">Ready to start?</h2>
+            <p className="text-sm text-neutral-500 max-w-sm mx-auto">
+              Ultra-minimal design with strategic pastel accents
             </p>
             <div className="flex gap-3 justify-center pt-2">
-              <Button className="gradient-primary text-white px-6 py-2.5 rounded-lg hover-lift text-sm">
-                <Code className="w-4 h-4 mr-1.5" />
-                Docs
+              <Button className="gradient-pastel-mint text-neutral-700 px-5 py-2 rounded-lg text-sm border-0">
+                <Code className="w-3 h-3 mr-1.5" />
+                Documentation
               </Button>
-              <Button variant="outline" className="glass-hover px-6 py-2.5 rounded-lg text-sm">
-                <Zap className="w-4 h-4 mr-1.5" />
-                Start
+              <Button variant="outline" className="px-5 py-2 rounded-lg text-sm">
+                <Zap className="w-3 h-3 mr-1.5" />
+                Examples
               </Button>
             </div>
           </div>
