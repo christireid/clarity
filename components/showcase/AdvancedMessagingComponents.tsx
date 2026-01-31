@@ -7,7 +7,7 @@ import { SearchBar, SearchResultsList, HighlightedText } from "@/components/ai/s
 import { MentionInput, MentionList, MentionBadge } from "@/components/ai/mentions";
 import { QuickReplyBar, QuickReplyChip } from "@/components/ai/quick-replies";
 import { ForwardDialog, ForwardPreview } from "@/components/ai/message-forwarding";
-import { MessageGroup, DateSeparator, UnreadDivider } from "@/components/ai/message-grouping";
+import { MessageGroupComponent, DateSeparator, UnreadSeparator } from "@/components/ai/message-grouping";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 
