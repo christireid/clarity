@@ -5,12 +5,13 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Activity, Database, Zap, Minimize2, Settings, Sliders } from 'lucide-react';
+import { Activity, Database, Zap, Minimize2, Settings, Sliders, Layers } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Slider } from '@/components/ui/slider';
+import { Message } from '../chat/types';
 
 export interface SDKConfig {
   systemPrompt: string;
@@ -24,6 +25,7 @@ interface DevToolsProps {
   ragContext?: any[];
   config?: SDKConfig;
   onConfigChange?: (config: SDKConfig) => void;
+  contextWindow?: Message[]; // New
 }
 
 export function SDKDevTools({ 
@@ -31,13 +33,13 @@ export function SDKDevTools({
   streamLogs = [], 
   ragContext = [], 
   config = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-4o' },
-  onConfigChange 
+  onConfigChange,
+  contextWindow = []
 }: DevToolsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
   const [localConfig, setLocalConfig] = useState<SDKConfig>(config);
 
-  // Sync external config updates
   useEffect(() => {
     setLocalConfig(config);
   }, [config]);
@@ -82,6 +84,7 @@ export function SDKDevTools({
         <div className="px-3 pt-3">
           <TabsList className="w-full">
             <TabsTrigger value="tokens" className="flex-1 text-xs">Tokens</TabsTrigger>
+            <TabsTrigger value="context" className="flex-1 text-xs">Context</TabsTrigger>
             <TabsTrigger value="stream" className="flex-1 text-xs">Stream</TabsTrigger>
             <TabsTrigger value="config" className="flex-1 text-xs">Config</TabsTrigger>
           </TabsList>
@@ -137,6 +140,31 @@ export function SDKDevTools({
             )}
           </TabsContent>
 
+          {/* CONTEXT TAB */}
+          <TabsContent value="context" className="h-full m-0">
+             <div className="mb-2 text-xs text-muted-foreground flex items-center gap-2">
+               <Layers className="w-3 h-3" /> Active Context Window ({contextWindow.length} msgs)
+             </div>
+             <ScrollArea className="h-full rounded-md border p-2 bg-muted/30">
+               <div className="space-y-2">
+                 {contextWindow.length > 0 ? contextWindow.map((msg, i) => (
+                   <div key={msg.id} className="p-2 bg-background border rounded text-xs space-y-1 relative overflow-hidden">
+                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
+                     <div className="font-semibold flex justify-between pl-2">
+                       <span className="capitalize">{msg.role}</span>
+                       <span className="text-[10px] text-muted-foreground">Token Est: {Math.ceil(msg.content.length / 4)}</span>
+                     </div>
+                     <div className="pl-2 text-muted-foreground line-clamp-2">
+                       {msg.content}
+                     </div>
+                   </div>
+                 )) : (
+                   <div className="text-center text-muted-foreground pt-8">No context window data</div>
+                 )}
+               </div>
+             </ScrollArea>
+          </TabsContent>
+
           {/* STREAM TAB */}
           <TabsContent value="stream" className="h-full m-0">
             <ScrollArea className="h-full rounded-md border p-2 bg-muted/30">
@@ -158,7 +186,7 @@ export function SDKDevTools({
           <TabsContent value="config" className="h-full m-0 space-y-4">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-xs">System Prompt</Label>
+                <Label className="text-xs">System Prompt (Supports {'{{variable}}'})</Label>
                 <Textarea 
                   value={localConfig.systemPrompt}
                   onChange={(e) => handleConfigChange('systemPrompt', e.target.value)}
