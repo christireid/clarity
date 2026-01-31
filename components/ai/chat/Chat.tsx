@@ -168,6 +168,8 @@ function ChatMessages({ className, renderBubble }: ChatMessagesProps) {
   );
 }
 
+import { VirtualizedChatList } from "./virtualized/VirtualizedChatList";
+
 /**
  * Compound Component Pattern
  */
@@ -175,6 +177,7 @@ export const Chat = Object.assign(ChatRoot, {
   Provider: ChatProvider,
   Header: ChatHeader,
   Messages: ChatMessages,
+  VirtualizedMessages: VirtualizedChatList,
   Input: ChatInput,
   Bubble: ChatBubble,
 });
