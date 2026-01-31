@@ -61,9 +61,9 @@ export function CollaborationComponents() {
       >
         <VersionHistory 
           versions={[
-            { id: "v1", author: "Alice", message: "Initial draft", timestamp: new Date(Date.now() - 86400000) },
-            { id: "v2", author: "Bob", message: "Refined prompt", timestamp: new Date(Date.now() - 43200000) },
-            { id: "v3", author: "Alice", message: "Final polish", timestamp: new Date() }
+            { id: "v1", author: "Alice", message: "Initial draft", timestamp: new Date("2024-01-01T08:00:00") },
+            { id: "v2", author: "Bob", message: "Refined prompt", timestamp: new Date("2024-01-01T09:00:00") },
+            { id: "v3", author: "Alice", message: "Final polish", timestamp: new Date("2024-01-01T10:00:00") }
           ]}
           onSelect={(id) => console.log("Selected version:", id)}
           onRevert={(id) => console.log("Revert to:", id)}
