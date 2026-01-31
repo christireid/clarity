@@ -164,13 +164,13 @@
     --input: 20 6% 15%;
     --ring: 209 100% 48%;
     
-    /* Glassmorphism Dark */
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-bg-medium: rgba(255, 255, 255, 0.08);
-    --glass-bg-heavy: rgba(255, 255, 255, 0.12);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    --glass-blur: blur(16px);
+    /* Glassmorphism Dark - Enhanced */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-bg-medium: rgba(255, 255, 255, 0.05);
+    --glass-bg-heavy: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --glass-blur: blur(24px);
     
     /* Sidebar Dark */
     --sidebar-background: 20 14% 8%;
