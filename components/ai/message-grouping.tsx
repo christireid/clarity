@@ -361,6 +361,7 @@ export function TimeIndicator({
     <time
       dateTime={timestamp.toISOString()}
       className={cn("text-xs text-muted-foreground", className)}
+      suppressHydrationWarning
     >
       {getTimeText()}
     </time>
