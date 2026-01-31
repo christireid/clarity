@@ -19,7 +19,7 @@ interface UseAdvancedChatOptions {
   };
   initialConfig?: SDKConfig;
   persistenceKey?: string;
-  middleware?: ChatMiddleware[]; // NEW
+  middleware?: ChatMiddleware[];
   onResponse?: (message: Message) => void;
   onFinish?: (messages: Message[]) => void;
 }
@@ -30,7 +30,7 @@ interface UseAdvancedChatResult {
   setInput: (value: string) => void;
   isLoading: boolean;
   handleSubmit: (e?: React.FormEvent, metadata?: any) => Promise<void>;
-  append: (message: Message, schema?: z.ZodSchema) => Promise<void>; // NEW: Schema support
+  append: (message: Message, schema?: z.ZodSchema) => Promise<void>;
   reload: () => Promise<void>;
   stop: () => void;
   clear: () => void;
@@ -72,7 +72,6 @@ export function useAdvancedChat({
   const abortControllerRef = useRef<AbortController | null>(null);
   const isMounted = useRef(false);
 
-  // Load from Persistence
   useEffect(() => {
     isMounted.current = true;
     if (persistenceKey && typeof window !== 'undefined') {
@@ -91,34 +90,38 @@ export function useAdvancedChat({
     }
   }, [persistenceKey]);
 
-  // Save to Persistence
   useEffect(() => {
     if (isMounted.current && persistenceKey && messages.length > 0) {
       localStorage.setItem(persistenceKey, JSON.stringify(messages));
     }
   }, [messages, persistenceKey]);
 
-  const processMessage = async (userMessage: Message, schema?: z.ZodSchema) => {
+  const processMessage = async (originalUserMessage: Message, schema?: z.ZodSchema) => {
     setIsLoading(true);
     setStreamLogs([]);
     setRagContext([]);
     abortControllerRef.current = new AbortController();
 
     try {
-      let newMessages = [...messages, userMessage];
-      setMessages(newMessages);
-
-      // 1. Run Request Middleware
+      // 1. Run Request Middleware BEFORE setting state
+      // We wrap the message in an array to fit the middleware signature
+      let processedMessages = [originalUserMessage];
       for (const mw of middleware) {
         if (mw.onRequest) {
-          const prevLen = JSON.stringify(newMessages).length;
-          newMessages = await mw.onRequest(newMessages);
-          const newLen = JSON.stringify(newMessages).length;
+          const prevLen = JSON.stringify(processedMessages).length;
+          processedMessages = await mw.onRequest(processedMessages);
+          const newLen = JSON.stringify(processedMessages).length;
           if (prevLen !== newLen) {
              setStreamLogs(prev => [...prev, `Middleware modified request (${prevLen} -> ${newLen} chars)`]);
           }
         }
       }
+      
+      const userMessage = processedMessages[0]; // Get back the modified message
+
+      // Update state with the processed message (which might be redacted)
+      let newMessages = [...messages, userMessage];
+      setMessages(newMessages);
 
       // 2. Compile System Prompt
       const compiledSystemPrompt = compilePrompt(config.systemPrompt, {
@@ -182,28 +185,25 @@ export function useAdvancedChat({
       // MOCK STREAM GENERATION
       const mockStream = async () => {
         const isChart = userMessage.content.toLowerCase().includes('chart');
+        const isProfile = userMessage.content.toLowerCase().includes('profile'); // Fixed check
         
-        // Structured Output Handling
-        if (schema) {
+        if (schema && isProfile) {
            setStreamLogs(prev => [...prev, `Generating Structured Output...`]);
-           // Mock generating a profile if that's what was asked
-           if (userMessage.content.toLowerCase().includes('profile')) {
-             await new Promise(r => setTimeout(r, 1000));
-             const profile = {
-               name: "Alex Chen",
-               role: "Senior Developer",
-               skills: ["React", "TypeScript", "AI"]
-             };
-             // Validate against schema (simulated)
-             try {
-               schema.parse(profile);
-               parserRef.current.feed(`0:\`\`\`json\n${JSON.stringify(profile, null, 2)}\n\`\`\`\n`);
-             } catch (e) {
-               parserRef.current.feed(`0:Error: Generated output did not match schema.`);
-             }
+           await new Promise(r => setTimeout(r, 1000));
+           const profile = {
+             name: "Alex Chen",
+             role: "Senior Developer",
+             skills: ["React", "TypeScript", "AI"]
+           };
+           // Simulated validation
+           try {
+             schema.parse(profile);
+             // Send as a single chunk for simplicity in mock, wrapped in code block
+             parserRef.current.feed(`0:\`\`\`json\n${JSON.stringify(profile, null, 2)}\n\`\`\`\n`);
+           } catch (e) {
+             parserRef.current.feed(`0:Error: Generated output did not match schema.`);
            }
         } else {
-          // Standard Text/UI
           const chunks = isChart
              ? ['Here ', 'is ', 'the ', 'chart ', 'you ', 'requested.']
              : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response.'];
@@ -225,7 +225,6 @@ export function useAdvancedChat({
           unsubscribe();
           setIsLoading(false);
           
-          // 5. Run Response Middleware
           let finalMessage = { ...assistantMessage, status: 'sent' as const };
           for (const mw of middleware) {
             if (mw.onResponse) {
