@@ -4,7 +4,26 @@ import logging
 import os
 from typing import AsyncGenerator
 
-from emergentintegrations.llm.chat import LlmChat, UserMessage, SystemMessage
+# Mock implementation for emergentintegrations
+class SystemMessage:
+    def __init__(self, content: str):
+        self.content = content
+        self.role = "system"
+
+class UserMessage:
+    def __init__(self, content: str):
+        self.content = content
+        self.role = "user"
+
+class LlmChat:
+    def __init__(self, model: str = "gpt-4"):
+        self.model = model
+    
+    async def stream_chat(self, messages):
+        # Mock streaming response
+        for chunk in ["This", " is", " a", " simulated", " response", " for", " testing", "."]:
+            yield {"content": chunk, "type": "text"}
+            await asyncio.sleep(0.1)
 from fastapi import Request
 from sse_starlette.sse import EventSourceResponse
 
