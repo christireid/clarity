@@ -280,6 +280,23 @@ import {
   RevealOnScroll,
   BentoGrid,
 } from "@/components/ai/ui-pattern-animations";
+import {
+  FloatingElement,
+  SpotlightCursor,
+  MorphBlob,
+  ParticleBurst,
+  FlipCard3D,
+  WaveText,
+  ShimmerBorder,
+  BreathEffect,
+  Shake,
+  BounceIn,
+} from "@/components/ai/advanced-animations";
+import {
+  ManusChat,
+  EmergentChat,
+  LoveableChat,
+} from "@/components/ai/chat-clones-extended";
 import { MessageEditor, EditableMessage } from "@/components/ai/message-editor";
 import { MessageReactions, ReactionPicker, ReactionList, QuickReactionBar } from "@/components/ai/reactions";
 import { MessageStatusIndicator, ReadReceiptAvatars, TypingStatus, OnlineStatusIndicator } from "@/components/ai/read-receipts";
