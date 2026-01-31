@@ -229,7 +229,7 @@ function SyntaxHighlight({ code, language }: { code: string; language: string })
 
   if (!code) return null;
   // Use span for inline content, pre/code wrappers are handled by parent
-  return <span dangerouslySetInnerHTML={{ __html: highlighted }} />;
+  return <span dangerouslySetInnerHTML={{ __html: highlighted }} suppressHydrationWarning />;
 }
 
 function highlightCode(code: string, language: string): string {
