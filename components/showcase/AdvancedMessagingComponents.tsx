@@ -83,13 +83,23 @@ export function AdvancedMessagingComponents() {
       >
         <div className="space-y-4">
           <DateSeparator date={new Date()} />
-          <MessageGroup 
-            messages={[
-              { id: "1", content: "Hello", author: "Alice", timestamp: new Date() },
-              { id: "2", content: "How are you?", author: "Alice", timestamp: new Date() }
-            ]}
+          <MessageGroupComponent 
+            group={{
+              id: "group-1",
+              role: "user",
+              messages: [
+                { id: "1", content: "Hello", role: "user", timestamp: new Date() },
+                { id: "2", content: "How are you?", role: "user", timestamp: new Date() }
+              ],
+              timestamp: new Date()
+            }}
+            renderMessage={(message) => (
+              <div className="px-3 py-2 rounded-lg bg-primary text-primary-foreground">
+                {message.content}
+              </div>
+            )}
           />
-          <UnreadDivider />
+          <UnreadSeparator />
         </div>
       </ComponentCard>
     </div>
