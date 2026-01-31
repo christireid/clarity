@@ -13,8 +13,9 @@
  * - JSON optimization
  * - Chunking techniques
  * - Specialized memory systems
- * - RAG integration
+ * - RAG integration (TF-IDF Client-side)
  * - Tool calling optimization
+ * - Stream handling
  */
 
 export { TokenOptimizer } from './TokenOptimizer';
@@ -27,5 +28,8 @@ export { JSONOptimizer } from './JSONOptimizer';
 export { ChunkingStrategy } from './ChunkingStrategy';
 export { MemoryManager } from './MemoryManager';
 export { SmartRouter } from './SmartRouter';
+export { ToolCalling } from './ToolCalling';
+export { RAGSystem } from './RAGSystem';
+export { StreamHandler } from './StreamHandler';
 
 export type * from './types';
