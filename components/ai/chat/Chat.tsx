@@ -177,7 +177,7 @@ export const Chat = Object.assign(ChatRoot, {
   Provider: ChatProvider,
   Header: ChatHeader,
   Messages: ChatMessages,
-  VirtualizedMessages: VirtualizedChatList,
+  VirtualizedMessages: ChatMessages, // Fallback to regular messages for now
   Input: ChatInput,
   Bubble: ChatBubble,
 });
