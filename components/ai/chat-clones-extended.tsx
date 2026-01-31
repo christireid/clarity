@@ -68,6 +68,12 @@ function ManusChatInner() {
     }, 1000);
   };
 
+  const slashCommands = [
+    { id: '1', label: 'explain', description: 'Explain code', action: () => handleSend('/explain') },
+    { id: '2', label: 'fix', description: 'Fix bugs', action: () => handleSend('/fix') },
+    { id: '3', label: 'test', description: 'Generate tests', action: () => handleSend('/test') },
+  ];
+
   return (
     <Chat className="h-[600px] border-border shadow-sm">
       <div className="flex items-center justify-between border-b border-border p-4">
