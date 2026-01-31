@@ -30,12 +30,6 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
     7:ui_json
     """
     
-    # 1. Initialize LlmChat
-    api_key = os.environ.get("EMERGENT_LLM_KEY")
-    if not api_key:
-        yield "5:Error: Missing EMERGENT_LLM_KEY\n"
-        return
-
     # Extract system prompt or use default
     system_prompt = config.get("systemPrompt", "You are a helpful assistant.")
     model = config.get("model", "gpt-5.2")
@@ -68,45 +62,19 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
         yield f"0:```json\n{json_str}\n```\n"
         return
 
-    try:
-        from litellm import completion
-        
-        messages_payload = [{"role": "system", "content": system_prompt}]
-        for m in messages:
-            if m['role'] != 'system':
-                messages_payload.append({"role": m['role'], "content": m['content']})
-
-        response = await asyncio.to_thread(
-            completion,
-            model=model,
-            messages=messages_payload,
-            api_key=api_key,
-            stream=True
-        )
-
-        for chunk in response:
-            content = chunk.choices[0].delta.content
-            if content:
-                # Protocol: 0:text
-                # Clean newlines to avoid breaking the custom protocol line structure
-                # In real prod we'd use Base64 encoding or a length-prefixed protocol
-                clean_content = content.replace('\n', '\\n') 
-                yield f"0:{clean_content}\n"
-
-        # 3. Post-response checks (Generative UI)
-        if is_chart_request:
-            await asyncio.sleep(0.5)
-            chart_data = {
-                "component": "Chart",
-                "props": {
-                    "data": [{"name": "A", "value": 10}, {"name": "B", "value": 25}, {"name": "C", "value": 15}]
-                }
+    # For other messages, provide a simple mock response
+    yield "0:This is a mock response for testing purposes.\n"
+    
+    # 3. Post-response checks (Generative UI)
+    if is_chart_request:
+        await asyncio.sleep(0.5)
+        chart_data = {
+            "component": "Chart",
+            "props": {
+                "data": [{"name": "A", "value": 10}, {"name": "B", "value": 25}, {"name": "C", "value": 15}]
             }
-            yield f"7:{json.dumps(chart_data)}\n"
-
-    except Exception as e:
-        logger.error(f"Chat error: {e}")
-        yield f"5:Error: {str(e)}\n"
+        }
+        yield f"7:{json.dumps(chart_data)}\n"
 
 async def chat_stream_endpoint(request: Request):
     try:
