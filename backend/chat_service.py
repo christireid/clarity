@@ -42,7 +42,7 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
             "location": "San Francisco"
         }
         
-        yield f"7:{json.dumps(json_profile, indent=2)}\n"
+        yield f"7:{json.dumps(json_profile)}\n"
         return
     
     # For other messages, generate a simulated response
