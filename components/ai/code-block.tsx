@@ -186,33 +186,35 @@ export function CodeBlock({
         )}
         style={{ maxHeight: !isExpanded && maxHeight ? maxHeight : undefined }}
       >
-        <pre className={cn("p-4 text-sm font-mono", wordWrap && "whitespace-pre-wrap break-words")}>
-          <code className={`language-${language}`}>
-            {showLineNumbers ? (
-              <table className="w-full border-collapse">
-                <tbody>
-                  {lines.map((line, idx) => (
-                    <tr
-                      key={idx}
-                      className={cn(
-                        highlightLines.includes(idx + 1) && "bg-ai-user/10"
-                      )}
-                    >
-                      <td className="pr-4 text-right text-muted-foreground/50 select-none w-[1%] whitespace-nowrap">
-                        {idx + 1}
-                      </td>
-                      <td className="pl-4 border-l border-code-border">
-                        <SyntaxHighlight code={line || ""} language={language} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <SyntaxHighlight code={safeCode} language={language} />
-            )}
-          </code>
-        </pre>
+        <div className={cn("p-4 text-sm font-mono", wordWrap && "whitespace-pre-wrap break-words")}>
+          {showLineNumbers ? (
+            <table className="w-full border-collapse">
+              <tbody>
+                {lines.map((line, idx) => (
+                  <tr
+                    key={idx}
+                    className={cn(
+                      highlightLines.includes(idx + 1) && "bg-ai-user/10"
+                    )}
+                  >
+                    <td className="pr-4 text-right text-muted-foreground/50 select-none w-[1%] whitespace-nowrap align-top">
+                      {idx + 1}
+                    </td>
+                    <td className="pl-4 border-l border-code-border align-top">
+                      <SyntaxHighlight code={line || " "} language={language} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <pre className="m-0 p-0 bg-transparent">
+              <code className={`language-${language}`}>
+                <SyntaxHighlight code={safeCode} language={language} />
+              </code>
+            </pre>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -226,6 +228,7 @@ function SyntaxHighlight({ code, language }: { code: string; language: string })
   }, [code, language]);
 
   if (!code) return null;
+  // Use span for inline content, pre/code wrappers are handled by parent
   return <span dangerouslySetInnerHTML={{ __html: highlighted }} />;
 }
 
@@ -349,37 +352,35 @@ export function CodeDiff({
         </div>
       )}
       <div className="overflow-auto">
-        <pre className="p-4 text-sm font-mono">
-          <code>
-            <table className="w-full border-collapse">
-              <tbody>
-                {diff.map((line, idx) => (
-                  <tr
-                    key={idx}
-                    className={cn(
-                      line.type === "add" && "bg-ai-success/10",
-                      line.type === "remove" && "bg-destructive/10"
-                    )}
-                  >
-                    <td className="pr-2 text-right text-muted-foreground/50 select-none w-[1%] whitespace-nowrap">
-                      {line.type !== "add" ? line.oldLineNum : ""}
-                    </td>
-                    <td className="pr-4 text-right text-muted-foreground/50 select-none w-[1%] whitespace-nowrap border-r border-code-border">
-                      {line.type !== "remove" ? line.newLineNum : ""}
-                    </td>
-                    <td className="px-2 w-4 text-center select-none">
-                      {line.type === "add" && <span className="text-ai-success">+</span>}
-                      {line.type === "remove" && <span className="text-destructive">-</span>}
-                    </td>
-                    <td className="pl-2">
-                      <SyntaxHighlight code={line.content || ""} language={language} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </code>
-        </pre>
+        <div className="p-4 text-sm font-mono">
+          <table className="w-full border-collapse">
+            <tbody>
+              {diff.map((line, idx) => (
+                <tr
+                  key={idx}
+                  className={cn(
+                    line.type === "add" && "bg-ai-success/10",
+                    line.type === "remove" && "bg-destructive/10"
+                  )}
+                >
+                  <td className="pr-2 text-right text-muted-foreground/50 select-none w-[1%] whitespace-nowrap align-top">
+                    {line.type !== "add" ? line.oldLineNum : ""}
+                  </td>
+                  <td className="pr-4 text-right text-muted-foreground/50 select-none w-[1%] whitespace-nowrap border-r border-code-border align-top">
+                    {line.type !== "remove" ? line.newLineNum : ""}
+                  </td>
+                  <td className="px-2 w-4 text-center select-none align-top">
+                    {line.type === "add" && <span className="text-ai-success">+</span>}
+                    {line.type === "remove" && <span className="text-destructive">-</span>}
+                  </td>
+                  <td className="pl-2 align-top">
+                    <SyntaxHighlight code={line.content || " "} language={language} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
