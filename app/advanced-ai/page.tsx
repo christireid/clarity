@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Zap, Cpu, Activity, StopCircle, RotateCw, Download, FileText
+  Zap, Cpu, Activity, StopCircle, RotateCw, Download, FileText, Trash2
 } from "lucide-react";
 import { SDKDevTools } from "@/components/ai/devtools/SDKDevTools";
 import { Attachment } from "@/components/ai/chat/types";
@@ -23,11 +23,18 @@ optimizer.rag.addDocument("doc2", "Token optimization reduces AI costs by compre
 
 export default function AdvancedAIShowcase() {
   const { 
-    messages, append, isLoading, setMessages, optimizationStats, streamLogs, stop, reload, ragContext, config, setConfig
+    messages, append, isLoading, setMessages, optimizationStats, streamLogs, stop, reload, ragContext, config, setConfig, clear, contextWindow
   } = useAdvancedChat({
     initialMessages: [
       { id: '1', role: 'assistant', content: 'Ready to optimize! Try asking about "Next.js", type "Show me a chart", or drop an image file.', timestamp: new Date() }
-    ]
+    ],
+    // Enable Persistence
+    persistenceKey: 'advanced-ai-chat-history-v1',
+    initialConfig: {
+      systemPrompt: 'You are a helpful assistant. Current date is {{date}}.',
+      temperature: 0.7,
+      model: 'gpt-4o'
+    }
   });
 
   const chatContextValue = {
@@ -100,6 +107,9 @@ export default function AdvancedAIShowcase() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon" onClick={clear} title="Clear History" className="text-destructive/70 hover:text-destructive">
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                   <Button variant="ghost" size="icon" onClick={handleExport} title="Export Chat">
                     <Download className="w-4 h-4" />
                   </Button>
@@ -159,6 +169,7 @@ export default function AdvancedAIShowcase() {
         ragContext={ragContext}
         config={config}
         onConfigChange={setConfig}
+        contextWindow={contextWindow}
       />
     </div>
   );
