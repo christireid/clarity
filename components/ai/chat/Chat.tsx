@@ -92,7 +92,7 @@ function ChatProvider({ children, initialMessages = [], onSendMessage, value: ex
     error,
   };
 
-  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+  return <ChatContext.Provider value={externalValue || value}>{children}</ChatContext.Provider>;
 }
 
 /**
