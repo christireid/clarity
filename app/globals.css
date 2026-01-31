@@ -457,30 +457,32 @@
  * COMPONENT ENHANCEMENTS
  * ============================================================================= */
 
-/* Enhanced Card Styles */
+/* Enhanced Card Styles - Minimal Padding */
 .card-glass {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-2xl);
-  padding: 1.5rem;
+  border-radius: var(--radius-xl);
+  padding: 1rem;
   transition: all var(--duration-normal) var(--ease-smooth);
 }
 
 .card-glass:hover {
   background: var(--glass-bg-medium);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
   transform: translateY(-2px);
 }
 
-/* Enhanced Button Styles */
+/* Enhanced Button Styles - Minimal Padding */
 .btn-glass {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
-  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-lg);
+  padding: 0.5rem 1rem;
   transition: all var(--duration-fast) var(--ease-smooth);
 }
 
@@ -493,19 +495,20 @@
   transform: translateY(0);
 }
 
-/* Enhanced Input Styles */
+/* Enhanced Input Styles - Minimal Padding */
 .input-glass {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
   transition: all var(--duration-fast) var(--ease-smooth);
 }
 
 .input-glass:focus {
   border-color: hsl(var(--primary));
-  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.08);
 }
 
 /* =============================================================================
