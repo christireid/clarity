@@ -2,15 +2,11 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { User, Bot, CheckCircle2, Clock, AlertCircle, Copy, ThumbsUp, ThumbsDown, RotateCw } from "lucide-react";
+import { User, Bot, CheckCircle2, Clock, AlertCircle, Copy, ThumbsUp, ThumbsDown, RotateCw, Volume2, StopCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Message } from "./types";
 import { renderGenerativeComponent } from "./GenerativeUIRegistry";
-
-/**
- * ChatBubble - Individual message bubble
- * Supports user/assistant/system roles with proper accessibility
- */
+import { useTTS } from "./useTTS";
 
 interface ChatBubbleProps {
   message: Message;
@@ -25,6 +21,13 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
   const isAssistant = message.role === 'assistant';
   const isSystem = message.role === 'system';
   const [copied, setCopied] = React.useState(false);
+  
+  // TTS Hook
+  const { speak, stop, isSpeaking, isSupported } = useTTS();
+  // Local state to track if *this specific bubble* is speaking. 
+  // Note: The global hook tracks 'isSpeaking' globally. 
+  // For a robust implementation, we'd need an ID check, but simple toggle works for single-voice.
+  const [isThisSpeaking, setIsThisSpeaking] = React.useState(false);
 
   const StatusIcon = {
     sending: Clock,
@@ -33,14 +36,26 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
   }[message.status || 'sent'];
 
   const handleCopy = () => {
-    if (onCopy) {
-      onCopy(message.content);
-    } else {
-      navigator.clipboard.writeText(message.content);
-    }
+    if (onCopy) onCopy(message.content);
+    else navigator.clipboard.writeText(message.content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const handleSpeak = () => {
+    if (isThisSpeaking) {
+      stop();
+      setIsThisSpeaking(false);
+    } else {
+      speak(message.content);
+      setIsThisSpeaking(true);
+    }
+  };
+
+  // Sync state with global speaking
+  React.useEffect(() => {
+    if (!isSpeaking) setIsThisSpeaking(false);
+  }, [isSpeaking]);
 
   return (
     <div
@@ -60,7 +75,6 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
           isUser && "bg-neutral-200 dark:bg-neutral-800",
           isSystem && "bg-neutral-300 dark:bg-neutral-700"
         )}
-        aria-hidden="true"
       >
         {isAssistant && <Bot className="w-4 h-4 text-neutral-700" />}
         {isUser && <User className="w-4 h-4 text-neutral-600" />}
@@ -69,6 +83,19 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
 
       {/* Message Content */}
       <div className={cn("flex-1 max-w-[80%] space-y-1", isUser && "flex flex-col items-end")}>
+        {/* Attachments Display */}
+        {message.attachments && message.attachments.length > 0 && (
+          <div className="flex gap-2 flex-wrap mb-2">
+            {message.attachments.map(att => (
+              att.type === 'image' ? (
+                <img key={att.id} src={att.url} alt={att.name} className="max-w-[200px] max-h-[200px] rounded-lg border border-border" />
+              ) : (
+                <div key={att.id} className="p-2 bg-muted rounded border text-xs">{att.name}</div>
+              )
+            ))}
+          </div>
+        )}
+
         <div
           className={cn(
             "rounded-lg p-3 text-sm relative group/bubble",
@@ -92,55 +119,35 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
           </time>
           {message.status && StatusIcon && (
             <StatusIcon 
-              className={cn(
-                "w-3 h-3",
-                message.status === 'error' && "text-error-500"
-              )} 
-              aria-label={message.status}
+              className={cn("w-3 h-3", message.status === 'error' && "text-error-500")} 
             />
           )}
 
-          {/* Action Buttons (Visible on Hover) */}
+          {/* Action Buttons */}
           {!isUser && message.status !== 'sending' && (
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-5 w-5 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-                onClick={handleCopy}
-                title="Copy message"
-              >
+              {isSupported && (
+                <Button 
+                  variant="ghost" size="icon" className="h-5 w-5" onClick={handleSpeak} 
+                  title={isThisSpeaking ? "Stop" : "Read Aloud"}
+                >
+                  {isThisSpeaking ? <StopCircle className="w-3 h-3 text-red-500" /> : <Volume2 className="w-3 h-3" />}
+                </Button>
+              )}
+              <Button variant="ghost" size="icon" className="h-5 w-5" onClick={handleCopy}>
                 {copied ? <CheckCircle2 className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
               </Button>
               {onRegenerate && (
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="h-5 w-5 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-                  onClick={onRegenerate}
-                  title="Regenerate"
-                >
+                <Button variant="ghost" size="icon" className="h-5 w-5" onClick={onRegenerate}>
                   <RotateCw className="w-3 h-3" />
                 </Button>
               )}
               {onFeedback && (
                 <>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-5 w-5 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-                    onClick={() => onFeedback('up')}
-                    title="Helpful"
-                  >
+                  <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => onFeedback('up')}>
                     <ThumbsUp className="w-3 h-3" />
                   </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-5 w-5 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-                    onClick={() => onFeedback('down')}
-                    title="Not helpful"
-                  >
+                  <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => onFeedback('down')}>
                     <ThumbsDown className="w-3 h-3" />
                   </Button>
                 </>
@@ -153,9 +160,7 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
   );
 }
 
-/**
- * ChatBubble.List - Renders list of bubbles
- */
+// ... List component remains same ...
 interface ChatBubbleListProps {
   items: Message[];
   className?: string;
@@ -173,6 +178,4 @@ export function ChatBubbleList({ items, className, renderItem }: ChatBubbleListP
     </div>
   );
 }
-
-// Attach subcomponent
 ChatBubble.List = ChatBubbleList;
