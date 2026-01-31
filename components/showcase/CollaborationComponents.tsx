@@ -48,8 +48,8 @@ export function CollaborationComponents() {
       >
         <CommentThread 
           comments={[
-            { id: "1", author: "Alice", content: "Should we update this prompt?", timestamp: new Date(Date.now() - 3600000) },
-            { id: "2", author: "Bob", content: "Yes, let's make it more specific.", timestamp: new Date() }
+            { id: "1", author: "Alice", content: "Should we update this prompt?", timestamp: new Date("2024-01-01T09:00:00") },
+            { id: "2", author: "Bob", content: "Yes, let's make it more specific.", timestamp: new Date("2024-01-01T10:00:00") }
           ]}
           onReply={(text) => console.log("Reply:", text)}
         />
