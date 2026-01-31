@@ -90,8 +90,8 @@ export function AdvancedMessagingComponents() {
           <DateSeparator date={new Date()} />
           <MessageGroup 
             messages={[
-              { id: "1", content: "Hello", role: "user", timestamp: new Date() },
-              { id: "2", content: "How are you?", role: "user", timestamp: new Date() }
+              { id: "1", content: "Hello", role: "user", timestamp: new Date("2024-01-01T10:00:00") },
+              { id: "2", content: "How are you?", role: "user", timestamp: new Date("2024-01-01T10:01:00") }
             ]}
             renderMessage={(msg) => (
               <div key={msg.id} className="p-2 bg-muted rounded">
