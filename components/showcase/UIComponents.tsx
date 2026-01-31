@@ -158,13 +158,13 @@ export function UIComponents() {
           <SenderDisplay
             type="user"
             name="John Doe"
-            timestamp={new Date()}
+            timestamp={new Date("2024-01-01T10:00:00")}
           />
           <SenderDisplay
             type="assistant"
             name="Claude"
             model="claude"
-            timestamp={new Date()}
+            timestamp={new Date("2024-01-01T10:01:00")}
           />
         </div>
       </ComponentCard>
