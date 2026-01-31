@@ -82,7 +82,7 @@ export function DevToolsComponents() {
             sourceBranch: "feature/ai-components",
             targetBranch: "main",
             status: "open",
-            createdAt: new Date(Date.now() - 86400000),
+            createdAt: new Date("2024-01-01T09:00:00"),
             commits: 5,
             additions: 450,
             deletions: 23,
