@@ -58,8 +58,9 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
             "skills": ["React", "Python", "AI"]
         }
         # Send as MARKDOWN TEXT (Type 0) so ChatBubble renders it as a code block
-        json_str = json.dumps(profile_data, indent=2)
-        yield f"0:```json\n{json_str}\n```\n"
+        # Make sure JSON is on a single line to avoid breaking the stream protocol
+        json_str = json.dumps(profile_data, separators=(',', ':'))  # Compact JSON
+        yield f"0:```json\\n{json_str}\\n```\n"
         return
 
     # For other messages, provide a simple mock response
