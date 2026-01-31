@@ -66,6 +66,16 @@ function OptimizedChatInner() {
   const [processingStep, setProcessingStep] = React.useState<string>("");
   const [ragContext, setRagContext] = React.useState<any[]>([]);
 
+  const slashCommands = [
+    { id: '1', label: 'optimize', description: 'Force optimization', action: () => {} },
+    { id: '2', label: 'clear', description: 'Clear context', action: () => {} },
+  ];
+
+  const mentions = [
+    { id: '1', label: 'docs', type: 'variable' as const },
+    { id: '2', label: 'rag', type: 'variable' as const },
+  ];
+
   const handleSend = async (content: string) => {
     // 1. Add User Message
     addMessage({ role: 'user', content, status: 'sent' });
