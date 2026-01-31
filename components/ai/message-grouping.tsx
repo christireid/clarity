@@ -151,7 +151,7 @@ export function MessageGroupComponent({
           </React.Fragment>
         ))}
         {showTimestamp && (
-          <span className="text-[10px] text-muted-foreground px-1 mt-1">
+          <span className="text-[10px] text-muted-foreground px-1 mt-1" suppressHydrationWarning>
             {format(group.timestamp, "h:mm a")}
           </span>
         )}
