@@ -13,9 +13,9 @@ export function MemoryComponents() {
       >
         <MemoryManager 
           memories={[
-            { id: "1", content: "User prefers dark mode", type: "preference", createdAt: new Date() },
-            { id: "2", content: "Working on a React project", type: "context", createdAt: new Date() },
-            { id: "3", content: "Key API endpoint is /v1/users", type: "fact", createdAt: new Date() }
+            { id: "1", content: "User prefers dark mode", type: "preference", createdAt: new Date("2024-01-01T10:00:00") },
+            { id: "2", content: "Working on a React project", type: "context", createdAt: new Date("2024-01-01T10:05:00") },
+            { id: "3", content: "Key API endpoint is /v1/users", type: "fact", createdAt: new Date("2024-01-01T10:10:00") }
           ]}
           onDelete={(id) => console.log("Delete:", id)}
           onEdit={(id, content) => console.log("Edit:", id, content)}
