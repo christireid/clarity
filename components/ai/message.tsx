@@ -134,7 +134,7 @@ export function MessageBubble({
             <span className="text-muted-foreground/60">· {message.model}</span>
           )}
           {(message.createdAt || message.timestamp) && (
-            <span className="text-muted-foreground/60">
+            <span className="text-muted-foreground/60" suppressHydrationWarning>
               · {new Date(message.createdAt || message.timestamp!).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
             </span>
           )}
