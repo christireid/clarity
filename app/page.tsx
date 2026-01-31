@@ -682,6 +682,8 @@ export default function ComponentShowcase() {
   {activeCategory === "text-fx" && <TextFxComponents />}
   {activeCategory === "background-fx" && <BackgroundFxComponents />}
   {activeCategory === "ui-patterns" && <UIPatternsComponents />}
+  {activeCategory === "advanced-fx" && <AdvancedFxComponents />}
+  {activeCategory === "chat-clones-extended" && <ChatClonesExtendedComponents />}
   </div>
         </div>
       </main>
