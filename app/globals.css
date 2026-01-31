@@ -459,7 +459,11 @@
 
 /* Enhanced Card Styles */
 .card-glass {
-  @apply glass rounded-2xl p-6;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  padding: 1.5rem;
   transition: all var(--duration-normal) var(--ease-smooth);
 }
 
@@ -472,7 +476,11 @@
 
 /* Enhanced Button Styles */
 .btn-glass {
-  @apply glass rounded-xl px-6 py-3;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1.5rem;
   transition: all var(--duration-fast) var(--ease-smooth);
 }
 
@@ -487,7 +495,11 @@
 
 /* Enhanced Input Styles */
 .input-glass {
-  @apply glass rounded-lg px-4 py-2;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 0.5rem 1rem;
   transition: all var(--duration-fast) var(--ease-smooth);
 }
 
