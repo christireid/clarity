@@ -265,23 +265,60 @@
 }
 
 /* =============================================================================
- * GRADIENT UTILITIES
+ * GRADIENT UTILITIES - Pastel Accents
  * ============================================================================= */
 
 @layer utilities {
+  .gradient-pastel-pink {
+    background: linear-gradient(135deg, #fce7f3, #f9a8d4);
+  }
+  
+  .gradient-pastel-purple {
+    background: linear-gradient(135deg, #f3e8ff, #d8b4fe);
+  }
+  
+  .gradient-pastel-blue {
+    background: linear-gradient(135deg, #dbeafe, #93c5fd);
+  }
+  
+  .gradient-pastel-mint {
+    background: linear-gradient(135deg, #d1fae5, #6ee7b7);
+  }
+  
+  .gradient-pastel-peach {
+    background: linear-gradient(135deg, #fed7aa, #fb923c);
+  }
+  
+  /* Animated gradients */
+  .gradient-pastel-animated {
+    background: linear-gradient(135deg, #fce7f3, #f3e8ff, #dbeafe, #d1fae5);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+  }
+  
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  .gradient-text-pastel {
+    background: linear-gradient(135deg, #f9a8d4, #d8b4fe, #93c5fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Minimal gradient - mostly neutral */
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    background: linear-gradient(135deg, #f5f5f5, #e5e5e5);
   }
   
   .gradient-primary-hover {
-    background: linear-gradient(135deg, 
-      hsl(var(--primary) / 0.9), 
-      hsl(var(--accent) / 0.9)
-    );
+    background: linear-gradient(135deg, #e5e5e5, #d4d4d4);
   }
   
   .gradient-text {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    background: linear-gradient(135deg, #737373, #404040);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -299,7 +336,7 @@
     inset: 0;
     border-radius: var(--radius-lg);
     padding: 1px;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    background: linear-gradient(135deg, #f3e8ff, #dbeafe);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
