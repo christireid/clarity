@@ -597,6 +597,22 @@ export default function ComponentShowcase() {
                   />
                 </button>
               ))}
+              
+              <div className="my-2 border-t border-border/50" />
+              
+              <a
+                href="/app/advanced-ai"
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors hover:bg-muted text-foreground"
+              >
+                <Zap className="h-5 w-5 text-amber-500" />
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm">Advanced AI Demo</p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    Token Optimization & RAG
+                  </p>
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-50" />
+              </a>
             </nav>
 
             <div className="mt-6 rounded-lg border border-border bg-card p-4">
