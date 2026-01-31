@@ -103,8 +103,7 @@ export function useAdvancedChat({
     abortControllerRef.current = new AbortController();
 
     try {
-      // 1. Run Request Middleware BEFORE setting state
-      // We wrap the message in an array to fit the middleware signature
+      // 1. Run Request Middleware
       let processedMessages = [originalUserMessage];
       for (const mw of middleware) {
         if (mw.onRequest) {
@@ -117,9 +116,7 @@ export function useAdvancedChat({
         }
       }
       
-      const userMessage = processedMessages[0]; // Get back the modified message
-
-      // Update state with the processed message (which might be redacted)
+      const userMessage = processedMessages[0]; 
       let newMessages = [...messages, userMessage];
       setMessages(newMessages);
 
@@ -185,9 +182,9 @@ export function useAdvancedChat({
       // MOCK STREAM GENERATION
       const mockStream = async () => {
         const isChart = userMessage.content.toLowerCase().includes('chart');
-        const isProfile = userMessage.content.toLowerCase().includes('profile'); // Fixed check
         
-        if (schema && isProfile) {
+        // Structured Output Handling
+        if (schema) {
            setStreamLogs(prev => [...prev, `Generating Structured Output...`]);
            await new Promise(r => setTimeout(r, 1000));
            const profile = {
@@ -195,15 +192,14 @@ export function useAdvancedChat({
              role: "Senior Developer",
              skills: ["React", "TypeScript", "AI"]
            };
-           // Simulated validation
            try {
              schema.parse(profile);
-             // Send as a single chunk for simplicity in mock, wrapped in code block
              parserRef.current.feed(`0:\`\`\`json\n${JSON.stringify(profile, null, 2)}\n\`\`\`\n`);
            } catch (e) {
              parserRef.current.feed(`0:Error: Generated output did not match schema.`);
            }
         } else {
+          // Standard Text/UI
           const chunks = isChart
              ? ['Here ', 'is ', 'the ', 'chart ', 'you ', 'requested.']
              : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response.'];
@@ -225,6 +221,7 @@ export function useAdvancedChat({
           unsubscribe();
           setIsLoading(false);
           
+          // 5. Run Response Middleware
           let finalMessage = { ...assistantMessage, status: 'sent' as const };
           for (const mw of middleware) {
             if (mw.onResponse) {
