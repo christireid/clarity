@@ -61,8 +61,13 @@ export function AdvancedMessagingComponents() {
         title="Quick Replies"
         description="Suggested responses"
       >
-        <QuickReplyBar 
-          replies={["Yes", "No", "Maybe", "Ask later"]}
+        <QuickRepliesBar 
+          replies={[
+            { id: "1", title: "Yes", content: "Yes" },
+            { id: "2", title: "No", content: "No" },
+            { id: "3", title: "Maybe", content: "Maybe" },
+            { id: "4", title: "Ask later", content: "Ask later" }
+          ]}
           onSelect={(r) => console.log("Reply:", r)}
         />
       </ComponentCard>
