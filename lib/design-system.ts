@@ -76,41 +76,41 @@ export const colors = {
 };
 
 // =============================================================================
-// GLASSMORPHISM SYSTEM
+// GLASSMORPHISM SYSTEM - Enhanced
 // =============================================================================
 
 export const glass = {
-  // Blur levels
+  // Blur levels - Increased for stronger effect
   blur: {
-    sm: 'blur(4px)',
-    md: 'blur(8px)',
-    lg: 'blur(12px)',
-    xl: 'blur(16px)',
-    '2xl': 'blur(24px)',
+    sm: 'blur(8px)',
+    md: 'blur(16px)',
+    lg: 'blur(20px)',
+    xl: 'blur(24px)',
+    '2xl': 'blur(32px)',
   },
   
-  // Background opacity
+  // Background opacity - More transparent
   bg: {
-    subtle: 'rgba(255, 255, 255, 0.05)',
-    light: 'rgba(255, 255, 255, 0.10)',
-    medium: 'rgba(255, 255, 255, 0.15)',
-    heavy: 'rgba(255, 255, 255, 0.20)',
+    subtle: 'rgba(255, 255, 255, 0.03)',
+    light: 'rgba(255, 255, 255, 0.05)',
+    medium: 'rgba(255, 255, 255, 0.08)',
+    heavy: 'rgba(255, 255, 255, 0.12)',
   },
   
-  // Border treatments
+  // Border treatments - More subtle
   border: {
-    subtle: '1px solid rgba(255, 255, 255, 0.1)',
-    medium: '1px solid rgba(255, 255, 255, 0.15)',
-    heavy: '1px solid rgba(255, 255, 255, 0.2)',
+    subtle: '1px solid rgba(255, 255, 255, 0.08)',
+    medium: '1px solid rgba(255, 255, 255, 0.12)',
+    heavy: '1px solid rgba(255, 255, 255, 0.16)',
   },
   
-  // Shadow combinations
+  // Shadow combinations - Softer
   shadow: {
-    sm: '0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06)',
-    md: '0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06)',
-    lg: '0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08)',
-    xl: '0 12px 32px rgba(0, 0, 0, 0.16), 0 8px 16px rgba(0, 0, 0, 0.12)',
-    inner: 'inset 0 2px 4px rgba(0, 0, 0, 0.06)',
+    sm: '0 2px 16px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.04)',
+    md: '0 4px 24px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04)',
+    lg: '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.06)',
+    xl: '0 12px 48px rgba(0, 0, 0, 0.10), 0 8px 20px rgba(0, 0, 0, 0.08)',
+    inner: 'inset 0 1px 3px rgba(0, 0, 0, 0.04)',
   },
 };
 
