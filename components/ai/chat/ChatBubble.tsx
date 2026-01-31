@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { User, Bot, CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import type { Message } from "./types";
+import { renderGenerativeComponent } from "./GenerativeUIRegistry";
 
 /**
  * ChatBubble - Individual message bubble
