@@ -17,7 +17,7 @@ export function ObservabilityComponents() {
           trace={{
             id: "t1",
             name: "Generate Report",
-            startTime: new Date(Date.now() - 5000),
+            startTime: new Date("2024-01-01T10:00:00"),
             duration: 1200,
             status: "success",
             spans: [
