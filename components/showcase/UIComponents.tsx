@@ -58,10 +58,10 @@ export function UIComponents() {
   ];
 
   const notifications: Notification[] = [
-    { id: "1", type: "success", title: "Task Completed", message: "Your AI agent finished processing the data.", timestamp: new Date(), read: false },
-    { id: "2", type: "info", title: "New Model Available", message: "GPT-5 is now available for testing.", timestamp: new Date(Date.now() - 3600000), read: false },
-    { id: "3", type: "warning", title: "Token Limit Warning", message: "You've used 90% of your monthly token allocation.", timestamp: new Date(Date.now() - 7200000), read: true },
-    { id: "4", type: "error", title: "API Error", message: "Failed to connect to the AI service. Retrying...", timestamp: new Date(Date.now() - 86400000), read: true },
+    { id: "1", type: "success", title: "Task Completed", message: "Your AI agent finished processing the data.", timestamp: new Date("2024-01-01T10:00:00"), read: false },
+    { id: "2", type: "info", title: "New Model Available", message: "GPT-5 is now available for testing.", timestamp: new Date("2024-01-01T09:00:00"), read: false },
+    { id: "3", type: "warning", title: "Token Limit Warning", message: "You've used 90% of your monthly token allocation.", timestamp: new Date("2024-01-01T08:00:00"), read: true },
+    { id: "4", type: "error", title: "API Error", message: "Failed to connect to the AI service. Retrying...", timestamp: new Date("2024-01-01T07:00:00"), read: true },
   ];
 
   return (
