@@ -8,14 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Zap, 
-  Cpu, 
-  Activity,
-  StopCircle,
-  RotateCw,
-  Download
+  Zap, Cpu, Activity, StopCircle, RotateCw, Download, FileText
 } from "lucide-react";
 import { SDKDevTools } from "@/components/ai/devtools/SDKDevTools";
+import { Attachment } from "@/components/ai/chat/types";
 
 // Initialize Optimizer
 const optimizer = new TokenOptimizer({
@@ -27,20 +23,10 @@ optimizer.rag.addDocument("doc2", "Token optimization reduces AI costs by compre
 
 export default function AdvancedAIShowcase() {
   const { 
-    messages, 
-    append, 
-    isLoading, 
-    setMessages, 
-    optimizationStats,
-    streamLogs,
-    stop,
-    reload,
-    ragContext,
-    config,
-    setConfig
+    messages, append, isLoading, setMessages, optimizationStats, streamLogs, stop, reload, ragContext, config, setConfig
   } = useAdvancedChat({
     initialMessages: [
-      { id: '1', role: 'assistant', content: 'Ready to optimize! Try asking about "Next.js" or type "Show me a chart".', timestamp: new Date() }
+      { id: '1', role: 'assistant', content: 'Ready to optimize! Try asking about "Next.js", type "Show me a chart", or drop an image file.', timestamp: new Date() }
     ]
   });
 
@@ -59,13 +45,14 @@ export default function AdvancedAIShowcase() {
     error: undefined
   };
 
-  const handleSend = async (content: string) => {
+  const handleSend = async (content: string, attachments?: Attachment[]) => {
     await append({ 
       id: Date.now().toString(),
       role: 'user', 
       content, 
       timestamp: new Date(),
-      status: 'sent' 
+      status: 'sent',
+      attachments 
     });
   };
 
@@ -91,7 +78,7 @@ export default function AdvancedAIShowcase() {
       <div className="mb-6 space-y-2 shrink-0">
         <h1 className="text-3xl font-bold tracking-tight">Advanced AI Engine</h1>
         <p className="text-muted-foreground">
-          Powered by <code>useAdvancedChat</code> hook with built-in Token Optimization, Streaming, & Virtualization.
+          Powered by <code>useAdvancedChat</code> hook with built-in Token Optimization, Streaming, Virtualization & Multimodal Support.
         </p>
       </div>
 
@@ -143,7 +130,7 @@ export default function AdvancedAIShowcase() {
               
               <Chat.Input 
                 onSend={handleSend}
-                placeholder="Type 'chart', 'form', or ask a question..."
+                placeholder="Type 'chart', 'form', or drop files..."
                 className="p-4 border-t border-border shrink-0"
                 slashCommands={slashCommands}
               />
