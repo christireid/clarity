@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { User, Bot, CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { User, Bot, CheckCircle2, Clock, AlertCircle, Copy, ThumbsUp, ThumbsDown, RotateCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { Message } from "./types";
 import { renderGenerativeComponent } from "./GenerativeUIRegistry";
 
@@ -14,12 +15,16 @@ import { renderGenerativeComponent } from "./GenerativeUIRegistry";
 interface ChatBubbleProps {
   message: Message;
   className?: string;
+  onCopy?: (content: string) => void;
+  onRegenerate?: () => void;
+  onFeedback?: (type: 'up' | 'down') => void;
 }
 
-export function ChatBubble({ message, className }: ChatBubbleProps) {
+export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedback }: ChatBubbleProps) {
   const isUser = message.role === 'user';
   const isAssistant = message.role === 'assistant';
   const isSystem = message.role === 'system';
+  const [copied, setCopied] = React.useState(false);
 
   const StatusIcon = {
     sending: Clock,
@@ -27,10 +32,20 @@ export function ChatBubble({ message, className }: ChatBubbleProps) {
     error: AlertCircle,
   }[message.status || 'sent'];
 
+  const handleCopy = () => {
+    if (onCopy) {
+      onCopy(message.content);
+    } else {
+      navigator.clipboard.writeText(message.content);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div
       className={cn(
-        "flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300",
+        "group flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300",
         isUser && "flex-row-reverse",
         className
       )}
@@ -56,7 +71,7 @@ export function ChatBubble({ message, className }: ChatBubbleProps) {
       <div className={cn("flex-1 max-w-[80%] space-y-1", isUser && "flex flex-col items-end")}>
         <div
           className={cn(
-            "rounded-lg p-3 text-sm",
+            "rounded-lg p-3 text-sm relative group/bubble",
             isAssistant && "glass-medium",
             isUser && "bg-neutral-900 text-neutral-50 dark:bg-neutral-50 dark:text-neutral-900",
             isSystem && "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
@@ -70,8 +85,8 @@ export function ChatBubble({ message, className }: ChatBubbleProps) {
           )}
         </div>
 
-        {/* Metadata */}
-        <div className={cn("flex items-center gap-2 text-xs text-muted-foreground", isUser && "flex-row-reverse")}>
+        {/* Metadata & Actions */}
+        <div className={cn("flex items-center gap-2 text-xs text-muted-foreground min-h-[20px]", isUser && "flex-row-reverse")}>
           <time dateTime={message.timestamp.toISOString()}>
             {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </time>
@@ -83,6 +98,54 @@ export function ChatBubble({ message, className }: ChatBubbleProps) {
               )} 
               aria-label={message.status}
             />
+          )}
+
+          {/* Action Buttons (Visible on Hover) */}
+          {!isUser && message.status !== 'sending' && (
+            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-5 w-5 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                onClick={handleCopy}
+                title="Copy message"
+              >
+                {copied ? <CheckCircle2 className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
+              </Button>
+              {onRegenerate && (
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-5 w-5 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                  onClick={onRegenerate}
+                  title="Regenerate"
+                >
+                  <RotateCw className="w-3 h-3" />
+                </Button>
+              )}
+              {onFeedback && (
+                <>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-5 w-5 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                    onClick={() => onFeedback('up')}
+                    title="Helpful"
+                  >
+                    <ThumbsUp className="w-3 h-3" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-5 w-5 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                    onClick={() => onFeedback('down')}
+                    title="Not helpful"
+                  >
+                    <ThumbsDown className="w-3 h-3" />
+                  </Button>
+                </>
+              )}
+            </div>
           )}
         </div>
       </div>
