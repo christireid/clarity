@@ -4,70 +4,67 @@
  */
 
 // =============================================================================
-// COLOR SYSTEM - Sophisticated Palette
+// COLOR SYSTEM - Minimal with Pastel Accents
 // =============================================================================
 
 export const colors = {
-  // Primary - Deep sophisticated blues
-  primary: {
-    50: '#f0f7ff',
-    100: '#e0effe',
-    200: '#b9dcfe',
-    300: '#7cc0fd',
-    400: '#36a4fa',
-    500: '#0c8ce9',
-    600: '#006fcc',
-    700: '#0058a6',
-    800: '#004a89',
-    900: '#003f72',
-    950: '#00284c',
-  },
-  
-  // Accent - Vibrant purples
-  accent: {
-    50: '#faf5ff',
-    100: '#f3e8ff',
-    200: '#e9d5ff',
-    300: '#d8b4fe',
-    400: '#c084fc',
-    500: '#a855f7',
-    600: '#9333ea',
-    700: '#7e22ce',
-    800: '#6b21a8',
-    900: '#581c87',
-    950: '#3b0764',
-  },
-  
-  // Neutral - Warm grays
+  // Neutral - Primary palette (90% of UI)
   neutral: {
-    50: '#fafaf9',
-    100: '#f5f5f4',
-    200: '#e7e5e4',
-    300: '#d6d3d1',
-    400: '#a8a29e',
-    500: '#78716c',
-    600: '#57534e',
-    700: '#44403c',
-    800: '#292524',
-    900: '#1c1917',
-    950: '#0c0a09',
+    50: '#fafafa',
+    100: '#f5f5f5',
+    200: '#e5e5e5',
+    300: '#d4d4d4',
+    400: '#a3a3a3',
+    500: '#737373',
+    600: '#525252',
+    700: '#404040',
+    800: '#262626',
+    900: '#171717',
+    950: '#0a0a0a',
   },
   
-  // Success
+  // Pastel Accents - Soft gradients (10% of UI)
+  pastel: {
+    pink: {
+      from: '#fce7f3', // soft pink
+      via: '#fbcfe8',  // lighter pink
+      to: '#f9a8d4',   // rose pink
+    },
+    purple: {
+      from: '#f3e8ff', // lavender
+      via: '#e9d5ff',  // light purple
+      to: '#d8b4fe',   // soft purple
+    },
+    blue: {
+      from: '#dbeafe', // sky blue
+      via: '#bfdbfe',  // light blue
+      to: '#93c5fd',   // soft blue
+    },
+    mint: {
+      from: '#d1fae5', // mint
+      via: '#a7f3d0',  // light green
+      to: '#6ee7b7',   // soft emerald
+    },
+    peach: {
+      from: '#fed7aa', // peach
+      via: '#fdba74',  // light orange
+      to: '#fb923c',   // soft orange
+    },
+  },
+  
+  // Semantic colors - Subtle
   success: {
     50: '#f0fdf4',
     500: '#10b981',
     900: '#064e3b',
   },
   
-  // Warning
   warning: {
     50: '#fffbeb',
     500: '#f59e0b',
     900: '#78350f',
   },
   
-  // Error
   error: {
     50: '#fef2f2',
     500: '#ef4444',
