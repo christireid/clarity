@@ -516,6 +516,18 @@ const componentCategories = [
     icon: Boxes,
     description: "Marquee, tabs, carousels",
   },
+  {
+    id: "advanced-fx",
+    label: "Advanced Effects",
+    icon: Sparkles,
+    description: "Floating, morphing, 3D flips",
+  },
+  {
+    id: "chat-clones-extended",
+    label: "Platform Clones",
+    icon: MessageSquare,
+    description: "Manus, Emergent, Loveable",
+  },
 ];
 
 export default function ComponentShowcase() {
