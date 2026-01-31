@@ -168,7 +168,7 @@ function ChatMessages({ className, renderBubble }: ChatMessagesProps) {
   );
 }
 
-import { VirtualizedChatList } from "./virtualized/VirtualizedChatList";
+// import { VirtualizedChatList } from "./virtualized/VirtualizedChatList";
 
 /**
  * Compound Component Pattern
