@@ -21,8 +21,8 @@ export function AdvancedMessagingComponents() {
         <ThreadView 
           parentMessage={{ id: "1", content: "Main topic", author: "Alice" }}
           replies={[
-            { id: "2", content: "Reply 1", author: "Bob", timestamp: new Date() },
-            { id: "3", content: "Reply 2", author: "Charlie", timestamp: new Date() }
+            { id: "2", content: "Reply 1", author: "Bob", timestamp: new Date("2024-01-01T10:05:00") },
+            { id: "3", content: "Reply 2", author: "Charlie", timestamp: new Date("2024-01-01T10:10:00") }
           ]}
         />
       </ComponentCard>
