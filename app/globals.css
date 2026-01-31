@@ -475,9 +475,20 @@
 }
 
 /* =============================================================================
- * SCROLLBAR STYLING - Minimal & Sophisticated
+ * SCROLLBAR STYLING - Minimal & Hidden
  * ============================================================================= */
 
+/* Hide scrollbars completely */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Minimal thin scrollbars when needed */
 .scrollbar-thin::-webkit-scrollbar {
   width: 6px;
   height: 6px;
