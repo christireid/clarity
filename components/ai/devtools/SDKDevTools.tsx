@@ -5,19 +5,48 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Activity, Database, Zap, Minimize2, Maximize2, X } from 'lucide-react';
+import { Activity, Database, Zap, Minimize2, Settings, Sliders } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Slider } from '@/components/ui/slider';
+
+export interface SDKConfig {
+  systemPrompt: string;
+  temperature: number;
+  model: string;
+}
 
 interface DevToolsProps {
   optimizerStats?: any;
   streamLogs?: string[];
   ragContext?: any[];
-  isOpen?: boolean;
+  config?: SDKConfig;
+  onConfigChange?: (config: SDKConfig) => void;
 }
 
-export function SDKDevTools({ optimizerStats, streamLogs = [], ragContext = [] }: DevToolsProps) {
+export function SDKDevTools({ 
+  optimizerStats, 
+  streamLogs = [], 
+  ragContext = [], 
+  config = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-4o' },
+  onConfigChange 
+}: DevToolsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
+  const [localConfig, setLocalConfig] = useState<SDKConfig>(config);
+
+  // Sync external config updates
+  useEffect(() => {
+    setLocalConfig(config);
+  }, [config]);
+
+  const handleConfigChange = (key: keyof SDKConfig, value: any) => {
+    const newConfig = { ...localConfig, [key]: value };
+    setLocalConfig(newConfig);
+    onConfigChange?.(newConfig);
+  };
 
   if (!isOpen) {
     return (
@@ -34,7 +63,7 @@ export function SDKDevTools({ optimizerStats, streamLogs = [], ragContext = [] }
   }
 
   return (
-    <Card className="fixed bottom-4 right-4 z-50 w-[400px] h-[500px] shadow-2xl flex flex-col animate-in fade-in slide-in-from-bottom-4">
+    <Card className="fixed bottom-4 right-4 z-50 w-[400px] h-[600px] shadow-2xl flex flex-col animate-in fade-in slide-in-from-bottom-4 border-2 border-primary/10">
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b bg-muted/50">
         <div className="flex items-center gap-2 font-semibold text-sm">
@@ -54,11 +83,12 @@ export function SDKDevTools({ optimizerStats, streamLogs = [], ragContext = [] }
           <TabsList className="w-full">
             <TabsTrigger value="tokens" className="flex-1 text-xs">Tokens</TabsTrigger>
             <TabsTrigger value="stream" className="flex-1 text-xs">Stream</TabsTrigger>
-            <TabsTrigger value="rag" className="flex-1 text-xs">RAG</TabsTrigger>
+            <TabsTrigger value="config" className="flex-1 text-xs">Config</TabsTrigger>
           </TabsList>
         </div>
 
         <div className="flex-1 overflow-hidden p-3">
+          {/* TOKENS TAB */}
           <TabsContent value="tokens" className="h-full m-0 space-y-4">
             {optimizerStats ? (
               <div className="space-y-4">
@@ -76,6 +106,29 @@ export function SDKDevTools({ optimizerStats, streamLogs = [], ragContext = [] }
                   <span>Savings</span>
                   <Badge variant="secondary">{optimizerStats.savedPercentage?.toFixed(1)}%</Badge>
                 </div>
+                
+                {ragContext.length > 0 && (
+                  <div className="pt-2 border-t">
+                    <div className="text-xs font-semibold mb-2 flex items-center gap-2">
+                      <Database className="w-3 h-3" /> RAG Context ({ragContext.length})
+                    </div>
+                    <ScrollArea className="h-[200px] rounded-md border p-2 bg-muted/30">
+                      <div className="space-y-2">
+                        {ragContext.map((doc, i) => (
+                          <div key={i} className="p-2 bg-background border rounded text-xs space-y-1">
+                            <div className="font-semibold flex justify-between">
+                              <span>{doc.id}</span>
+                              <Badge variant="outline" className="text-[10px] h-4">Doc</Badge>
+                            </div>
+                            <div className="text-muted-foreground line-clamp-2">
+                              {doc.content}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="h-full flex items-center justify-center text-muted-foreground text-xs">
@@ -84,6 +137,7 @@ export function SDKDevTools({ optimizerStats, streamLogs = [], ragContext = [] }
             )}
           </TabsContent>
 
+          {/* STREAM TAB */}
           <TabsContent value="stream" className="h-full m-0">
             <ScrollArea className="h-full rounded-md border p-2 bg-muted/30">
               <div className="space-y-1 font-mono text-xs">
@@ -100,26 +154,40 @@ export function SDKDevTools({ optimizerStats, streamLogs = [], ragContext = [] }
             </ScrollArea>
           </TabsContent>
 
-          <TabsContent value="rag" className="h-full m-0">
-             <ScrollArea className="h-full rounded-md border p-2 bg-muted/30">
+          {/* CONFIG TAB */}
+          <TabsContent value="config" className="h-full m-0 space-y-4">
+            <div className="space-y-4">
               <div className="space-y-2">
-                {ragContext.length > 0 ? (
-                  ragContext.map((doc, i) => (
-                    <div key={i} className="p-2 bg-background border rounded text-xs space-y-1">
-                      <div className="font-semibold flex justify-between">
-                        <span>{doc.id}</span>
-                        <Badge variant="outline" className="text-[10px] h-4">Doc</Badge>
-                      </div>
-                      <div className="text-muted-foreground line-clamp-3">
-                        {doc.content}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center text-muted-foreground pt-8">No RAG context</div>
-                )}
+                <Label className="text-xs">System Prompt</Label>
+                <Textarea 
+                  value={localConfig.systemPrompt}
+                  onChange={(e) => handleConfigChange('systemPrompt', e.target.value)}
+                  className="text-xs font-mono min-h-[100px]"
+                  placeholder="Enter system prompt..."
+                />
               </div>
-            </ScrollArea>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <Label className="text-xs">Temperature</Label>
+                  <span className="text-xs font-mono">{localConfig.temperature}</span>
+                </div>
+                <Slider 
+                  value={[localConfig.temperature]}
+                  min={0} max={1} step={0.1}
+                  onValueChange={([val]) => handleConfigChange('temperature', val)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-xs">Model ID</Label>
+                <Input 
+                  value={localConfig.model}
+                  onChange={(e) => handleConfigChange('model', e.target.value)}
+                  className="text-xs font-mono"
+                />
+              </div>
+            </div>
           </TabsContent>
         </div>
       </Tabs>
