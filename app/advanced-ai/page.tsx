@@ -8,16 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
-  BarChart3, 
   Zap, 
-  Database, 
   Cpu, 
-  Terminal,
-  Activity
+  Activity,
+  StopCircle,
+  RotateCw
 } from "lucide-react";
 import { SDKDevTools } from "@/components/ai/devtools/SDKDevTools";
 
-// Initialize Optimizer for display purposes
+// Initialize Optimizer
 const optimizer = new TokenOptimizer({
   contextWindow: { maxTokens: 4000, strategy: 'hybrid' },
   memoryConfig: { shortTermSize: 10, longTermSize: 50, compressionThreshold: 100 }
@@ -32,7 +31,9 @@ export default function AdvancedAIShowcase() {
     isLoading, 
     setMessages, 
     optimizationStats,
-    streamLogs
+    streamLogs,
+    stop,
+    reload
   } = useAdvancedChat({
     initialMessages: [
       { id: '1', role: 'assistant', content: 'Ready to optimize! Try asking about "Next.js" or type "Show me a chart".', timestamp: new Date() }
@@ -71,8 +72,8 @@ export default function AdvancedAIShowcase() {
   ];
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-7xl relative">
-      <div className="mb-8 space-y-2">
+    <div className="container mx-auto py-8 px-4 max-w-7xl relative h-screen max-h-[900px] flex flex-col">
+      <div className="mb-6 space-y-2 shrink-0">
         <h1 className="text-3xl font-bold tracking-tight">Advanced AI Engine</h1>
         <p className="text-muted-foreground">
           Powered by <code>useAdvancedChat</code> hook with built-in Token Optimization, Streaming, & Virtualization.
@@ -80,11 +81,11 @@ export default function AdvancedAIShowcase() {
       </div>
 
       <Chat.Provider value={chatContextValue}>
-        <div className="grid lg:grid-cols-3 gap-6 h-[700px]">
+        <div className="grid lg:grid-cols-3 gap-6 flex-1 min-h-0">
           {/* Left: Chat Interface */}
-          <div className="lg:col-span-2 h-full">
-            <Chat className="h-full border border-border rounded-2xl shadow-sm bg-background">
-              <div className="flex items-center justify-between p-4 border-b border-border">
+          <div className="lg:col-span-2 h-full flex flex-col min-h-0">
+            <Chat className="h-full border border-border rounded-2xl shadow-sm bg-background flex flex-col overflow-hidden">
+              <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center">
                     <Zap className="w-4 h-4" />
@@ -96,26 +97,42 @@ export default function AdvancedAIShowcase() {
                     </div>
                   </div>
                 </div>
-                {isLoading && (
-                  <Badge variant="outline" className="animate-pulse">
-                    Processing...
-                  </Badge>
-                )}
+                <div className="flex items-center gap-2">
+                  {isLoading ? (
+                    <Button variant="destructive" size="sm" onClick={stop} className="h-8 gap-2">
+                      <StopCircle className="w-4 h-4" /> Stop
+                    </Button>
+                  ) : (
+                    <Button variant="outline" size="sm" onClick={() => reload()} className="h-8 gap-2">
+                      <RotateCw className="w-4 h-4" /> Regenerate
+                    </Button>
+                  )}
+                </div>
               </div>
 
               {/* Use Virtualized List for Performance */}
-              <Chat.VirtualizedMessages className="p-4" />
+              <Chat.VirtualizedMessages 
+                className="p-4" 
+                renderBubble={(msg) => (
+                  <Chat.Bubble 
+                    message={msg} 
+                    onCopy={() => console.log('Copied')} 
+                    onRegenerate={() => reload()}
+                    onFeedback={(type) => console.log('Feedback', type)}
+                  />
+                )}
+              />
               
               <Chat.Input 
                 onSend={handleSend}
                 placeholder="Type 'chart', 'form', or ask a question..."
-                className="p-4 border-t border-border"
+                className="p-4 border-t border-border shrink-0"
                 slashCommands={slashCommands}
               />
             </Chat>
           </div>
 
-          {/* Right: Inspector Panel (now using DevTools) */}
+          {/* Right: Inspector Panel */}
           <div className="space-y-6 overflow-y-auto pr-2">
              <Card className="p-6 bg-muted/20 border-dashed">
                <div className="text-center space-y-2">
@@ -134,7 +151,7 @@ export default function AdvancedAIShowcase() {
       <SDKDevTools 
         optimizerStats={optimizationStats} 
         streamLogs={streamLogs}
-        ragContext={[]} // Pass real RAG context if available from hook
+        ragContext={[]}
       />
     </div>
   );
