@@ -95,7 +95,7 @@ export function CitationChip({
             className
           )}
         >
-          <div className="flex items-center gap-2 min-w-0">
+          <span className="flex items-center gap-2 min-w-0">
             {citation?.favicon ? (
               <img
                 src={citation.favicon || "/placeholder.svg"}
@@ -106,7 +106,7 @@ export function CitationChip({
               <Globe className="w-4 h-4 text-muted-foreground" />
             )}
             <span className="text-sm truncate max-w-[150px]">{title}</span>
-          </div>
+          </span>
           <Badge
             variant="outline"
             className="bg-ai-user/10 text-ai-user border-ai-user/30 text-xs px-1.5"
