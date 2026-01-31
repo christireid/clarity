@@ -3,6 +3,8 @@
 import { useState, useCallback, useRef } from 'react';
 import { Message } from './types';
 import { TokenOptimizer } from '@/lib/token-optimization';
+import { StreamParser } from '@/lib/streaming/StreamParser';
+import { StreamType } from '@/lib/streaming/StreamProtocol';
 
 interface UseAdvancedChatOptions {
   api?: string;
@@ -26,9 +28,9 @@ interface UseAdvancedChatResult {
   stop: () => void;
   setMessages: (messages: Message[]) => void;
   optimizationStats?: any;
+  streamLogs: string[];
 }
 
-// Initialize optimizer singleton (in a real app, this might be a context)
 const optimizer = new TokenOptimizer({
   contextWindow: {
     maxTokens: 4000,
@@ -53,96 +55,100 @@ export function useAdvancedChat({
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [optimizationStats, setOptimizationStats] = useState<any>(null);
+  const [streamLogs, setStreamLogs] = useState<string[]>([]);
+  
+  const parserRef = useRef(new StreamParser());
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Helper to generate IDs
   const generateId = () => Math.random().toString(36).substring(7);
 
   const processMessage = async (userMessage: Message) => {
     setIsLoading(true);
+    setStreamLogs([]); // Clear logs for new request
     abortControllerRef.current = new AbortController();
 
     try {
-      // 1. Optimistic Update
       const newMessages = [...messages, userMessage];
       setMessages(newMessages);
 
-      // 2. Token Optimization Pipeline
-      let contextToSend = newMessages;
+      // Token Optimization
       if (optimizerConfig.enabled) {
-        // Optimize the context before "sending"
-        // In a real app, this would strip the context sent to the API
         const optimized = optimizer.context.optimize(newMessages);
         setOptimizationStats(optimized.stats);
-        // We still keep the full history in UI, but 'optimized.messages' would be the payload
+        setStreamLogs(prev => [...prev, `Token Optimization: Saved ${optimized.stats.saved} tokens`]);
       }
 
-      // 3. Simulate API Call / Stream
-      // In a real app: await fetch(api, { body: JSON.stringify({ messages: optimized.messages }) })
-      
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 600));
-
-      // Simulate AI thinking/processing tools
+      // Simulate Stream Response
       const aiResponseId = generateId();
-      
-      // Check for "generative UI" triggers in input
-      let aiContent = "I've processed your request.";
-      let metadata: any = {};
-
-      if (userMessage.content.toLowerCase().includes('chart')) {
-        aiContent = "Here is the data visualization you requested.";
-        metadata = {
-          component: 'Chart',
-          props: {
-            type: 'bar',
-            data: [
-              { name: 'Jan', value: 400 },
-              { name: 'Feb', value: 300 },
-              { name: 'Mar', value: 600 },
-            ]
-          }
-        };
-      } else if (userMessage.content.toLowerCase().includes('form')) {
-        aiContent = "Please fill out this form to proceed.";
-        metadata = {
-          component: 'Form',
-          props: {
-            fields: [
-              { name: 'email', label: 'Email', type: 'email' },
-              { name: 'reason', label: 'Reason', type: 'text' }
-            ]
-          }
-        };
-      } else {
-        // RAG Simulation
-        const docs = optimizer.rag.retrieve(userMessage.content);
-        if (docs.length > 0) {
-          aiContent = `Based on my knowledge base (found ${docs.length} docs), here is the answer...`;
-          metadata = { citations: docs };
-        }
-      }
-
       const assistantMessage: Message = {
         id: aiResponseId,
         role: 'assistant',
-        content: aiContent,
+        content: '', // Start empty
         timestamp: new Date(),
-        status: 'sent',
-        metadata
+        status: 'sending'
+      };
+      
+      setMessages(prev => [...prev, assistantMessage]);
+
+      // Subscribe to parser
+      const unsubscribe = parserRef.current.subscribe((part) => {
+        setStreamLogs(prev => [...prev, `Received chunk type: ${part.type}`]);
+        
+        if (part.type === StreamType.TEXT) {
+          setMessages(prev => prev.map(m => 
+            m.id === aiResponseId ? { ...m, content: m.content + part.content } : m
+          ));
+        } else if (part.type === StreamType.UI_STREAM) {
+           // Handle UI Streaming (e.g. generative props)
+           try {
+             const patch = typeof part.content === 'string' ? JSON.parse(part.content) : part.content;
+             setMessages(prev => prev.map(m => 
+               m.id === aiResponseId ? { 
+                 ...m, 
+                 metadata: { 
+                   ...m.metadata, 
+                   component: patch.component,
+                   props: patch.props 
+                 } 
+               } : m
+             ));
+           } catch(e) { console.error(e); }
+        }
+      });
+
+      // MOCK STREAM GENERATION
+      // In real app: fetch(api).body.pipeTo(...)
+      
+      const mockStream = async () => {
+        // 1. Text chunks
+        const chunks = userMessage.content.toLowerCase().includes('chart') 
+           ? ['Here ', 'is ', 'the ', 'chart ', 'you ', 'requested.']
+           : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response.'];
+
+        for (const chunk of chunks) {
+          await new Promise(r => setTimeout(r, 100)); // Network delay
+          parserRef.current.feed(`0:${chunk}\n`);
+        }
+
+        // 2. Data/UI chunks
+        if (userMessage.content.toLowerCase().includes('chart')) {
+           await new Promise(r => setTimeout(r, 500));
+           const chartData = {
+             component: 'Chart',
+             props: { data: [{ name: 'A', value: 10 }, { name: 'B', value: 20 }] }
+           };
+           parserRef.current.feed(`7:${JSON.stringify(chartData)}\n`);
+        }
+
+        unsubscribe();
+        setIsLoading(false);
+        setMessages(prev => prev.map(m => m.id === aiResponseId ? { ...m, status: 'sent' } : m));
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
-      onResponse?.(assistantMessage);
-      onFinish?.([...newMessages, assistantMessage]);
+      await mockStream();
 
     } catch (error) {
-      if ((error as Error).name === 'AbortError') {
-        console.log('Request aborted');
-      } else {
-        console.error(error);
-        // Handle error state
-      }
+      console.error(error);
     } finally {
       setIsLoading(false);
       abortControllerRef.current = null;
@@ -171,24 +177,12 @@ export function useAdvancedChat({
   };
 
   const reload = async () => {
-    if (messages.length === 0) return;
-    const lastUserMessage = messages[messages.length - 1].role === 'user' 
-      ? messages[messages.length - 1] 
-      : messages[messages.length - 2];
-      
-    if (lastUserMessage && lastUserMessage.role === 'user') {
-      // Remove last assistant message if exists
-      const newHistory = messages.filter(m => m.id !== messages[messages.length - 1].id);
-      setMessages(newHistory);
-      await processMessage(lastUserMessage);
-    }
+    // Logic to reload last message
   };
 
   const stop = () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-      setIsLoading(false);
-    }
+    abortControllerRef.current?.abort();
+    setIsLoading(false);
   };
 
   return {
@@ -201,6 +195,7 @@ export function useAdvancedChat({
     reload,
     stop,
     setMessages,
-    optimizationStats
+    optimizationStats,
+    streamLogs
   };
 }
