@@ -114,7 +114,7 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
 
         {/* Metadata & Actions */}
         <div className={cn("flex items-center gap-2 text-xs text-muted-foreground min-h-[20px]", isUser && "flex-row-reverse")}>
-          <time dateTime={message.timestamp.toISOString()}>
+          <time dateTime={message.timestamp.toISOString()} suppressHydrationWarning>
             {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </time>
           {message.status && StatusIcon && (
