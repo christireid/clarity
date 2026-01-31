@@ -204,7 +204,8 @@
   
   /* Enhanced Focus Styles */
   *:focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--ring)), 0 0 0 4px hsl(var(--ring) / 0.2);
     transition: box-shadow var(--duration-fast) var(--ease-smooth);
   }
   
