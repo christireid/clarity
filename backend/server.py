@@ -66,6 +66,12 @@ async def get_status_checks():
     
     return status_checks
 
+from chat_service import chat_stream_endpoint
+
+@api_router.post("/chat/stream")
+async def chat_stream(request: Request):
+    return await chat_stream_endpoint(request)
+
 # Include the router in the main app
 app.include_router(api_router)
 
