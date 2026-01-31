@@ -110,7 +110,7 @@ interface MessageGroupProps {
   className?: string;
 }
 
-export function MessageGroupComponent({
+export function MessageGroup({
   group,
   renderMessage,
   showAvatar = true,
