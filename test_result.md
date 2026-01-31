@@ -118,3 +118,37 @@
 - Action buttons visible on hover
 - Sticky scroll behavior demonstration
 - Final state verification
+
+### Latest Enhanced Features Testing (January 31, 2025 - 04:59 AM)
+**Testing Agent**: Comprehensive Enhanced Feature Testing  
+**Test Status**: ✅ **ALL NEW ENHANCED FEATURES VERIFIED**
+
+#### New Enhanced Features Test Results:
+1. ✅ **Export Button (Download Icon)**: Located in chat header, successfully triggers download of chat-history.json
+2. ✅ **Microphone Button**: Present in chat input area with proper voice input functionality
+3. ✅ **SDK DevTools Button**: Accessible and opens DevTools panel correctly
+4. ✅ **Config Tab in DevTools**: New Config tab exists and is functional with three tabs (Tokens, Stream, Config)
+5. ✅ **System Prompt Configuration**: Successfully changed system prompt text in Config tab
+6. ✅ **Message Sending**: "hello" message sent successfully after config change
+7. ✅ **Stream Tab Config Logging**: Config changes properly logged in Stream tab with full JSON config data
+
+#### Detailed Test Verification:
+- **Export Functionality**: Download button with Download icon found and clicked, successfully triggered chat-history.json download
+- **Voice Input**: Microphone button located in chat input with proper voice functionality integration
+- **DevTools Panel**: SDK DevTools opens as floating panel in bottom right corner
+- **Config Tab**: New Config tab accessible with System Prompt textarea, Temperature slider, and Model ID input
+- **Config Change Logging**: Stream tab shows config changes with full JSON: `{"systemPrompt":"You are a helpful AI assistant specialized in testing and development.","temperature":0.7,"model":"gpt-4o"}`
+- **Real-time Updates**: Configuration changes immediately reflected in stream logs
+
+#### Screenshots Captured:
+- Initial page with Export button and microphone visible
+- DevTools panel opened with all three tabs
+- Config tab showing system prompt configuration
+- Stream tab displaying config change logs
+
+#### Technical Notes:
+- All enhanced features working as expected
+- No errors or crashes during testing
+- Configuration changes properly propagated through the system
+- Voice input integration functional (microphone button present)
+- Export functionality generates proper JSON file download
