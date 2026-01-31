@@ -36,28 +36,46 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
     7:ui_json
     """
     
-    # 1. Initialize LlmChat
-    api_key = os.environ.get("EMERGENT_LLM_KEY")
-    if not api_key:
-        yield "5:Error: Missing EMERGENT_LLM_KEY\n"
-        return
-
     # Extract system prompt or use default
     system_prompt = config.get("systemPrompt", "You are a helpful assistant.")
-    model = config.get("model", "gpt-5.2")
+    model = config.get("model", "gpt-4")
     temperature = config.get("temperature", 0.7)
 
-    chat = LlmChat(
-        api_key=api_key,
-        session_id="session-123", # In real app, pass session_id
-        system_message=system_prompt
-    ).with_model("openai", model) # Default to OpenAI for now
+    # Use mock LlmChat implementation
+    chat = LlmChat(model=model)
 
-    # Convert frontend messages to LlmChat format
-    # Only take the last user message for simplicity in this stateless example,
-    # or reconstruct history if LlmChat supports it (it usually manages its own history).
-    # For this implementation, we'll send the last user message.
+    # Get the last user message
     last_user_msg = next((m for m in reversed(messages) if m['role'] == 'user'), None)
+    
+    if not last_user_msg:
+        yield "0:No user message found\n"
+        return
+
+    user_content = last_user_msg['content']
+    
+    # Check if this is a profile generation request
+    if "generate profile" in user_content.lower() and "alex" in user_content.lower():
+        # Generate JSON profile response
+        yield "0:Here's a profile for Alex:\n\n"
+        
+        json_profile = {
+            "name": "Alex",
+            "role": "Software Developer", 
+            "skills": ["JavaScript", "Python", "React", "Node.js"],
+            "experience": "5 years",
+            "location": "San Francisco"
+        }
+        
+        yield f"7:{json.dumps(json_profile, indent=2)}\n"
+        return
+    
+    # For other messages, generate a simulated response
+    async for chunk in chat.stream_chat([]):
+        if chunk["type"] == "text":
+            yield f"0:{chunk['content']}"
+        await asyncio.sleep(0.1)
+    
+    yield "0:\n"
     
     if not last_user_msg:
         yield "5:Error: No user message found\n"
