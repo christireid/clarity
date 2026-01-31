@@ -170,7 +170,9 @@ test_plan:
   current_focus:
     - "Advanced AI Showcase Page"
     - "Advanced AI Demo Link in Sidebar"
-  stuck_tasks: []
+  stuck_tasks: 
+    - "Advanced AI Showcase Page"
+    - "Advanced AI Demo Link in Sidebar"
   test_all: false
   test_priority: "high_first"
 
