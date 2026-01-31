@@ -41,7 +41,7 @@ function quickSort(arr) {
 \`\`\`
 
 This implementation has O(n log n) average time complexity.`,
-              timestamp: new Date(),
+              timestamp: new Date("2024-01-01T12:01:00"),
               model: "gpt-4",
             }}
             onCopy={() => {}}
