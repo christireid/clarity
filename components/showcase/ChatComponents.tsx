@@ -20,7 +20,7 @@ export function ChatComponents() {
               id: "1",
               role: "user",
               content: "Can you help me write a function to sort an array?",
-              timestamp: new Date(),
+              timestamp: new Date("2024-01-01T12:00:00"),
             }}
           />
           <MessageBubble
