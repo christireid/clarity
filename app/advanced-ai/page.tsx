@@ -12,7 +12,8 @@ import {
   Cpu, 
   Activity,
   StopCircle,
-  RotateCw
+  RotateCw,
+  Download
 } from "lucide-react";
 import { SDKDevTools } from "@/components/ai/devtools/SDKDevTools";
 
@@ -33,7 +34,10 @@ export default function AdvancedAIShowcase() {
     optimizationStats,
     streamLogs,
     stop,
-    reload
+    reload,
+    ragContext,
+    config,
+    setConfig
   } = useAdvancedChat({
     initialMessages: [
       { id: '1', role: 'assistant', content: 'Ready to optimize! Try asking about "Next.js" or type "Show me a chart".', timestamp: new Date() }
@@ -63,6 +67,17 @@ export default function AdvancedAIShowcase() {
       timestamp: new Date(),
       status: 'sent' 
     });
+  };
+
+  const handleExport = () => {
+    const data = JSON.stringify(messages, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'chat-history.json';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const slashCommands = [
@@ -98,6 +113,9 @@ export default function AdvancedAIShowcase() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon" onClick={handleExport} title="Export Chat">
+                    <Download className="w-4 h-4" />
+                  </Button>
                   {isLoading ? (
                     <Button variant="destructive" size="sm" onClick={stop} className="h-8 gap-2">
                       <StopCircle className="w-4 h-4" /> Stop
@@ -151,7 +169,9 @@ export default function AdvancedAIShowcase() {
       <SDKDevTools 
         optimizerStats={optimizationStats} 
         streamLogs={streamLogs}
-        ragContext={[]}
+        ragContext={ragContext}
+        config={config}
+        onConfigChange={setConfig}
       />
     </div>
   );
