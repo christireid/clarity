@@ -41,9 +41,9 @@ export function MemoryComponents() {
       >
         <MemoryTimeline 
           events={[
-            { id: "1", type: "added", content: "Learned user name", timestamp: new Date(Date.now() - 3600000) },
-            { id: "2", type: "updated", content: "Updated preference", timestamp: new Date(Date.now() - 1800000) },
-            { id: "3", type: "accessed", content: "Retrieved context", timestamp: new Date() }
+            { id: "1", type: "added", content: "Learned user name", timestamp: new Date("2024-01-01T09:00:00") },
+            { id: "2", type: "updated", content: "Updated preference", timestamp: new Date("2024-01-01T09:30:00") },
+            { id: "3", type: "accessed", content: "Retrieved context", timestamp: new Date("2024-01-01T10:00:00") }
           ]}
         />
       </ComponentCard>
