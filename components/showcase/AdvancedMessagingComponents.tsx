@@ -5,7 +5,7 @@ import { ThreadReply, ThreadView, ReplyInput } from "@/components/ai/thread-repl
 import { PinnedMessage, PinnedMessagesList, PinnedMessageBanner } from "@/components/ai/pinned-messages";
 import { SearchBar, SearchResultsList, HighlightedText } from "@/components/ai/search-messages";
 import { MentionInput, MentionList, MentionBadge } from "@/components/ai/mentions";
-import { QuickReplyBar, QuickReplyChip } from "@/components/ai/quick-replies";
+import { QuickRepliesBar, QuickReplyButton } from "@/components/ai/quick-replies";
 import { ForwardDialog, ForwardPreview } from "@/components/ai/message-forwarding";
 import { MessageGroupComponent, DateSeparator, UnreadSeparator } from "@/components/ai/message-grouping";
 import { ComponentCard } from "./ComponentCard";
