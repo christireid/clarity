@@ -3,8 +3,10 @@ import json
 import logging
 import os
 from typing import AsyncGenerator
+
+from emergentintegrations.llm.chat import LlmChat, UserMessage, SystemMessage
 from fastapi import Request
-from fastapi.responses import StreamingResponse
+from sse_starlette.sse import EventSourceResponse
 
 logger = logging.getLogger(__name__)
 
@@ -15,49 +17,83 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
     7:ui_json
     """
     
+    # 1. Initialize LlmChat
+    api_key = os.environ.get("EMERGENT_LLM_KEY")
+    if not api_key:
+        yield "5:Error: Missing EMERGENT_LLM_KEY\n"
+        return
+
     # Extract system prompt or use default
     system_prompt = config.get("systemPrompt", "You are a helpful assistant.")
-    model = config.get("model", "gpt-4")
+    model = config.get("model", "gpt-5.2")
     temperature = config.get("temperature", 0.7)
 
-    # Get the last user message
+    # Convert frontend messages to LlmChat format
     last_user_msg = next((m for m in reversed(messages) if m['role'] == 'user'), None)
     
     if not last_user_msg:
-        yield "0:No user message found\n"
+        yield "5:Error: No user message found\n"
         return
 
-    user_content = last_user_msg['content']
+    user_text = last_user_msg['content']
     
-    # Check if this is a profile generation request
-    if "generate profile" in user_content.lower() and "alex" in user_content.lower():
-        # Generate JSON profile response
-        yield "0:Here's a profile for Alex:\n\n"
-        
-        json_profile = {
-            "name": "Alex",
-            "role": "Software Developer", 
-            "skills": ["JavaScript", "Python", "React", "Node.js"],
-            "experience": "5 years",
-            "location": "San Francisco"
+    # Check for "Generative UI" triggers in input (Server-side logic)
+    is_chart_request = "chart" in user_text.lower()
+    is_profile_request = "profile" in user_text.lower()
+
+    if is_profile_request:
+        # Mock structured output for profile
+        yield "0:Generating profile...\n"
+        await asyncio.sleep(1)
+        profile_data = {
+            "name": "Alex Chen",
+            "role": "Senior Developer",
+            "skills": ["React", "Python", "AI"]
         }
-        
-        yield f"7:{json.dumps(json_profile)}\n"
+        # Send as MARKDOWN TEXT (Type 0) so ChatBubble renders it as a code block
+        json_str = json.dumps(profile_data, indent=2)
+        yield f"0:```json\n{json_str}\n```\n"
         return
-    
-    # For other messages, generate a simulated response
-    simulated_response = "This is a simulated response for testing purposes."
-    
-    # Stream the response word by word
-    words = simulated_response.split()
-    for i, word in enumerate(words):
-        if i == 0:
-            yield f"0:{word}"
-        else:
-            yield f"0: {word}"
-        await asyncio.sleep(0.2)
-    
-    yield "0:\n"
+
+    try:
+        from litellm import completion
+        
+        messages_payload = [{"role": "system", "content": system_prompt}]
+        for m in messages:
+            if m['role'] != 'system':
+                messages_payload.append({"role": m['role'], "content": m['content']})
+
+        response = await asyncio.to_thread(
+            completion,
+            model=model,
+            messages=messages_payload,
+            api_key=api_key,
+            stream=True
+        )
+
+        for chunk in response:
+            content = chunk.choices[0].delta.content
+            if content:
+                # Protocol: 0:text
+                # Clean newlines to avoid breaking the custom protocol line structure
+                # In real prod we'd use Base64 encoding or a length-prefixed protocol
+                clean_content = content.replace('\n', '\\n') 
+                yield f"0:{clean_content}\n"
+
+        # 3. Post-response checks (Generative UI)
+        if is_chart_request:
+            await asyncio.sleep(0.5)
+            chart_data = {
+                "component": "Chart",
+                "props": {
+                    "data": [{"name": "A", "value": 10}, {"name": "B", "value": 25}, {"name": "C", "value": 15}]
+                }
+            }
+            yield f"7:{json.dumps(chart_data)}\n"
+
+    except Exception as e:
+        logger.error(f"Chat error: {e}")
+        yield f"5:Error: {str(e)}\n"
 
 async def chat_stream_endpoint(request: Request):
     try:
@@ -67,6 +103,8 @@ async def chat_stream_endpoint(request: Request):
     except:
         messages = []
         config = {}
+
+    from fastapi.responses import StreamingResponse
     
     return StreamingResponse(
         stream_generator(messages, config),
