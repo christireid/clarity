@@ -58,7 +58,7 @@ export function DevToolsComponents() {
             sha: "a1b2c3d4e5f6789012345678901234567890abcd",
             message: "feat: Add new AI chat components\n\nImplemented message bubbles, thinking indicators, and tool call displays.",
             author: { name: "John Doe", email: "john@example.com" },
-            date: new Date(),
+            date: new Date("2024-01-01T10:00:00"),
             branch: "main",
             files: [
               { path: "src/components/Message.tsx", status: "added", additions: 120, deletions: 0 },
