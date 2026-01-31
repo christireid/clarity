@@ -70,117 +70,124 @@
 }
 
 /* =============================================================================
- * LIGHT THEME
+ * LIGHT THEME - Minimal Neutral with Pastel Accents
  * ============================================================================= */
 
 @layer base {
   :root {
-    --background: 250 50% 98%;
-    --foreground: 20 14% 10%;
+    --background: 250 0% 98%;
+    --foreground: 0 0% 9%;
     
     --card: 0 0% 100%;
-    --card-foreground: 20 14% 10%;
+    --card-foreground: 0 0% 9%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 20 14% 10%;
+    --popover-foreground: 0 0% 9%;
     
-    --primary: 209 100% 48%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
     
-    --secondary: 20 6% 90%;
-    --secondary-foreground: 20 14% 10%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
     
-    --muted: 20 6% 97%;
-    --muted-foreground: 20 6% 45%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
     
-    --accent: 270 91% 65%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 9%;
     
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 98%;
     
-    --border: 20 6% 90%;
-    --input: 20 6% 90%;
-    --ring: 209 100% 48%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 64%;
     
-    /* Glassmorphism Variables - Enhanced */
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-bg-medium: rgba(255, 255, 255, 0.08);
-    --glass-bg-heavy: rgba(255, 255, 255, 0.12);
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-    --glass-blur: blur(20px);
+    /* Pastel Gradient Accents */
+    --pastel-pink: linear-gradient(135deg, #fce7f3, #f9a8d4);
+    --pastel-purple: linear-gradient(135deg, #f3e8ff, #d8b4fe);
+    --pastel-blue: linear-gradient(135deg, #dbeafe, #93c5fd);
+    --pastel-mint: linear-gradient(135deg, #d1fae5, #6ee7b7);
+    --pastel-peach: linear-gradient(135deg, #fed7aa, #fb923c);
+    
+    /* Glassmorphism - Ultra subtle */
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-bg-medium: rgba(255, 255, 255, 0.6);
+    --glass-bg-heavy: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.06);
+    --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    --glass-blur: blur(24px);
     
     /* Success/Warning/Error */
     --success: 142 71% 45%;
     --warning: 38 92% 50%;
     --error: 0 84% 60%;
     
-    /* Chart Colors */
-    --chart-1: 209 100% 48%;
-    --chart-2: 270 91% 65%;
-    --chart-3: 142 71% 45%;
-    --chart-4: 38 92% 50%;
-    --chart-5: 0 84% 60%;
+    /* Chart Colors - Neutral */
+    --chart-1: 0 0% 20%;
+    --chart-2: 0 0% 40%;
+    --chart-3: 0 0% 60%;
+    --chart-4: 0 0% 70%;
+    --chart-5: 0 0% 80%;
     
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 20 14% 10%;
-    --sidebar-primary: 209 100% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 6% 97%;
-    --sidebar-accent-foreground: 20 14% 10%;
-    --sidebar-border: 20 6% 90%;
-    --sidebar-ring: 209 100% 48%;
+    --sidebar-foreground: 0 0% 9%;
+    --sidebar-primary: 0 0% 9%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 0% 64%;
   }
 
-  /* Dark Theme */
+  /* Dark Theme - Minimal */
   .dark {
-    --background: 20 14% 4%;
-    --foreground: 20 6% 98%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
     
-    --card: 20 14% 8%;
-    --card-foreground: 20 6% 98%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 98%;
     
-    --popover: 20 14% 8%;
-    --popover-foreground: 20 6% 98%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
     
-    --primary: 209 100% 48%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
     
-    --secondary: 20 6% 15%;
-    --secondary-foreground: 20 6% 98%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 98%;
     
-    --muted: 20 6% 15%;
-    --muted-foreground: 20 6% 60%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 64%;
     
-    --accent: 270 91% 65%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 98%;
     
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
     
-    --border: 20 6% 15%;
-    --input: 20 6% 15%;
-    --ring: 209 100% 48%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 40%;
     
-    /* Glassmorphism Dark - Enhanced */
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-bg-medium: rgba(255, 255, 255, 0.05);
-    --glass-bg-heavy: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    --glass-blur: blur(24px);
+    /* Glassmorphism Dark */
+    --glass-bg: rgba(255, 255, 255, 0.02);
+    --glass-bg-medium: rgba(255, 255, 255, 0.04);
+    --glass-bg-heavy: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    --glass-blur: blur(32px);
     
     /* Sidebar Dark */
-    --sidebar-background: 20 14% 8%;
-    --sidebar-foreground: 20 6% 98%;
-    --sidebar-primary: 209 100% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 6% 15%;
-    --sidebar-accent-foreground: 20 6% 98%;
-    --sidebar-border: 20 6% 15%;
-    --sidebar-ring: 209 100% 48%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 0 0% 9%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 0 0% 40%;
   }
 }
 
