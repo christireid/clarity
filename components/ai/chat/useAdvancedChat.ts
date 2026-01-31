@@ -6,8 +6,8 @@ import { TokenOptimizer } from '@/lib/token-optimization';
 import { StreamParser } from '@/lib/streaming/StreamParser';
 import { StreamType } from '@/lib/streaming/StreamProtocol';
 import type { SDKConfig } from '@/components/ai/devtools/SDKDevTools';
+import { compilePrompt } from '@/lib/prompt-template';
 
-// ... (Interfaces remain same) ...
 interface UseAdvancedChatOptions {
   api?: string;
   initialMessages?: Message[];
@@ -16,6 +16,7 @@ interface UseAdvancedChatOptions {
     contextWindow: number;
   };
   initialConfig?: SDKConfig;
+  persistenceKey?: string; // New: Persistence Key
   onResponse?: (message: Message) => void;
   onFinish?: (messages: Message[]) => void;
 }
@@ -29,12 +30,14 @@ interface UseAdvancedChatResult {
   append: (message: Message) => Promise<void>;
   reload: () => Promise<void>;
   stop: () => void;
+  clear: () => void; // New: Clear history
   setMessages: (messages: Message[]) => void;
   optimizationStats?: any;
   streamLogs: string[];
   ragContext: any[];
   config: SDKConfig;
   setConfig: (config: SDKConfig) => void;
+  contextWindow: Message[]; // New: Expose optimized context
 }
 
 const optimizer = new TokenOptimizer({
@@ -47,10 +50,12 @@ export function useAdvancedChat({
   initialMessages = [],
   optimizerConfig = { enabled: true, contextWindow: 4000 },
   initialConfig = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-4o' },
+  persistenceKey,
   onResponse,
   onFinish
 }: UseAdvancedChatOptions = {}): UseAdvancedChatResult {
-  // ... (State remains same) ...
+  
+  // State
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -58,11 +63,39 @@ export function useAdvancedChat({
   const [streamLogs, setStreamLogs] = useState<string[]>([]);
   const [ragContext, setRagContext] = useState<any[]>([]);
   const [config, setConfig] = useState<SDKConfig>(initialConfig);
+  const [contextWindow, setContextWindow] = useState<Message[]>([]); // Visualized context
   
   const parserRef = useRef(new StreamParser());
   const abortControllerRef = useRef<AbortController | null>(null);
+  const isMounted = useRef(false);
 
   const generateId = () => Math.random().toString(36).substring(7);
+
+  // Load from Persistence
+  useEffect(() => {
+    isMounted.current = true;
+    if (persistenceKey && typeof window !== 'undefined') {
+      const saved = localStorage.getItem(persistenceKey);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved, (key, value) => {
+            if (key === 'timestamp') return new Date(value);
+            return value;
+          });
+          setMessages(parsed);
+        } catch (e) {
+          console.error('Failed to load chat history', e);
+        }
+      }
+    }
+  }, [persistenceKey]);
+
+  // Save to Persistence
+  useEffect(() => {
+    if (isMounted.current && persistenceKey && messages.length > 0) {
+      localStorage.setItem(persistenceKey, JSON.stringify(messages));
+    }
+  }, [messages, persistenceKey]);
 
   const processMessage = async (userMessage: Message) => {
     setIsLoading(true);
@@ -74,24 +107,31 @@ export function useAdvancedChat({
       const newMessages = [...messages, userMessage];
       setMessages(newMessages);
 
-      // Handle Attachments
-      if (userMessage.attachments?.length) {
-        setStreamLogs(prev => [...prev, `Processing ${userMessage.attachments?.length} attachments...`]);
-        // Here we would typically upload/optimize images
-      }
+      // 1. Compile System Prompt (Template Engine)
+      const compiledSystemPrompt = compilePrompt(config.systemPrompt, {
+        date: new Date().toLocaleDateString(),
+        language: 'English',
+        // Add other dynamic vars here
+      });
+      setStreamLogs(prev => [...prev, `System Prompt Compiled: "${compiledSystemPrompt.slice(0, 50)}..."`]);
 
-      // RAG Retrieval
+      // 2. RAG Retrieval
       const retrievedDocs = optimizer.rag.retrieve(userMessage.content);
       setRagContext(retrievedDocs);
       if (retrievedDocs.length > 0) {
         setStreamLogs(prev => [...prev, `RAG: Retrieved ${retrievedDocs.length} docs`]);
       }
 
-      // Token Optimization
+      // 3. Token Optimization
+      let contextToSend = newMessages;
       if (optimizerConfig.enabled) {
         const optimized = optimizer.context.optimize(newMessages);
         setOptimizationStats(optimized.stats);
+        contextToSend = optimized.messages; 
+        setContextWindow(optimized.messages); // Update visualization
         setStreamLogs(prev => [...prev, `Token Optimization: Saved ${optimized.stats.saved} tokens`]);
+      } else {
+        setContextWindow(newMessages);
       }
 
       // Simulate Response
@@ -125,10 +165,6 @@ export function useAdvancedChat({
         const chunks = isChart
            ? ['Here ', 'is ', 'the ', 'chart ', 'you ', 'requested.']
            : ['This ', 'is ', 'a ', 'simulated ', 'streaming ', 'response.'];
-
-        if (userMessage.attachments?.length) {
-           chunks.unshift(`I received your ${userMessage.attachments.length} file(s). `);
-        }
 
         for (const chunk of chunks) {
           if (abortControllerRef.current?.signal.aborted) break;
@@ -192,7 +228,14 @@ export function useAdvancedChat({
     }
   };
 
+  const clear = useCallback(() => {
+    setMessages([]);
+    if (persistenceKey) {
+      localStorage.removeItem(persistenceKey);
+    }
+  }, [persistenceKey]);
+
   return {
-    messages, input, setInput, isLoading, handleSubmit, append, reload, stop, setMessages, optimizationStats, streamLogs, ragContext, config, setConfig
+    messages, input, setInput, isLoading, handleSubmit, append, reload, stop, clear, setMessages, optimizationStats, streamLogs, ragContext, config, setConfig, contextWindow
   };
 }
