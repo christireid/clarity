@@ -87,7 +87,7 @@ export function AdvancedMessagingComponents() {
         description="Visual grouping of messages"
       >
         <div className="space-y-4">
-          <DateSeparator date={new Date()} />
+          <DateSeparator date={new Date("2024-01-01T10:00:00")} />
           <MessageGroup 
             messages={[
               { id: "1", content: "Hello", role: "user", timestamp: new Date("2024-01-01T10:00:00") },
