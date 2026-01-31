@@ -64,7 +64,7 @@ export function RealtimeComponents() {
             <PresenceDot status="dnd" />
             <PresenceDot status="offline" />
           </div>
-          <UserPresence user={{ name: "Alice", status: "online", lastSeen: new Date() }} />
+          <UserPresence user={{ name: "Alice", status: "online", lastSeen: new Date("2024-01-01T10:00:00") }} />
           <WhosHere 
             users={[
               { id: "1", name: "Alice", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice" },
