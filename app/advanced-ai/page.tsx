@@ -135,8 +135,10 @@ function OptimizedChatInner() {
           
           <Chat.Input 
             onSend={handleSend}
-            placeholder="Ask about Next.js or Token Optimization..."
+            placeholder="Ask about Next.js or Token Optimization... (Try / or @)"
             className="p-4 border-t border-border"
+            slashCommands={slashCommands}
+            mentions={mentions}
           />
         </Chat>
       </div>
