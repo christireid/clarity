@@ -63,6 +63,11 @@ export function ChatBubble({ message, className }: ChatBubbleProps) {
           )}
         >
           {message.content}
+          {message.metadata?.component && (
+            <div className="mt-3 w-full border-t border-border/10 pt-3">
+              {renderGenerativeComponent(message.metadata.component, message.metadata.props)}
+            </div>
+          )}
         </div>
 
         {/* Metadata */}
