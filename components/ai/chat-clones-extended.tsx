@@ -95,6 +95,7 @@ function ManusChatInner() {
         onSend={handleSend} 
         placeholder="Ask Manus anything about code..."
         className="border-t border-border p-4"
+        slashCommands={slashCommands}
       />
     </Chat>
   );
