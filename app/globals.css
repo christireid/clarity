@@ -191,6 +191,13 @@
   }
 }
 
+@layer components {
+  /* Ensure sidebar has solid background */
+  aside.bg-sidebar {
+    background-color: hsl(var(--sidebar-background));
+  }
+}
+
 /* =============================================================================
  * BASE STYLES
  * ============================================================================= */
