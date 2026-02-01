@@ -176,6 +176,12 @@
     --border: 0 0% 15%;
     --input: 0 0% 15%;
     --ring: 0 0% 40%;
+
+    /* Chat Bubble Colors Dark */
+    --chat-bubble-user: 0 0% 98%;
+    --chat-bubble-user-foreground: 0 0% 9%;
+    --chat-bubble-assistant: 0 0% 10%;
+    --chat-bubble-assistant-foreground: 0 0% 98%;
     
     /* Glassmorphism Dark */
     --glass-bg: rgba(255, 255, 255, 0.02);
