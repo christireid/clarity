@@ -151,9 +151,10 @@ export function CommandPalette({
 
   return (
     <>
-      {/* Backdrop with blur - Ensure backdrop-blur-sm is applied */}
+      {/* Backdrop with forced blur */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-all duration-200"
+        style={{ backdropFilter: 'blur(8px)' }}
         onClick={() => {
           setIsOpen(false);
           onOpenChange?.(false);
