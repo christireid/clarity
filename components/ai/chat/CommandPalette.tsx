@@ -151,7 +151,7 @@ export function CommandPalette({
 
   return (
     <>
-      {/* Backdrop with blur */}
+      {/* Backdrop with blur - added backdrop-blur-sm */}
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
         onClick={() => {
