@@ -31,6 +31,7 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
     Generates SSE events complying with the custom protocol:
     0:text
     7:ui_json
+    8:thinking
     """
     
     # Extract system prompt or use default
@@ -56,28 +57,35 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
     # 1. Handle Attachments (Vision Simulation)
     if attachments:
         count = len(attachments)
-        yield f"0:I received {count} attachment(s). \n"
+        yield f"8:Analyzing {count} attachment(s)...\n" # Thinking
         await asyncio.sleep(0.5)
         
         for att in attachments:
             name = att.get('name', 'Unknown')
             type_ = att.get('type', 'file')
-            yield f"0:Analyzing {type_} '{name}'... \n"
+            yield f"8:Scanning {type_} '{name}' for features...\n" # Thinking
             await asyncio.sleep(0.8)
             
             if type_ == 'image':
-                yield f"0:This image appears to be a user upload. Since I am in mock mode, I can confirm it was received successfully.\n"
+                yield f"8:Detected objects: User Interface, Charts, Buttons.\n" # Thinking
             else:
-                yield f"0:Processed {name}.\n"
+                yield f"8:Read content from {name}.\n" # Thinking
+        
+        yield "0:I have analyzed your attachments.\n"
         
         # If text accompanies the image, respond to it
         if user_text:
-             yield f"0:\nRegarding your message: \"{user_text}\" - \n"
+             yield f"0:Regarding your message: \"{user_text}\" - \n"
 
     # 2. Handle Profile Request
     if is_profile_request:
-        yield "0:Generating profile...\n"
-        await asyncio.sleep(1)
+        yield "8:Searching database for 'Alex'...\n" # Thinking
+        await asyncio.sleep(0.5)
+        yield "8:Found 1 matching record.\n"
+        await asyncio.sleep(0.5)
+        yield "8:Formatting user profile data...\n"
+        await asyncio.sleep(0.5)
+        
         profile_data = {
             "component": "Profile",
             "props": {
@@ -87,12 +95,17 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
                 "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
             }
         }
-        # Send as UI JSON (Type 7) so ChatBubble renders it as a component
+        # Send as UI JSON (Type 7)
         yield f"7:{json.dumps(profile_data)}\n"
         return
 
     # 3. Handle Chart Request
     if is_chart_request:
+        yield "8:Querying analytics engine...\n"
+        await asyncio.sleep(0.5)
+        yield "8:Aggregating data points for Q1...\n"
+        await asyncio.sleep(0.5)
+        
         yield "0:Here is the data visualization you requested.\n"
         await asyncio.sleep(0.5)
         chart_data = {
@@ -106,8 +119,13 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
         return
 
     # 4. Standard Response (Mock or Real)
-    # If no special triggers, simulate a standard conversation
     if not attachments and not is_chart_request and not is_profile_request:
+        # Simulate "Thinking" for standard chat too
+        yield "8:Analyzing request intent...\n"
+        await asyncio.sleep(0.3)
+        yield "8:Formulating response...\n"
+        await asyncio.sleep(0.3)
+        
         yield "0:This is a simulated response. The backend is running successfully.\n"
         await asyncio.sleep(0.5)
         yield "0:I can help you with:\n- Generating Profiles (Try 'Generate Profile')\n- Visualizing Data (Try 'Show chart')\n- Analyzing Images (Upload a file)\n"
