@@ -3,8 +3,6 @@
  * Comprehensive types for chat components
  */
 
-import type { ThinkingStep } from "@/lib/ai-types";
-
 export interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
@@ -13,7 +11,20 @@ export interface Message {
   status?: 'sending' | 'sent' | 'error' | 'streaming';
   attachments?: Attachment[];
   metadata?: Record<string, any>;
-  thinkingSteps?: ThinkingStep[];
+  thinkingSteps?: ThinkingStep[]; // New field
+  citations?: Citation[];
+  tokenCount?: { total: number };
+  toolCalls?: ToolCall[];
+  model?: string;
+  createdAt?: Date;
+}
+
+export interface ThinkingStep {
+  id: string;
+  type: string;
+  content: string;
+  status: 'pending' | 'active' | 'complete';
+  duration?: number;
 }
 
 export interface Attachment {
@@ -60,4 +71,23 @@ export interface KeyboardShortcut {
   action: () => void;
   description: string;
   group?: string;
+}
+
+// Add these missing types to support the MessageBubble component
+export interface ToolCall {
+  id: string;
+  name: string;
+  status: 'running' | 'complete' | 'error';
+  args: Record<string, any>;
+  result?: any;
+  error?: string;
+}
+
+export interface Citation {
+  id: string;
+  title: string;
+  url: string;
+  snippet?: string;
+  favicon?: string;
+  domain?: string;
 }
