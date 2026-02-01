@@ -288,8 +288,11 @@ export default function ComponentShowcase() {
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
         <div className="container max-w-6xl py-8 px-4 lg:px-8">
+          {/* Hero Section */}
+          <HeroSection />
+
           {/* Header */}
-          <header className="mb-8 pt-12 lg:pt-0"> {/* Added padding top for mobile menu button */}
+          <header id="components" className="mb-8 pt-12 lg:pt-0"> {/* Added padding top for mobile menu button */}
             <Badge variant="secondary" className="mb-4">
               {componentCategories.find((c) => c.id === activeCategory)?.label}
             </Badge>
