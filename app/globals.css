@@ -102,6 +102,12 @@
     --border: 0 0% 90%;
     --input: 0 0% 90%;
     --ring: 0 0% 64%;
+
+    /* Chat Bubble Colors */
+    --chat-bubble-user: 0 0% 9%;
+    --chat-bubble-user-foreground: 0 0% 98%;
+    --chat-bubble-assistant: 0 0% 96%;
+    --chat-bubble-assistant-foreground: 0 0% 9%;
     
     /* Pastel Gradient Accents */
     --pastel-pink: linear-gradient(135deg, #fce7f3, #f9a8d4);
