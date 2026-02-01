@@ -70,7 +70,7 @@ export function AdvancedMessagingComponents() {
       >
         <div className="space-y-4">
           <SearchBar onSearch={(q) => console.log("Search:", q)} />
-          <HighlightedText text="This is a search result example." highlight="search" />
+          <HighlightedText text="This is a search result example." query="search" />
         </div>
       </ComponentCard>
 
