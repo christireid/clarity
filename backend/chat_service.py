@@ -79,14 +79,15 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
         yield "0:Generating profile...\n"
         await asyncio.sleep(1)
         profile_data = {
-            "name": "Alex Chen",
-            "role": "Senior Developer",
-            "skills": ["React", "Python", "AI", "Vision"]
+            "component": "Profile",
+            "props": {
+                "name": "Alex Chen",
+                "role": "Senior Developer",
+                "skills": ["React", "Python", "AI", "Vision"]
+            }
         }
-        # Send as MARKDOWN TEXT (Type 0) so ChatBubble renders it as a code block
-        # Use compact JSON for single-line protocol
-        json_str = json.dumps(profile_data, separators=(',', ':'))
-        yield f"0:```json\\n{json_str}\\n```\n"
+        # Protocol: 7:JSON for UI Component
+        yield f"7:{json.dumps(profile_data)}\n"
         return
 
     # 3. Handle Chart Request
