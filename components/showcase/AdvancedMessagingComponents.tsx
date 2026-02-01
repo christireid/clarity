@@ -104,7 +104,12 @@ export function AdvancedMessagingComponents() {
         description="Share messages with others"
       >
         <ForwardDialog 
-          message={{ id: "1", content: "Check this out!", author: "Alice" }}
+          message={{ 
+            id: "1", 
+            content: "Check this out!", 
+            author: { id: "alice", name: "Alice" }, 
+            timestamp: new Date() 
+          }}
           trigger={<Button variant="outline">Forward</Button>}
         />
       </ComponentCard>
