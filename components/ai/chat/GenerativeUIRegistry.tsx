@@ -5,6 +5,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { User, Briefcase, Code } from "lucide-react";
 
 // --- Components ---
 
@@ -52,12 +55,51 @@ const WeatherWidget = ({ location, temp, condition }: any) => {
   );
 };
 
+const ProfileCard = ({ name, role, skills, avatar }: any) => {
+  return (
+    <Card className="mt-4 p-4 flex flex-col gap-4 bg-secondary/20 border-primary/10">
+      <div className="flex items-center gap-4">
+        <Avatar className="h-12 w-12 border-2 border-background shadow-sm">
+          <AvatarImage src={avatar} alt={name} />
+          <AvatarFallback className="bg-primary text-primary-foreground">{name.slice(0, 2).toUpperCase()}</AvatarFallback>
+        </Avatar>
+        <div>
+          <h3 className="font-semibold text-lg leading-none">{name}</h3>
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-1">
+            <Briefcase className="w-3.5 h-3.5" />
+            {role}
+          </div>
+        </div>
+      </div>
+      
+      <div className="space-y-2">
+        <div className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+          <Code className="w-3.5 h-3.5" /> Skills
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {skills?.map((skill: string) => (
+            <Badge key={skill} variant="secondary" className="bg-background hover:bg-background">
+              {skill}
+            </Badge>
+          ))}
+        </div>
+      </div>
+      
+      <div className="flex gap-2 mt-2">
+        <Button size="sm" className="w-full" variant="default">Contact</Button>
+        <Button size="sm" className="w-full" variant="outline">View Portfolio</Button>
+      </div>
+    </Card>
+  );
+};
+
 // --- Registry ---
 
 export const componentRegistry: Record<string, React.ComponentType<any>> = {
   'Chart': DynamicChart,
   'Form': DynamicForm,
-  'Weather': WeatherWidget
+  'Weather': WeatherWidget,
+  'Profile': ProfileCard
 };
 
 export function renderGenerativeComponent(componentName: string, props: any) {
