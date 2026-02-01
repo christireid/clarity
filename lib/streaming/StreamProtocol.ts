@@ -14,6 +14,7 @@
  * 5: Error (JSON)
  * 6: Ping/Heartbeat
  * 7: UI Component Stream (JSON - Streaming Props)
+ * 8: Thinking/Reasoning Chunk (Append to thinking buffer)
  */
 
 export enum StreamType {
@@ -24,7 +25,8 @@ export enum StreamType {
   TOOL_END = '4',
   ERROR = '5',
   PING = '6',
-  UI_STREAM = '7'
+  UI_STREAM = '7',
+  THINKING = '8'
 }
 
 export interface StreamPart {
