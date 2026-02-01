@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function HeroSection() {
   return (
-    <div className="relative w-full h-[400px] rounded-xl overflow-hidden border border-border bg-black/5 dark:bg-white/5 mb-12 flex flex-col items-center justify-center text-center p-8">
+    <div className="relative w-full min-h-[400px] rounded-xl overflow-hidden border border-border bg-black/5 dark:bg-white/5 mb-12 flex flex-col items-center justify-center text-center p-8 md:p-12">
       {/* Background Particles */}
       <div className="absolute inset-0 z-0">
         <Particles 
@@ -22,17 +22,17 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 space-y-6 max-w-3xl">
-        <Badge variant="outline" className="bg-background/50 backdrop-blur-sm animate-fade-in border-primary/20 text-primary">
+      <div className="relative z-10 space-y-5 max-w-3xl">
+        <Badge variant="outline" className="bg-background/50 backdrop-blur-sm animate-fade-in border-primary/20 text-primary mb-2">
           <Sparkles className="w-3 h-3 mr-2" />
           v2.0 Now Available
         </Badge>
 
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
           Build <span className="text-primary">Intelligent</span> Interfaces
         </h1>
 
-        <div className="text-lg md:text-xl text-muted-foreground h-12">
+        <div className="text-lg md:text-xl text-muted-foreground h-12 mb-4">
           <Typewriter 
             text={["Streaming Chat SDK", "Generative UI System", "Token Optimization", "RAG Integration"]} 
             speed={50}
@@ -42,7 +42,7 @@ export function HeroSection() {
           />
         </div>
 
-        <div className="flex flex-wrap gap-4 justify-center pt-4">
+        <div className="flex flex-wrap gap-4 justify-center pt-2">
           <Button size="lg" className="h-12 px-8 rounded-full shadow-lg shadow-primary/20" onClick={() => window.location.href = '/advanced-ai'}>
             <Zap className="w-4 h-4 mr-2" />
             Live Demo
