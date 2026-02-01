@@ -295,9 +295,9 @@ BeamContainer.displayName = "BeamContainer";
 // ============================================================================
 
 export interface IntegrationBeamDiagramProps {
-  centerIcon: React.ReactNode;
+  centerIcon?: React.ReactNode;
   centerLabel?: string;
-  integrations: Array<{
+  integrations?: Array<{
     icon: React.ReactNode;
     label?: string;
   }>;
@@ -307,7 +307,7 @@ export interface IntegrationBeamDiagramProps {
 export function IntegrationBeamDiagram({
   centerIcon,
   centerLabel,
-  integrations,
+  integrations = [],
   className,
 }: IntegrationBeamDiagramProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
