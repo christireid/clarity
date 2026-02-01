@@ -54,7 +54,12 @@ export function AdvancedMessagingComponents() {
         description="Important messages pinned to top"
       >
         <PinnedMessageBanner 
-          message={{ id: "1", content: "Please read the guidelines before posting.", author: "Admin" }}
+          message={{ 
+            id: "1", 
+            content: "Please read the guidelines before posting.", 
+            author: { id: "admin", name: "Admin" }, 
+            timestamp: new Date() 
+          }}
           onUnpin={() => {}}
         />
       </ComponentCard>
