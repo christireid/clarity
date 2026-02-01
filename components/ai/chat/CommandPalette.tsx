@@ -153,7 +153,7 @@ export function CommandPalette({
     <>
       {/* Backdrop with explicit backdrop-blur class */}
       <div
-        className="fixed inset-0 bg-black/50 z-50"
+        className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
         style={{ 
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)" // For Safari support
