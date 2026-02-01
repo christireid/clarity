@@ -99,7 +99,7 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
         <div
           className={cn(
             "rounded-lg p-3 text-sm relative group/bubble",
-            isAssistant && "glass-medium",
+            isAssistant && "glass-medium bg-secondary",
             isUser && "bg-neutral-900 text-neutral-50 dark:bg-neutral-50 dark:text-neutral-900",
             isSystem && "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
           )}
@@ -169,12 +169,14 @@ interface ChatBubbleListProps {
 
 export function ChatBubbleList({ items, className, renderItem }: ChatBubbleListProps) {
   return (
-    <div className={cn("space-y-4", className)} role="list" aria-label="Messages">
-      {items.map((item) => (
-        <div key={item.id} role="listitem">
-          {renderItem ? renderItem(item) : <ChatBubble message={item} />}
-        </div>
-      ))}
+    <div className="h-full flex flex-col">
+      <div className={cn("space-y-4 flex-1", className)} role="list" aria-label="Messages">
+        {items.map((item) => (
+          <div key={item.id} role="listitem">
+            {renderItem ? renderItem(item) : <ChatBubble message={item} />}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
