@@ -73,6 +73,7 @@ import { BackgroundFxComponents } from "@/components/showcase/BackgroundFxCompon
 import { UIPatternsComponents } from "@/components/showcase/UIPatternsComponents";
 import { AdvancedFxComponents } from "@/components/showcase/AdvancedFxComponents";
 import { ChatClonesExtendedComponents } from "@/components/showcase/ChatClonesExtendedComponents";
+import { HeroSection } from "@/components/showcase/HeroSection";
 
 const componentCategories = [
   { id: "chat", label: "Chat & Messages", icon: MessageSquare, description: "Core chat interface components" },
