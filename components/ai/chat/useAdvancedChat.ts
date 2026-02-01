@@ -151,7 +151,6 @@ export function useAdvancedChat({
       const generateId = () => Math.random().toString(36).substring(7);
       const aiResponseId = generateId();
       
-      // Use a functional update to ensure we don't have stale closure
       setMessages(currentMsgs => [
         ...currentMsgs, 
         {
@@ -159,32 +158,54 @@ export function useAdvancedChat({
           role: 'assistant',
           content: '',
           timestamp: new Date(),
-          status: 'sending'
+          status: 'sending',
+          thinkingSteps: [] // Initialize thinkingSteps
         }
       ]);
 
       const unsubscribe = parserRef.current.subscribe((part) => {
         setStreamLogs(prev => [...prev, `Received chunk: ${part.type}`]);
         
-        if (part.type === StreamType.TEXT) {
-          setMessages(prev => prev.map(m => {
-            if (m.id === aiResponseId) {
-               return { ...m, content: m.content + part.content };
-            }
-            return m;
-          }));
-        } else if (part.type === StreamType.UI_STREAM) {
-           try {
-             const patch = typeof part.content === 'string' ? JSON.parse(part.content) : part.content;
-             setMessages(prev => prev.map(m => 
-               m.id === aiResponseId ? { ...m, metadata: { ...m.metadata, component: patch.component, props: patch.props } } : m
-             ));
-           } catch(e) { console.error(e); }
-        }
+        setMessages(prev => prev.map(m => {
+          if (m.id !== aiResponseId) return m;
+
+          if (part.type === StreamType.TEXT) {
+             return { ...m, content: m.content + part.content };
+          } 
+          
+          if (part.type === StreamType.THINKING) {
+             // Append to thinking steps
+             // Check if the last step is "active" or create a new one
+             // Simple logic: Create new step for each chunk line or append if partial?
+             // Since backend sends "Analyzing..." as complete sentences, let's add as new steps
+             // or update the last one if it's "Thinking..."
+             
+             // Better: Just append content for now, or create discrete steps.
+             // Backend sends "8:Text\n". 
+             const newStep = { 
+               id: Math.random().toString(), 
+               type: 'thinking', 
+               content: part.content, 
+               status: 'active' 
+             };
+             
+             // Mark previous steps as complete
+             const updatedSteps = (m.thinkingSteps || []).map(s => ({ ...s, status: 'complete' }));
+             return { ...m, thinkingSteps: [...updatedSteps, newStep], status: 'streaming' };
+          }
+
+          if (part.type === StreamType.UI_STREAM) {
+             try {
+               const patch = typeof part.content === 'string' ? JSON.parse(part.content) : part.content;
+               return { ...m, metadata: { ...m.metadata, component: patch.component, props: patch.props } };
+             } catch(e) { console.error(e); }
+          }
+          
+          return m;
+        }));
       });
 
       // REAL BACKEND CALL
-      // Ensure we use the correct URL based on environment
       const backendUrl = api.startsWith('http') ? api : `http://localhost:8001${api}`;
       
       const response = await fetch(backendUrl, {
@@ -209,21 +230,14 @@ export function useAdvancedChat({
       unsubscribe();
       setIsLoading(false);
       
-      // 5. Run Response Middleware
-      // Get the latest message content
-      let finalMessage: Message = { 
-        id: aiResponseId, 
-        role: 'assistant', 
-        content: '', 
-        timestamp: new Date(), 
-        status: 'sent' 
-      };
-      
-      // We need to fetch the latest state, but inside this async function we can't easily access
-      // the updated state directly without refs. 
-      // Simplified: Just mark as sent. Middleware on complete response is tricky with streaming.
-      
-      setMessages(prev => prev.map(m => m.id === aiResponseId ? { ...m, status: 'sent' } : m));
+      // Mark final message and thinking steps as sent/complete
+      setMessages(prev => prev.map(m => {
+        if (m.id === aiResponseId) {
+           const completedSteps = (m.thinkingSteps || []).map(s => ({ ...s, status: 'complete' }));
+           return { ...m, status: 'sent', thinkingSteps: completedSteps };
+        }
+        return m;
+      }));
 
     } catch (error) {
       if ((error as Error).name !== 'AbortError') {
