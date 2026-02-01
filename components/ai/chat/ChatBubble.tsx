@@ -97,6 +97,16 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
           </div>
         )}
 
+        {/* Thinking Steps - Only show for assistant messages */}
+        {isAssistant && message.thinkingSteps && message.thinkingSteps.length > 0 && (
+          <div className="mb-3">
+            <ThinkingIndicator 
+              steps={message.thinkingSteps} 
+              isActive={message.status === 'streaming'}
+            />
+          </div>
+        )}
+
         <div
           className={cn(
             "rounded-lg p-3 text-sm relative group/bubble",
