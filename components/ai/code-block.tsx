@@ -233,7 +233,7 @@ export function CodeBlock({
   );
 }
 
-// Basic syntax highlighting
+// Basic syntax highlighting (simplified - in production use a proper library)
 function SyntaxHighlight({ code, language }: { code: string; language: string }) {
   const highlighted = React.useMemo(() => {
     if (!code) return "";
@@ -241,7 +241,7 @@ function SyntaxHighlight({ code, language }: { code: string; language: string })
   }, [code, language]);
 
   if (!code) return null;
-  // Use span for inline content
+  // Use span for inline content, pre/code wrappers are handled by parent
   return <span dangerouslySetInnerHTML={{ __html: highlighted }} />;
 }
 
