@@ -22,7 +22,7 @@ import {
   Minimize2,
   WrapText,
   FileCode,
-  Terminal,
+  Terminal as TerminalIcon,
   Eye,
 } from "lucide-react";
 
