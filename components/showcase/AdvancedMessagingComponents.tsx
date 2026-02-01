@@ -19,11 +19,33 @@ export function AdvancedMessagingComponents() {
         description="Nested message replies"
       >
         <ThreadView 
-          parentMessage={{ id: "1", content: "Main topic", author: "Alice" }}
-          replies={[
-            { id: "2", content: "Reply 1", author: "Bob", timestamp: new Date("2024-01-01T10:05:00") },
-            { id: "3", content: "Reply 2", author: "Charlie", timestamp: new Date("2024-01-01T10:10:00") }
-          ]}
+          thread={{
+            id: "thread-1",
+            parentMessageId: "1",
+            messages: [
+              { 
+                id: "2", 
+                content: "Reply 1", 
+                author: { id: "bob", name: "Bob" }, 
+                timestamp: new Date("2024-01-01T10:05:00") 
+              },
+              { 
+                id: "3", 
+                content: "Reply 2", 
+                author: { id: "charlie", name: "Charlie" }, 
+                timestamp: new Date("2024-01-01T10:10:00") 
+              }
+            ],
+            participantCount: 2,
+            lastActivity: new Date("2024-01-01T10:10:00")
+          }}
+          parentMessage={{ 
+            id: "1", 
+            content: "Main topic", 
+            author: { id: "alice", name: "Alice" }, 
+            timestamp: new Date("2024-01-01T10:00:00") 
+          }}
+          onReply={(content) => console.log("Reply:", content)}
         />
       </ComponentCard>
 
