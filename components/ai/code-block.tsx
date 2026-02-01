@@ -90,6 +90,11 @@ export function CodeBlock({
   const [copied, setCopied] = React.useState(false);
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [wordWrap, setWordWrap] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const safeCode = code || "";
   const lines = safeCode.split("\n");
@@ -187,32 +192,40 @@ export function CodeBlock({
         style={{ maxHeight: !isExpanded && maxHeight ? maxHeight : undefined }}
       >
         <div className={cn("p-4 text-sm font-mono", wordWrap && "whitespace-pre-wrap break-words")}>
-          {showLineNumbers ? (
-            <table className="w-full border-collapse">
-              <tbody>
-                {lines.map((line, idx) => (
-                  <tr
-                    key={idx}
-                    className={cn(
-                      highlightLines.includes(idx + 1) && "bg-ai-user/10"
-                    )}
-                  >
-                    <td className="pr-4 text-right text-muted-foreground/50 select-none w-[1%] whitespace-nowrap align-top">
-                      {idx + 1}
-                    </td>
-                    <td className="pl-4 border-l border-code-border align-top">
-                      <SyntaxHighlight code={line || " "} language={language} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
+          {!mounted ? (
+            // SSR / Initial Render: Simple pre/code block to prevent hydration mismatch
             <pre className="m-0 p-0 bg-transparent">
-              <code className={`language-${language}`}>
-                <SyntaxHighlight code={safeCode} language={language} />
-              </code>
+              <code className={`language-${language}`}>{safeCode}</code>
             </pre>
+          ) : (
+            // Client Render: Complex interactive table or highlighted code
+            showLineNumbers ? (
+              <table className="w-full border-collapse">
+                <tbody>
+                  {lines.map((line, idx) => (
+                    <tr
+                      key={idx}
+                      className={cn(
+                        highlightLines.includes(idx + 1) && "bg-ai-user/10"
+                      )}
+                    >
+                      <td className="pr-4 text-right text-muted-foreground/50 select-none w-[1%] whitespace-nowrap align-top">
+                        {idx + 1}
+                      </td>
+                      <td className="pl-4 border-l border-code-border align-top">
+                        <SyntaxHighlight code={line || " "} language={language} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <pre className="m-0 p-0 bg-transparent">
+                <code className={`language-${language}`}>
+                  <SyntaxHighlight code={safeCode} language={language} />
+                </code>
+              </pre>
+            )
           )}
         </div>
       </div>
@@ -220,7 +233,7 @@ export function CodeBlock({
   );
 }
 
-// Basic syntax highlighting (simplified - in production use a proper library)
+// Basic syntax highlighting
 function SyntaxHighlight({ code, language }: { code: string; language: string }) {
   const highlighted = React.useMemo(() => {
     if (!code) return "";
@@ -228,8 +241,8 @@ function SyntaxHighlight({ code, language }: { code: string; language: string })
   }, [code, language]);
 
   if (!code) return null;
-  // Use span for inline content, pre/code wrappers are handled by parent
-  return <span dangerouslySetInnerHTML={{ __html: highlighted }} suppressHydrationWarning />;
+  // Use span for inline content
+  return <span dangerouslySetInnerHTML={{ __html: highlighted }} />;
 }
 
 function highlightCode(code: string, language: string): string {
