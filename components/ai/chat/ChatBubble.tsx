@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import type { Message } from "./types";
 import { renderGenerativeComponent } from "./GenerativeUIRegistry";
 import { useTTS } from "./useTTS";
-import { ThinkingIndicator } from "@/components/ai/thinking-indicator";
+import { ThinkingIndicator } from "@/components/ai/thinking-indicator"; // Import ThinkingIndicator
 
 interface ChatBubbleProps {
   message: Message;
@@ -25,15 +25,13 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
   
   // TTS Hook
   const { speak, stop, isSpeaking, isSupported } = useTTS();
-  // Local state to track if *this specific bubble* is speaking. 
-  // Note: The global hook tracks 'isSpeaking' globally. 
-  // For a robust implementation, we'd need an ID check, but simple toggle works for single-voice.
   const [isThisSpeaking, setIsThisSpeaking] = React.useState(false);
 
   const StatusIcon = {
     sending: Clock,
     sent: CheckCircle2,
     error: AlertCircle,
+    streaming: Clock, // Map 'streaming' status to Clock
   }[message.status || 'sent'];
 
   const handleCopy = () => {
@@ -57,6 +55,9 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
   React.useEffect(() => {
     if (!isSpeaking) setIsThisSpeaking(false);
   }, [isSpeaking]);
+
+  const hasThinking = message.thinkingSteps && message.thinkingSteps.length > 0;
+  const isStreaming = message.status === 'streaming' || message.status === 'sending';
 
   return (
     <div
@@ -84,6 +85,15 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
 
       {/* Message Content */}
       <div className={cn("flex-1 max-w-[80%] space-y-1", isUser && "flex flex-col items-end")}>
+        {/* Thinking Steps - Displayed ABOVE the content */}
+        {hasThinking && !isUser && (
+          <ThinkingIndicator 
+            steps={message.thinkingSteps!} 
+            isActive={isStreaming} 
+            className="mb-2"
+          />
+        )}
+
         {/* Attachments Display */}
         {message.attachments && message.attachments.length > 0 && (
           <div className="flex gap-2 flex-wrap mb-2">
@@ -94,16 +104,6 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
                 <div key={att.id} className="p-2 bg-muted rounded border text-xs">{att.name}</div>
               )
             ))}
-          </div>
-        )}
-
-        {/* Thinking Steps - Only show for assistant messages */}
-        {isAssistant && message.thinkingSteps && message.thinkingSteps.length > 0 && (
-          <div className="mb-3">
-            <ThinkingIndicator 
-              steps={message.thinkingSteps} 
-              isActive={message.status === 'streaming'}
-            />
           </div>
         )}
 
