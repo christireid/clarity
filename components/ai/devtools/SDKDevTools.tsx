@@ -12,11 +12,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Slider } from '@/components/ui/slider';
 import { Message } from '../chat/types';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export interface SDKConfig {
   systemPrompt: string;
   temperature: number;
   model: string;
+  provider: 'mock' | 'openai' | 'anthropic' | 'litellm'; // Added provider
 }
 
 interface DevToolsProps {
@@ -25,14 +27,14 @@ interface DevToolsProps {
   ragContext?: any[];
   config?: SDKConfig;
   onConfigChange?: (config: SDKConfig) => void;
-  contextWindow?: Message[]; // New
+  contextWindow?: Message[]; 
 }
 
 export function SDKDevTools({ 
   optimizerStats, 
   streamLogs = [], 
   ragContext = [], 
-  config = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-4o' },
+  config = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-4o', provider: 'mock' },
   onConfigChange,
   contextWindow = []
 }: DevToolsProps) {
@@ -185,6 +187,21 @@ export function SDKDevTools({
           {/* CONFIG TAB */}
           <TabsContent value="config" className="h-full m-0 space-y-4">
             <div className="space-y-4">
+              <div className="space-y-2">
+                <Label className="text-xs">Provider (Adapter)</Label>
+                <Select value={localConfig.provider} onValueChange={(val) => handleConfigChange('provider', val)}>
+                  <SelectTrigger className="h-8 text-xs">
+                    <SelectValue placeholder="Select provider" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mock">Mock Provider</SelectItem>
+                    <SelectItem value="openai">OpenAI (Real)</SelectItem>
+                    <SelectItem value="anthropic">Anthropic (Real)</SelectItem>
+                    <SelectItem value="litellm">LiteLLM (Universal)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
               <div className="space-y-2">
                 <Label className="text-xs">System Prompt (Supports {'{{variable}}'})</Label>
                 <Textarea 
