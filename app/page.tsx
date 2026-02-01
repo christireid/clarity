@@ -116,7 +116,7 @@ const componentCategories = [
 
 export default function ComponentShowcase() {
   const [activeCategory, setActiveCategory] = React.useState("chat");
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [sidebarOpen, setSidebarOpen] = React.useState(false); // Default closed on mobile
   const { theme, setTheme } = useTheme();
 
   const renderActiveComponent = () => {
@@ -162,7 +162,7 @@ export default function ComponentShowcase() {
 
   return (
     <div className="flex h-screen bg-background">
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Button - ONLY VISIBLE ON MOBILE */}
       <Button
         variant="ghost"
         size="icon"
@@ -175,7 +175,7 @@ export default function ComponentShowcase() {
       {/* Sidebar Overlay for Mobile */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden backdrop-blur-sm"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -183,7 +183,7 @@ export default function ComponentShowcase() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-72 border-r border-border bg-sidebar transition-transform lg:relative lg:translate-x-0 flex flex-col",
+          "fixed inset-y-0 left-0 z-40 w-72 border-r border-border bg-sidebar transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex flex-col",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -200,7 +200,7 @@ export default function ComponentShowcase() {
           </div>
 
           {/* Navigation */}
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-4 scrollbar-thin">
             <nav className="space-y-1">
               {componentCategories.map((category) => (
                 <button
@@ -288,7 +288,7 @@ export default function ComponentShowcase() {
       <main className="flex-1 overflow-auto">
         <div className="container max-w-6xl py-8 px-4 lg:px-8">
           {/* Header */}
-          <header className="mb-8">
+          <header className="mb-8 pt-12 lg:pt-0"> {/* Added padding top for mobile menu button */}
             <Badge variant="secondary" className="mb-4">
               {componentCategories.find((c) => c.id === activeCategory)?.label}
             </Badge>
