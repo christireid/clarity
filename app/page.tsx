@@ -172,16 +172,24 @@ export default function ComponentShowcase() {
         {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </Button>
 
+      {/* Sidebar Overlay for Mobile */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-72 border-r border-border bg-sidebar transition-transform lg:relative lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 w-72 border-r border-border bg-sidebar transition-transform lg:relative lg:translate-x-0 flex flex-col",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex items-center gap-3 border-b border-border p-6">
+          <div className="flex items-center gap-3 border-b border-border p-6 shrink-0">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
               <Sparkles className="h-5 w-5 text-accent-foreground" />
             </div>
@@ -192,13 +200,19 @@ export default function ComponentShowcase() {
           </div>
 
           {/* Navigation */}
-          <ScrollArea className="flex-1 p-4">
+          <div className="flex-1 overflow-y-auto p-4">
             <nav className="space-y-1">
               {componentCategories.map((category) => (
                 <button
                   key={category.id}
                   type="button"
-                  onClick={() => setActiveCategory(category.id)}
+                  onClick={() => {
+                    setActiveCategory(category.id);
+                    // Close sidebar on mobile when item selected
+                    if (window.innerWidth < 1024) {
+                      setSidebarOpen(false);
+                    }
+                  }}
                   className={cn(
                     "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors",
                     activeCategory === category.id
@@ -206,7 +220,7 @@ export default function ComponentShowcase() {
                       : "hover:bg-muted text-foreground"
                   )}
                 >
-                  <category.icon className="h-5 w-5" />
+                  <category.icon className="h-5 w-5 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-sm">{category.label}</p>
                     <p className="text-xs text-muted-foreground truncate">
@@ -215,7 +229,7 @@ export default function ComponentShowcase() {
                   </div>
                   <ChevronRight
                     className={cn(
-                      "h-4 w-4 transition-transform",
+                      "h-4 w-4 transition-transform shrink-0",
                       activeCategory === category.id && "rotate-90"
                     )}
                   />
@@ -228,14 +242,14 @@ export default function ComponentShowcase() {
                 href="/app/advanced-ai"
                 className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors hover:bg-muted text-foreground"
               >
-                <Zap className="h-5 w-5 text-amber-500" />
+                <Zap className="h-5 w-5 text-amber-500 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm">Advanced AI Demo</p>
                   <p className="text-xs text-muted-foreground truncate">
                     Token Optimization & RAG
                   </p>
                 </div>
-                <ArrowRight className="h-4 w-4 opacity-50" />
+                <ArrowRight className="h-4 w-4 opacity-50 shrink-0" />
               </a>
             </nav>
 
@@ -248,10 +262,10 @@ export default function ComponentShowcase() {
                 npm install @ai-chat/components
               </code>
             </div>
-          </ScrollArea>
+          </div>
 
           {/* Footer */}
-          <div className="border-t border-border p-4">
+          <div className="border-t border-border p-4 shrink-0">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Theme</span>
               <Button
