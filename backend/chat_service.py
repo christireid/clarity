@@ -83,10 +83,11 @@ async def stream_generator(messages: list, config: dict) -> AsyncGenerator[str, 
             "props": {
                 "name": "Alex Chen",
                 "role": "Senior Developer",
-                "skills": ["React", "Python", "AI", "Vision"]
+                "skills": ["React", "Python", "AI", "Vision"],
+                "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
             }
         }
-        # Protocol: 7:JSON for UI Component
+        # Send as UI JSON (Type 7) so ChatBubble renders it as a component
         yield f"7:{json.dumps(profile_data)}\n"
         return
 
