@@ -38,6 +38,11 @@ export function CitationChip({
   const url = urlProp || citation?.url || "#";
   const title = titleProp || citation?.title || `Source ${index}`;
 
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null; // Prevent hydration mismatch for tooltips
+
   if (variant === "inline") {
     return (
       <TooltipProvider delayDuration={200}>
@@ -149,6 +154,10 @@ export function CitationChip({
 
 // Inline citation marker for use within text
 export function InlineCitation({ index, url, title }: { index: number; url: string; title: string }) {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
