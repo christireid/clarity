@@ -190,6 +190,7 @@ export function MessageBubble({
                 : "bg-muted text-foreground", // Use bg-muted for assistant messages
               isStreaming && "animate-pulse-subtle"
             )}
+            style={isUser ? {} : { backgroundColor: 'hsl(var(--muted))' }} // Force background for assistant
           >
             {isUser ? (
               <p className="whitespace-pre-wrap">{message.content}</p>
