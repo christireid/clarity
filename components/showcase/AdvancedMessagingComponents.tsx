@@ -110,6 +110,11 @@ export function AdvancedMessagingComponents() {
             author: { id: "alice", name: "Alice" }, 
             timestamp: new Date() 
           }}
+          targets={[
+            { id: "1", type: "user", name: "Bob", description: "Team member" },
+            { id: "2", type: "channel", name: "#general", description: "General discussion" },
+            { id: "3", type: "user", name: "Charlie", description: "Project lead" }
+          ]}
           trigger={<Button variant="outline">Forward</Button>}
         />
       </ComponentCard>
