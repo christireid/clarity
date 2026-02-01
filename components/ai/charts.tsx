@@ -38,6 +38,11 @@ const CHART_COLORS = [
   "hsl(var(--chart-3))",
   "hsl(var(--chart-4))",
   "hsl(var(--chart-5))",
+  "#3b82f6", // Fallback blue
+  "#10b981", // Fallback green
+  "#f59e0b", // Fallback yellow
+  "#ef4444", // Fallback red
+  "#8b5cf6", // Fallback purple
 ];
 
 // Custom tooltip
@@ -131,6 +136,21 @@ export function BarChartCard({
   className,
   height = 300,
 }: BarChartCardProps) {
+  // Ensure we have data to render
+  if (!data || data.length === 0) {
+    return (
+      <Card className={className}>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[300px] text-muted-foreground">
+          No data available
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className={className}>
       <CardHeader>
@@ -138,26 +158,28 @@ export function BarChartCard({
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={height}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-            <XAxis
-              dataKey="name"
-              tick={{ fontSize: 12 }}
-              tickLine={false}
-              axisLine={false}
-              className="text-muted-foreground"
-            />
-            <YAxis
-              tick={{ fontSize: 12 }}
-              tickLine={false}
-              axisLine={false}
-              className="text-muted-foreground"
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey={dataKey} fill={color} radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+        <div style={{ width: '100%', height: height }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 12 }}
+                tickLine={false}
+                axisLine={false}
+                className="text-muted-foreground"
+              />
+              <YAxis
+                tick={{ fontSize: 12 }}
+                tickLine={false}
+                axisLine={false}
+                className="text-muted-foreground"
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey={dataKey} fill={color} radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
@@ -183,6 +205,20 @@ export function LineChartCard({
   className,
   height = 300,
 }: LineChartCardProps) {
+  if (!data || data.length === 0) {
+    return (
+      <Card className={className}>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[300px] text-muted-foreground">
+          No data available
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className={className}>
       <CardHeader>
@@ -190,31 +226,33 @@ export function LineChartCard({
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={height}>
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-            <XAxis
-              dataKey="name"
-              tick={{ fontSize: 12 }}
-              tickLine={false}
-              axisLine={false}
-            />
-            <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-            {dataKeys.map((key, index) => (
-              <Line
-                key={key}
-                type="monotone"
-                dataKey={key}
-                stroke={colors[index % colors.length]}
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
+        <div style={{ width: '100%', height: height }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={data}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 12 }}
+                tickLine={false}
+                axisLine={false}
               />
-            ))}
-          </LineChart>
-        </ResponsiveContainer>
+              <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+              {dataKeys.map((key, index) => (
+                <Line
+                  key={key}
+                  type="monotone"
+                  dataKey={key}
+                  stroke={colors[index % colors.length]}
+                  strokeWidth={2}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
@@ -242,6 +280,20 @@ export function AreaChartCard({
   className,
   height = 300,
 }: AreaChartCardProps) {
+  if (!data || data.length === 0) {
+    return (
+      <Card className={className}>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[300px] text-muted-foreground">
+          No data available
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className={className}>
       <CardHeader>
@@ -249,31 +301,33 @@ export function AreaChartCard({
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={height}>
-          <AreaChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-            <XAxis
-              dataKey="name"
-              tick={{ fontSize: 12 }}
-              tickLine={false}
-              axisLine={false}
-            />
-            <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-            {dataKeys.map((key, index) => (
-              <Area
-                key={key}
-                type="monotone"
-                dataKey={key}
-                stroke={colors[index % colors.length]}
-                fill={colors[index % colors.length]}
-                fillOpacity={0.3}
-                stackId={stacked ? "stack" : undefined}
+        <div style={{ width: '100%', height: height }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 12 }}
+                tickLine={false}
+                axisLine={false}
               />
-            ))}
-          </AreaChart>
-        </ResponsiveContainer>
+              <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+              {dataKeys.map((key, index) => (
+                <Area
+                  key={key}
+                  type="monotone"
+                  dataKey={key}
+                  stroke={colors[index % colors.length]}
+                  fill={colors[index % colors.length]}
+                  fillOpacity={0.3}
+                  stackId={stacked ? "stack" : undefined}
+                />
+              ))}
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
@@ -299,6 +353,20 @@ export function PieChartCard({
   className,
   height = 300,
 }: PieChartCardProps) {
+  if (!data || data.length === 0) {
+    return (
+      <Card className={className}>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[300px] text-muted-foreground">
+          No data available
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className={className}>
       <CardHeader>
@@ -306,26 +374,28 @@ export function PieChartCard({
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={height}>
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={donut ? "60%" : 0}
-              outerRadius="80%"
-              paddingAngle={2}
-            >
-              {data.map((_, index) => (
-                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+        <div style={{ width: '100%', height: height }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={donut ? "60%" : 0}
+                outerRadius="80%"
+                paddingAngle={2}
+              >
+                {data.map((_, index) => (
+                  <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                ))}
+              </Pie>
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
