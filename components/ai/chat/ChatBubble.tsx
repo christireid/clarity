@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import type { Message } from "./types";
 import { renderGenerativeComponent } from "./GenerativeUIRegistry";
 import { useTTS } from "./useTTS";
+import { ThinkingIndicator } from "@/components/ai/thinking-indicator";
 
 interface ChatBubbleProps {
   message: Message;
