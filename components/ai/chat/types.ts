@@ -3,14 +3,17 @@
  * Comprehensive types for chat components
  */
 
+import type { ThinkingStep } from "@/lib/ai-types";
+
 export interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: Date;
-  status?: 'sending' | 'sent' | 'error';
+  status?: 'sending' | 'sent' | 'error' | 'streaming';
   attachments?: Attachment[];
   metadata?: Record<string, any>;
+  thinkingSteps?: ThinkingStep[];
 }
 
 export interface Attachment {
