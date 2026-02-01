@@ -109,16 +109,16 @@ export function MessageBubble({
       )}
     >
       {/* Avatar */}
-      <Avatar className={cn("h-8 w-8 shrink-0", isUser ? "bg-ai-user" : "bg-secondary")}>
+      <Avatar className={cn("h-8 w-8 shrink-0", isUser ? "bg-primary text-primary-foreground" : "bg-muted")}>
         {isUser ? (
           <>
-            <AvatarFallback className="bg-ai-user text-primary-foreground">
+            <AvatarFallback className="bg-primary text-primary-foreground">
               <User className="h-4 w-4" />
             </AvatarFallback>
           </>
         ) : (
           <>
-            <AvatarFallback className="bg-secondary text-secondary-foreground">
+            <AvatarFallback className="bg-muted text-foreground">
               <Bot className="h-4 w-4" />
             </AvatarFallback>
           </>
@@ -187,7 +187,7 @@ export function MessageBubble({
               "rounded-2xl px-4 py-3",
               isUser
                 ? "bg-primary text-primary-foreground" // Use bg-primary for user messages
-                : "bg-muted text-muted-foreground", // Use bg-muted for assistant messages
+                : "bg-muted text-foreground", // Use bg-muted for assistant messages
               isStreaming && "animate-pulse-subtle"
             )}
           >
