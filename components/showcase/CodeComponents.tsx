@@ -266,15 +266,21 @@ function createUser(data: Partial<User>): User {
         description="Grid layout for feature cards"
       >
         <MDXCardGrid columns={3}>
-          <MDXCard title="Fast" icon="⚡">
-            Optimized for performance with lazy loading and code splitting.
-          </MDXCard>
-          <MDXCard title="Accessible" icon="♿">
-            Built with accessibility in mind, following WCAG guidelines.
-          </MDXCard>
-          <MDXCard title="Customizable" icon="🎨">
-            Fully themeable with CSS variables and Tailwind support.
-          </MDXCard>
+          <MDXCard
+            title="Fast"
+            description="Optimized for performance with lazy loading and code splitting."
+            icon={<span>⚡</span>}
+          />
+          <MDXCard
+            title="Accessible"
+            description="Built with accessibility in mind, following WCAG guidelines."
+            icon={<span>♿</span>}
+          />
+          <MDXCard
+            title="Customizable"
+            description="Fully themeable with CSS variables and Tailwind support."
+            icon={<span>🎨</span>}
+          />
         </MDXCardGrid>
       </ComponentCard>
     </div>

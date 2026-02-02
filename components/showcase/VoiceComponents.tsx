@@ -5,6 +5,18 @@ import { VoiceButton, VoiceRecorder, TextToSpeechButton, VoiceVisualizer, VoiceI
 import { AudioPlayer, AudioActionButton } from "@/components/ai/audio-player";
 import { ComponentCard } from "./ComponentCard";
 
+function VoiceInputFieldDemo() {
+  const [value, setValue] = React.useState("");
+  return (
+    <VoiceInputField
+      value={value}
+      onChange={setValue}
+      onSubmit={() => console.log("Submit:", value)}
+      placeholder="Type or speak..."
+    />
+  );
+}
+
 export function VoiceComponents() {
   return (
     <div className="space-y-8">
@@ -28,16 +40,14 @@ export function VoiceComponents() {
         title="Voice Visualizer"
         description="Audio waveform visualization"
       >
-        <VoiceVisualizer isRecording={true} />
+        <VoiceVisualizer isActive={true} bars={7} />
       </ComponentCard>
 
       <ComponentCard
         title="Voice Input Field"
         description="Input with integrated voice typing"
       >
-        <VoiceInputField
-          onSubmit={(text) => console.log("Voice Input:", text)}
-        />
+        <VoiceInputFieldDemo />
       </ComponentCard>
 
       {/* Audio Player Components */}
@@ -48,8 +58,8 @@ export function VoiceComponents() {
         <AudioPlayer
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
           title="Sample Audio Track"
-          artist="Sound Helix"
-          duration={120}
+          subtitle="Sound Helix"
+          variant="card"
           onPlay={() => console.log("Playing")}
           onPause={() => console.log("Paused")}
           onEnded={() => console.log("Ended")}
@@ -58,14 +68,13 @@ export function VoiceComponents() {
 
       <ComponentCard
         title="Audio Action Button"
-        description="Compact audio control buttons"
+        description="Compact audio control buttons with different states"
       >
         <div className="flex items-center gap-4">
-          <AudioActionButton action="play" onClick={() => console.log("Play")} />
-          <AudioActionButton action="pause" onClick={() => console.log("Pause")} />
-          <AudioActionButton action="stop" onClick={() => console.log("Stop")} />
-          <AudioActionButton action="rewind" onClick={() => console.log("Rewind")} />
-          <AudioActionButton action="forward" onClick={() => console.log("Forward")} />
+          <AudioActionButton status="default" onClick={() => console.log("Default")} />
+          <AudioActionButton status="loading" onClick={() => console.log("Loading")} />
+          <AudioActionButton status="playing" onClick={() => console.log("Playing")} />
+          <AudioActionButton status="error" onClick={() => console.log("Error")} />
         </div>
       </ComponentCard>
     </div>

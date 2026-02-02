@@ -367,14 +367,18 @@ export function LayoutComponents() {
       >
         <div className="max-w-md">
           <BlogPostCard
-            title="Getting Started with AI Components"
-            excerpt="Learn how to build beautiful AI-powered interfaces with our comprehensive component library."
-            author={{ name: "Jane Doe", avatar: "https://i.pravatar.cc/150?u=jane" }}
-            date={new Date(Date.now() - 86400000 * 3)}
-            category="Tutorial"
-            readTime="5 min read"
-            image="https://picsum.photos/400/200"
-            href="#"
+            post={{
+              id: "1",
+              title: "Getting Started with AI Components",
+              slug: "getting-started",
+              excerpt: "Learn how to build beautiful AI-powered interfaces with our comprehensive component library.",
+              author: { name: "Jane Doe", avatar: "https://i.pravatar.cc/150?u=jane" },
+              publishedAt: new Date(Date.now() - 86400000 * 3),
+              readingTime: 5,
+              tags: ["Tutorial", "React"],
+              coverImage: "https://picsum.photos/400/200",
+            }}
+            onRead={(post) => console.log("Read:", post.title)}
           />
         </div>
       </ComponentCard>
@@ -384,11 +388,16 @@ export function LayoutComponents() {
         description="Header section for full blog articles"
       >
         <BlogArticleHeader
-          title="Building Modern AI Interfaces"
-          author={{ name: "John Smith", avatar: "https://i.pravatar.cc/150?u=john", role: "Senior Developer" }}
-          date={new Date()}
-          category="Development"
-          readTime="8 min read"
+          post={{
+            id: "2",
+            title: "Building Modern AI Interfaces",
+            slug: "modern-ai-interfaces",
+            excerpt: "A deep dive into creating user-friendly AI applications.",
+            author: { name: "John Smith", avatar: "https://i.pravatar.cc/150?u=john", role: "Senior Developer" },
+            publishedAt: new Date(),
+            readingTime: 8,
+            tags: ["Development", "AI"],
+          }}
         />
       </ComponentCard>
 
@@ -398,14 +407,14 @@ export function LayoutComponents() {
       >
         <BlogCategories
           categories={[
-            { name: "All", count: 42 },
-            { name: "Tutorial", count: 15 },
-            { name: "Development", count: 12 },
-            { name: "Design", count: 8 },
-            { name: "News", count: 7 },
+            { id: "all", name: "All", slug: "all", count: 42 },
+            { id: "tutorial", name: "Tutorial", slug: "tutorial", count: 15 },
+            { id: "dev", name: "Development", slug: "development", count: 12 },
+            { id: "design", name: "Design", slug: "design", count: 8 },
+            { id: "news", name: "News", slug: "news", count: 7 },
           ]}
-          activeCategory="All"
-          onSelect={(cat) => console.log("Selected:", cat)}
+          selectedId="all"
+          onSelect={(cat) => console.log("Selected:", cat.name)}
         />
       </ComponentCard>
 
@@ -430,38 +439,40 @@ export function LayoutComponents() {
           <DocSidebar
             sections={[
               {
+                id: "getting-started",
                 title: "Getting Started",
-                items: [
-                  { label: "Introduction", href: "#", active: true },
-                  { label: "Installation", href: "#" },
-                  { label: "Quick Start", href: "#" },
+                pages: [
+                  { id: "intro", title: "Introduction", slug: "introduction" },
+                  { id: "install", title: "Installation", slug: "installation" },
+                  { id: "quick", title: "Quick Start", slug: "quick-start" },
                 ],
               },
               {
+                id: "components",
                 title: "Components",
-                items: [
-                  { label: "Chat", href: "#" },
-                  { label: "Input", href: "#" },
-                  { label: "Agent", href: "#" },
+                pages: [
+                  { id: "chat", title: "Chat", slug: "chat" },
+                  { id: "input", title: "Input", slug: "input" },
+                  { id: "agent", title: "Agent", slug: "agent" },
                 ],
               },
             ]}
+            currentPage="introduction"
+            onNavigate={(slug) => console.log("Navigate:", slug)}
           />
         </div>
       </ComponentCard>
 
       <ComponentCard
         title="Doc Header"
-        description="Documentation page header with breadcrumbs"
+        description="Documentation page header"
       >
         <DocHeader
           title="Installation"
           description="Get started by installing the AI Components library in your project."
-          breadcrumbs={[
-            { label: "Docs", href: "#" },
-            { label: "Getting Started", href: "#" },
-            { label: "Installation" },
-          ]}
+          category="Getting Started"
+          tags={["setup", "npm"]}
+          lastUpdated={new Date()}
         />
       </ComponentCard>
 
@@ -500,9 +511,9 @@ export function LayoutComponents() {
         <QuickLinks
           title="Resources"
           links={[
-            { label: "GitHub Repository", href: "#", icon: <Code className="h-4 w-4" /> },
-            { label: "Documentation", href: "#", icon: <BookOpen className="h-4 w-4" /> },
-            { label: "Report Issue", href: "#", icon: <AlertCircle className="h-4 w-4" /> },
+            { title: "GitHub Repository", href: "#", icon: <Code className="h-4 w-4" /> },
+            { title: "Documentation", href: "#", icon: <BookOpen className="h-4 w-4" /> },
+            { title: "Report Issue", href: "#", icon: <AlertCircle className="h-4 w-4" /> },
           ]}
         />
       </ComponentCard>

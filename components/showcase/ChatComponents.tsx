@@ -18,7 +18,7 @@ import { InlineCitation } from "@/components/ai/inline-citation";
 import { DraftEditor, DraftIndicator, DraftList } from "@/components/ai/message-draft";
 import { SystemMessage, DividerMessage, DateDivider, TypingIndicator, NotificationBubble, SystemBubble } from "@/components/ai/system-message";
 import { UnreadBadge, NewMessagesBanner, JumpToUnread, ConversationUnreadIndicator } from "@/components/ai/unread-indicator";
-import { Conversation, ConversationContent, MessageGroup, OpenInChat, ContextDisplay } from "@/components/ai/conversation";
+import { Conversation, ConversationContent, MessageGroup, OpenInChat, ContextDisplay, Message as ConversationMessage } from "@/components/ai/conversation";
 import { ComponentCard } from "./ComponentCard";
 
 export function ChatComponents() {
@@ -435,28 +435,25 @@ console.log(greeting);
       >
         <div className="h-[300px] border rounded-lg overflow-hidden">
           <Conversation>
-            <ConversationContent
-              messages={[
-                { id: "1", role: "user" as const, content: "Hello!" },
-                { id: "2", role: "assistant" as const, content: "Hi there! How can I help you today?" },
-              ]}
-            />
+            <ConversationContent>
+              <ConversationMessage from="user">Hello!</ConversationMessage>
+              <ConversationMessage from="assistant">Hi there! How can I help you today?</ConversationMessage>
+            </ConversationContent>
           </Conversation>
         </div>
       </ComponentCard>
 
       <ComponentCard
         title="Message Group"
-        description="Grouped consecutive messages from same sender"
+        description="Collapsible message section"
       >
-        <MessageGroup
-          sender="assistant"
-          messages={[
-            { id: "1", content: "Here's what I found:" },
-            { id: "2", content: "First, you'll need to install the dependencies." },
-            { id: "3", content: "Then, run the build command." },
-          ]}
-        />
+        <MessageGroup title="Assistant Responses" count={3}>
+          <div className="space-y-2 text-sm">
+            <p>Here&apos;s what I found:</p>
+            <p>First, you&apos;ll need to install the dependencies.</p>
+            <p>Then, run the build command.</p>
+          </div>
+        </MessageGroup>
       </ComponentCard>
 
       <ComponentCard
@@ -464,22 +461,23 @@ console.log(greeting);
         description="Button to continue conversation in full chat"
       >
         <OpenInChat
-          conversationId="conv-123"
           onClick={() => console.log("Open in chat")}
+          label="Continue in Chat"
         />
       </ComponentCard>
 
       <ComponentCard
         title="Context Display"
-        description="Show conversation context and metadata"
+        description="Show token usage and context window"
       >
         <ContextDisplay
-          context={{
-            model: "gpt-4",
-            tokens: 1234,
-            temperature: 0.7,
-            systemPrompt: "You are a helpful assistant.",
-          }}
+          tokens={1234}
+          maxTokens={4096}
+          items={[
+            { label: "System prompt", tokens: 200 },
+            { label: "Conversation", tokens: 834 },
+            { label: "Response buffer", tokens: 200 },
+          ]}
         />
       </ComponentCard>
     </div>

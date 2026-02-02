@@ -79,29 +79,29 @@ export function DashboardsComponents() {
               <QuickStatCard
                 title="Total Messages"
                 value="12,847"
-                change="+12%"
-                changeType="positive"
+                change={12}
+                changeLabel="vs last week"
                 icon={<MessageSquare className="h-4 w-4" />}
               />
               <QuickStatCard
                 title="Active Users"
                 value="1,234"
-                change="+8%"
-                changeType="positive"
+                change={8}
+                changeLabel="vs last week"
                 icon={<Users className="h-4 w-4" />}
               />
               <QuickStatCard
                 title="Token Usage"
                 value="2.4M"
-                change="-5%"
-                changeType="negative"
+                change={-5}
+                changeLabel="vs last week"
                 icon={<Zap className="h-4 w-4" />}
               />
               <QuickStatCard
                 title="Response Time"
                 value="1.2s"
-                change="0%"
-                changeType="neutral"
+                change={0}
+                changeLabel="no change"
                 icon={<Activity className="h-4 w-4" />}
               />
             </div>
@@ -120,37 +120,41 @@ export function DashboardsComponents() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <DashboardWidgetCard
-                title="Recent Activity"
-                description="Latest actions in your workspace"
-                actions={[
-                  { label: "View All", onClick: () => console.log("View all") },
-                ]}
-              >
-                <div className="space-y-2">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm">
-                      <div className="h-2 w-2 rounded-full bg-green-500" />
-                      <span>Activity item {i}</span>
+                widget={{
+                  id: "activity",
+                  title: "Recent Activity",
+                  type: "activity",
+                  size: "md",
+                  render: () => (
+                    <div className="space-y-2">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="flex items-center gap-2 text-sm">
+                          <div className="h-2 w-2 rounded-full bg-green-500" />
+                          <span>Activity item {i}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </DashboardWidgetCard>
+                  ),
+                }}
+              />
               <DashboardWidgetCard
-                title="Quick Actions"
-                description="Frequently used operations"
-              >
-                <div className="flex flex-wrap gap-2">
-                  <button className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md">
-                    New Chat
-                  </button>
-                  <button className="px-3 py-1.5 text-sm bg-muted rounded-md">
-                    View Reports
-                  </button>
-                  <button className="px-3 py-1.5 text-sm bg-muted rounded-md">
-                    Settings
-                  </button>
-                </div>
-              </DashboardWidgetCard>
+                widget={{
+                  id: "actions",
+                  title: "Quick Actions",
+                  type: "custom",
+                  size: "md",
+                  render: () => (
+                    <div className="flex flex-wrap gap-2">
+                      <button className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md">
+                        New Chat
+                      </button>
+                      <button className="px-3 py-1.5 text-sm bg-muted rounded-md">
+                        View Reports
+                      </button>
+                    </div>
+                  ),
+                }}
+              />
             </div>
           </ComponentCard>
 
@@ -160,12 +164,12 @@ export function DashboardsComponents() {
           >
             <DashboardLayoutSelector
               layouts={[
-                { id: "grid", label: "Grid View", icon: "grid" },
-                { id: "list", label: "List View", icon: "list" },
-                { id: "compact", label: "Compact", icon: "compact" },
+                { id: "grid", name: "Grid View", columns: 3, widgets: [] },
+                { id: "list", name: "List View", columns: 1, widgets: [] },
+                { id: "compact", name: "Compact", columns: 4, widgets: [] },
               ]}
-              activeLayout="grid"
-              onLayoutChange={(layout) => console.log("Layout:", layout)}
+              currentLayout="grid"
+              onLayoutChange={(layoutId) => console.log("Layout:", layoutId)}
             />
           </ComponentCard>
         </div>
