@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ChatGPTClone, ClaudeClone, PerplexityClone } from "@/components/ai/chat-clones";
 import { ManusChat, EmergentChat, LoveableChat } from "@/components/ai/chat-clones-extended";
+import { TwitterPost, LinkedInPost, RedditPost } from "@/components/ai/social-posts";
 import { ComponentCard } from "./ComponentCard";
 
 // Consolidated Platform Clones - each with distinct UX patterns
@@ -87,6 +88,81 @@ export function CloneComponents() {
         description="Friendly creative interface with reactions"
       >
         <LoveableChat className="h-[600px]" />
+      </ComponentCard>
+
+      {/* Social Media Clones */}
+      <ComponentCard
+        title="Twitter/X Post"
+        description="Social post with engagement actions"
+      >
+        <div className="max-w-xl mx-auto border rounded-lg overflow-hidden">
+          <TwitterPost
+            author={{
+              name: "AI Developer",
+              handle: "aidev",
+              verified: true,
+            }}
+            content="Just shipped a new feature using AI-assisted coding! 🚀 The future of development is here. What tools are you using to boost your productivity?"
+            timestamp={new Date(Date.now() - 3600000)}
+            stats={{
+              replies: 42,
+              retweets: 156,
+              likes: 892,
+              views: 15400,
+            }}
+            onLike={() => console.log("Liked")}
+            onRetweet={() => console.log("Retweeted")}
+            onReply={() => console.log("Reply")}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="LinkedIn Post"
+        description="Professional network post format"
+      >
+        <div className="max-w-xl mx-auto">
+          <LinkedInPost
+            author={{
+              name: "Sarah Johnson",
+              title: "VP of Engineering at TechCorp",
+              connection: "2nd",
+            }}
+            content="Excited to share that our team has successfully implemented AI-powered code review! 🎉\n\nKey learnings from this journey:\n\n1. Start small - pilot with one team first\n2. Focus on developer experience\n3. Measure impact with real metrics\n4. Iterate based on feedback\n\nThe results: 40% faster reviews, 25% fewer bugs in production.\n\nWhat's your experience with AI in the development workflow?"
+            timestamp={new Date(Date.now() - 7200000)}
+            stats={{
+              reactions: 234,
+              comments: 45,
+              reposts: 12,
+            }}
+            reactions={[
+              { type: "👍", count: 180 },
+              { type: "🎉", count: 42 },
+              { type: "💡", count: 12 },
+            ]}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Reddit Post"
+        description="Community discussion format"
+      >
+        <div className="max-w-xl mx-auto">
+          <RedditPost
+            subreddit="programming"
+            author="curious_dev"
+            title="What's the best approach for implementing AI chat in a React app?"
+            content="I'm building a chat application and want to add AI capabilities. Looking for recommendations on libraries, best practices, and architecture patterns. Has anyone here implemented something similar?"
+            timestamp={new Date(Date.now() - 14400000)}
+            stats={{
+              upvotes: 342,
+              comments: 89,
+              awards: ["🥇", "💡"],
+            }}
+            flair="Discussion"
+          />
+        </div>
       </ComponentCard>
     </div>
   );

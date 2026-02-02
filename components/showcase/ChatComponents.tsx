@@ -9,7 +9,7 @@ import { MarkdownRenderer } from "@/components/ai/markdown-renderer";
 import { ChatSidebar, ConversationList } from "@/components/ai/chat-sidebar";
 import { ChatContainer, ChatHeader, ChatMessages } from "@/components/ai/chat-container";
 import { ExpandableChat, ChatWidget } from "@/components/ai/expandable-chat";
-import { Bubble, BubbleGroup } from "@/components/ai/bubble";
+import { Bubble, BubbleList } from "@/components/ai/bubble";
 import { Welcome, QuickPrompts, Suggestions } from "@/components/ai/welcome";
 import { ConversationsList, ConversationItem } from "@/components/ai/conversations-list";
 import { MessageActionsBar, InlineActions } from "@/components/ai/message-actions";
@@ -222,10 +222,12 @@ console.log(greeting);
         title="Chat Bubbles"
         description="Alternative bubble-style messages"
       >
-        <BubbleGroup>
-          <Bubble role="user" content="What's the weather like?" />
-          <Bubble role="assistant" content="I'd be happy to help with weather information! However, I don't have access to real-time weather data. You can check weather.com or your local weather service." typing={false} />
-        </BubbleGroup>
+        <BubbleList
+          items={[
+            { key: "1", role: "user", content: "What's the weather like?" },
+            { key: "2", role: "ai", content: "I'd be happy to help with weather information! However, I don't have access to real-time weather data. You can check weather.com or your local weather service." },
+          ]}
+        />
       </ComponentCard>
 
       {/* Welcome & Prompts */}

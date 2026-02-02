@@ -2,6 +2,14 @@
 
 import * as React from "react";
 import { LiveCursor, CollaboratorAvatars, PresenceIndicator, CommentThread, CommentsPanel, VersionHistory, ShareDialog as CollaborationShareDialog } from "@/components/ai/collaboration";
+import {
+  ParticipantAvatar,
+  ParticipantsStack,
+  ParticipantsList,
+  MultiTypingIndicator,
+  PresenceIndicator as ParticipantPresence,
+  InviteParticipants,
+} from "@/components/ai/participants";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 
@@ -74,10 +82,115 @@ export function CollaborationComponents() {
         title="Share Dialog"
         description="Invite collaborators"
       >
-        <CollaborationShareDialog 
+        <CollaborationShareDialog
           onInvite={(email, role) => console.log("Invite:", email, role)}
           trigger={<Button variant="outline">Share</Button>}
         />
+      </ComponentCard>
+
+      {/* Participant Components */}
+      <ComponentCard
+        title="Participant Avatar"
+        description="Avatar with status indicator"
+      >
+        <div className="flex items-center gap-4">
+          <ParticipantAvatar
+            participant={{ id: "1", name: "Alice", status: "online" }}
+            size="lg"
+          />
+          <ParticipantAvatar
+            participant={{ id: "2", name: "Bob", status: "away" }}
+            size="md"
+          />
+          <ParticipantAvatar
+            participant={{ id: "3", name: "Charlie", status: "busy" }}
+            size="sm"
+          />
+          <ParticipantAvatar
+            participant={{ id: "4", name: "Diana", status: "offline" }}
+            size="md"
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Participants Stack"
+        description="Overlapping avatar group"
+      >
+        <ParticipantsStack
+          participants={[
+            { id: "1", name: "Alice", status: "online" },
+            { id: "2", name: "Bob", status: "online" },
+            { id: "3", name: "Charlie", status: "away" },
+            { id: "4", name: "Diana", status: "online" },
+            { id: "5", name: "Eve", status: "offline" },
+            { id: "6", name: "Frank", status: "online" },
+          ]}
+          max={4}
+          onShowAll={() => console.log("Show all")}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Participants List"
+        description="Full list with roles and actions"
+      >
+        <div className="max-w-sm">
+          <ParticipantsList
+            participants={[
+              { id: "1", name: "Alice Smith", role: "owner", status: "online", email: "alice@example.com" },
+              { id: "2", name: "Bob Jones", role: "admin", status: "online" },
+              { id: "3", name: "Charlie Brown", role: "member", status: "away", isTyping: true },
+              { id: "4", name: "Diana Prince", role: "viewer", status: "offline" },
+            ]}
+            currentUserId="1"
+            onInvite={() => console.log("Invite")}
+            onRemove={(p) => console.log("Remove:", p.name)}
+            onMessage={(p) => console.log("Message:", p.name)}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Multi Typing Indicator"
+        description="Show who is typing"
+      >
+        <div className="space-y-4">
+          <MultiTypingIndicator
+            participants={[{ id: "1", name: "Alice", status: "online" }]}
+          />
+          <MultiTypingIndicator
+            participants={[
+              { id: "1", name: "Alice", status: "online" },
+              { id: "2", name: "Bob", status: "online" },
+            ]}
+          />
+          <MultiTypingIndicator
+            participants={[
+              { id: "1", name: "Alice", status: "online" },
+              { id: "2", name: "Bob", status: "online" },
+              { id: "3", name: "Charlie", status: "online" },
+            ]}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Presence Counter"
+        description="Online user count"
+      >
+        <ParticipantPresence online={8} total={12} />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Invite Participants"
+        description="Email invitation form"
+      >
+        <div className="max-w-sm">
+          <InviteParticipants
+            onInvite={(emails) => console.log("Inviting:", emails)}
+          />
+        </div>
       </ComponentCard>
     </div>
   );

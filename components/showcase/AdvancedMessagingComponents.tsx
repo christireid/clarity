@@ -8,6 +8,12 @@ import { MentionInput, MentionList, MentionBadge } from "@/components/ai/mention
 import { QuickReplyBar } from "@/components/ai/quick-replies";
 import { ForwardDialog, ForwardPreview } from "@/components/ai/message-forwarding";
 import { MessageGroup, DateSeparator, UnreadSeparator } from "@/components/ai/message-grouping";
+import {
+  SchedulePicker,
+  ScheduledMessageCard,
+  ScheduledMessagesList,
+  ScheduleIndicator,
+} from "@/components/ai/scheduled-messages";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 
@@ -125,7 +131,7 @@ export function AdvancedMessagingComponents() {
       >
         <div className="space-y-4">
           <DateSeparator date={new Date("2024-01-01T10:00:00")} />
-          <MessageGroup 
+          <MessageGroup
             messages={[
               { id: "1", content: "Hello", role: "user", timestamp: new Date("2024-01-01T10:00:00") },
               { id: "2", content: "How are you?", role: "user", timestamp: new Date("2024-01-01T10:01:00") }
@@ -138,6 +144,91 @@ export function AdvancedMessagingComponents() {
           />
           <UnreadSeparator />
         </div>
+      </ComponentCard>
+
+      {/* Scheduled Messages */}
+      <ComponentCard
+        title="Schedule Picker"
+        description="Select date and time for scheduled send"
+      >
+        <SchedulePicker
+          onChange={(date) => console.log("Scheduled for:", date)}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Schedule Indicator"
+        description="Show when message is scheduled"
+      >
+        <ScheduleIndicator
+          scheduledFor={new Date(Date.now() + 3600000)}
+          onClear={() => console.log("Cleared")}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Scheduled Message Card"
+        description="Preview of a scheduled message"
+      >
+        <div className="max-w-md">
+          <ScheduledMessageCard
+            message={{
+              id: "1",
+              content: "Don't forget the meeting tomorrow at 10am!",
+              scheduledFor: new Date(Date.now() + 86400000),
+              conversationId: "conv-1",
+              conversationName: "Team Chat",
+              status: "pending",
+              createdAt: new Date(),
+            }}
+            onEdit={(m) => console.log("Edit:", m)}
+            onDelete={(m) => console.log("Delete:", m)}
+            onSendNow={(m) => console.log("Send now:", m)}
+            onReschedule={(m, d) => console.log("Reschedule:", m, d)}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Scheduled Messages List"
+        description="All scheduled messages"
+      >
+        <ScheduledMessagesList
+          messages={[
+            {
+              id: "1",
+              content: "Weekly report reminder",
+              scheduledFor: new Date(Date.now() + 3600000),
+              conversationId: "conv-1",
+              conversationName: "#reports",
+              status: "pending",
+              createdAt: new Date(),
+            },
+            {
+              id: "2",
+              content: "Happy birthday!",
+              scheduledFor: new Date(Date.now() + 86400000),
+              conversationId: "conv-2",
+              conversationName: "Bob",
+              status: "pending",
+              createdAt: new Date(),
+            },
+            {
+              id: "3",
+              content: "Previous message",
+              scheduledFor: new Date(Date.now() - 3600000),
+              conversationId: "conv-1",
+              conversationName: "#general",
+              status: "sent",
+              createdAt: new Date(Date.now() - 7200000),
+            },
+          ]}
+          showPast
+          onEdit={(m) => console.log("Edit:", m)}
+          onDelete={(m) => console.log("Delete:", m)}
+          onSendNow={(m) => console.log("Send now:", m)}
+          onReschedule={(m, d) => console.log("Reschedule:", m, d)}
+        />
       </ComponentCard>
     </div>
   );

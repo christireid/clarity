@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { PromptManager, PromptChainBuilder, PromptVersionHistory, PromptTestingPanel, PromptLibrary, SystemPromptEditor, TokenCounter } from "@/components/ai/prompt-manager";
-import { Bookmarks, BookmarkCard, BookmarkList } from "@/components/ai/bookmarks";
+import { Bookmarks, BookmarkCard, BookmarksList } from "@/components/ai/bookmarks";
 import { Presets, PresetCard, PresetSelector } from "@/components/ai/presets";
 import { ComponentCard } from "./ComponentCard";
 
@@ -86,7 +86,7 @@ export function PromptToolingComponents() {
         title="Bookmarks"
         description="Save important prompts and responses"
       >
-        <BookmarkList
+        <BookmarksList
           bookmarks={[
             { id: "1", title: "API Design Pattern", content: "RESTful API best practices...", tags: ["api", "design"], createdAt: new Date() },
             { id: "2", title: "React Hook Pattern", content: "Custom hook for data fetching...", tags: ["react", "hooks"], createdAt: new Date(Date.now() - 86400000) },

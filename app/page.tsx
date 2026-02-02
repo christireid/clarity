@@ -28,7 +28,8 @@ import {
   Sun,
   Moon,
   Package,
-  ArrowRight
+  ArrowRight,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -63,6 +64,15 @@ import { AdvancedMessagingComponents } from "@/components/showcase/AdvancedMessa
 import { VoiceComponents } from "@/components/showcase/VoiceComponents";
 import { EffectsComponents } from "@/components/showcase/EffectsComponents";
 import { UIPatternsComponents } from "@/components/showcase/UIPatternsComponents";
+import { LayoutComponents } from "@/components/showcase/LayoutComponents";
+import { ThemeComponents } from "@/components/showcase/ThemeComponents";
+import { SpeechComponents } from "@/components/showcase/SpeechComponents";
+import { FeedbackComponents } from "@/components/showcase/FeedbackComponents";
+import { ThreadComponents } from "@/components/showcase/ThreadComponents";
+import { UtilityComponents } from "@/components/showcase/UtilityComponents";
+import { TranslationComponents } from "@/components/showcase/TranslationComponents";
+import { DashboardsComponents } from "@/components/showcase/DashboardsComponents";
+import { SearchComponents } from "@/components/showcase/SearchComponents";
 import { HeroSection } from "@/components/showcase/HeroSection";
 
 // Consolidated categories - each with distinct value, no overlaps
@@ -100,6 +110,16 @@ const componentCategories = [
   { id: "collaboration", label: "Collaboration", icon: Users, description: "Real-time cursors, comments" },
   { id: "auth", label: "Auth & Profile", icon: User, description: "Login, signup, profiles" },
   { id: "management", label: "Settings", icon: Settings, description: "App settings and config" },
+  // New categories
+  { id: "layout", label: "Layouts", icon: Boxes, description: "Page layouts and structures" },
+  { id: "theme", label: "Theming", icon: Sun, description: "Theme switching and customization" },
+  { id: "speech", label: "Speech", icon: Activity, description: "Voice input and text-to-speech" },
+  { id: "feedback", label: "Feedback", icon: MessageSquare, description: "Ratings, reviews, reports" },
+  { id: "threads", label: "Threads", icon: MessageSquare, description: "Thread management and lists" },
+  { id: "utility", label: "Utilities", icon: Keyboard, description: "Copy, paste, passwords" },
+  { id: "translation", label: "Translation", icon: FileText, description: "Language detection and i18n" },
+  { id: "dashboards", label: "Dashboards", icon: BarChart3, description: "Full-featured admin dashboards" },
+  { id: "search", label: "Web Search", icon: Search, description: "Search results and AI summaries" },
 ];
 
 export default function ComponentShowcase() {
@@ -142,6 +162,16 @@ export default function ComponentShowcase() {
       case "collaboration": return <CollaborationComponents />;
       case "auth": return <AuthComponents />;
       case "management": return <ManagementComponents />;
+      // New categories
+      case "layout": return <LayoutComponents />;
+      case "theme": return <ThemeComponents />;
+      case "speech": return <SpeechComponents />;
+      case "feedback": return <FeedbackComponents />;
+      case "threads": return <ThreadComponents />;
+      case "utility": return <UtilityComponents />;
+      case "translation": return <TranslationComponents />;
+      case "dashboards": return <DashboardsComponents />;
+      case "search": return <SearchComponents />;
       default: return <ChatComponents />;
     }
   };

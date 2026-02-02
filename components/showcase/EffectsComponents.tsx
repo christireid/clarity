@@ -10,6 +10,16 @@ import { Ripple, Magnetic, CardTilt, Gooey } from "@/components/ai/interactive-a
 import { FloatingElement, SpotlightCursor, ShimmerBorder } from "@/components/ai/advanced-animations";
 // Text Effects
 import { Typewriter, TextReveal, ScrambleText, AnimatedGradientText, NumberTicker } from "@/components/ai/text-animations";
+import {
+  TextShimmer,
+  TypingAnimation,
+  FadeInText,
+  GradientText,
+  StreamingText,
+  CharacterReveal,
+  CounterAnimation,
+} from "@/components/ai/text-effects";
+import { AuroraText, AuroraCard } from "@/components/ai/animated/aurora-background";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 
@@ -203,6 +213,116 @@ export function EffectsComponents() {
             <div className="text-4xl font-bold">
               <NumberTicker value={1234} />
             </div>
+          </ComponentCard>
+        </div>
+      </div>
+
+      {/* SECTION: Advanced Text Effects */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4 text-muted-foreground">Advanced Text Effects</h3>
+        <div className="space-y-8">
+          <ComponentCard
+            title="Text Shimmer"
+            description="Loading shimmer effect on text"
+          >
+            <TextShimmer text="Loading content..." className="text-2xl font-bold" />
+          </ComponentCard>
+
+          <ComponentCard
+            title="Typing Animation"
+            description="Character-by-character with cursor"
+          >
+            <TypingAnimation
+              text="Hello! I am typing this message..."
+              speed={50}
+              cursor
+              className="text-lg"
+            />
+          </ComponentCard>
+
+          <ComponentCard
+            title="Fade In Text"
+            description="Word-by-word fade in effect"
+          >
+            <FadeInText
+              text="Each word fades in one after another creating a smooth reveal effect"
+              wordDelay={150}
+              className="text-lg"
+            />
+          </ComponentCard>
+
+          <ComponentCard
+            title="Gradient Text"
+            description="Animated gradient color text"
+          >
+            <GradientText
+              text="Beautiful Gradient"
+              colors={["#3b82f6", "#8b5cf6", "#ec4899", "#3b82f6"]}
+              animated
+              className="text-4xl font-bold"
+            />
+          </ComponentCard>
+
+          <ComponentCard
+            title="Streaming Text"
+            description="AI-style streaming response"
+          >
+            <StreamingText
+              text="This simulates how AI models stream their responses in real-time, chunk by chunk."
+              speed={30}
+              chunkSize={3}
+              cursor
+              className="text-base"
+            />
+          </ComponentCard>
+
+          <ComponentCard
+            title="Character Reveal"
+            description="Characters animate in from different directions"
+          >
+            <div className="space-y-4">
+              <CharacterReveal text="Left to Right" direction="left" className="text-xl font-bold" />
+              <CharacterReveal text="From Center" direction="center" charDelay={50} className="text-xl font-bold" />
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Counter Animation"
+            description="Animated number counting"
+          >
+            <div className="flex gap-8 text-4xl font-bold">
+              <div>
+                <CounterAnimation from={0} to={1000} duration={2000} />
+                <span className="text-sm text-muted-foreground block">Users</span>
+              </div>
+              <div>
+                $<CounterAnimation from={0} to={99999} duration={2000} formatter={(v) => Math.round(v).toLocaleString()} />
+                <span className="text-sm text-muted-foreground block">Revenue</span>
+              </div>
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Aurora Text"
+            description="Text with aurora glow effect"
+          >
+            <AuroraText className="text-4xl font-bold">
+              Aurora Glow Text
+            </AuroraText>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Aurora Card"
+            description="Card with animated aurora border"
+          >
+            <AuroraCard className="max-w-md mx-auto">
+              <div className="p-6">
+                <h4 className="font-bold text-lg mb-2">Featured Content</h4>
+                <p className="text-muted-foreground text-sm">
+                  This card has an animated aurora border effect that smoothly cycles through colors.
+                </p>
+              </div>
+            </AuroraCard>
           </ComponentCard>
         </div>
       </div>

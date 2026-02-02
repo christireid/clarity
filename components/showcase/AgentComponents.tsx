@@ -9,7 +9,15 @@ import { HumanInLoopCard, ApprovalQueue, ApprovalRequest as ApprovalReq } from "
 import { ModelFallback, FallbackChain, ModelStatus } from "@/components/ai/model-fallback";
 import { ContextManager, ContextWindow, ContextItem } from "@/components/ai/context-management";
 import { RAGPanel, DocumentList, RetrievalResults } from "@/components/ai/rag";
-import { Confirmation, ConfirmationDialog } from "@/components/ai/confirmation";
+import { InlineConfirmation, ConfirmationDialog } from "@/components/ai/confirmation";
+import {
+  TaskStatusIcon,
+  TaskItem,
+  PlanDisplay,
+  CompactTaskList,
+  InlinePlan,
+  TaskInput,
+} from "@/components/ai/plan";
 import { ComponentCard } from "./ComponentCard";
 
 export function AgentComponents() {
@@ -190,17 +198,122 @@ export function AgentComponents() {
 
       {/* Confirmation Dialog */}
       <ComponentCard
-        title="Confirmation Dialog"
-        description="Confirm destructive actions"
+        title="Inline Confirmation"
+        description="Confirm destructive actions inline"
       >
-        <Confirmation
-          title="Delete Conversation"
-          description="Are you sure you want to delete this conversation? This action cannot be undone."
+        <InlineConfirmation
+          message="Are you sure you want to delete this?"
           confirmLabel="Delete"
-          variant="destructive"
           onConfirm={() => console.log("Confirmed")}
           onCancel={() => console.log("Cancelled")}
         />
+      </ComponentCard>
+
+      {/* Plan Components */}
+      <ComponentCard
+        title="Task Status Icons"
+        description="Visual status indicators"
+      >
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <TaskStatusIcon status="pending" />
+            <span className="text-sm">Pending</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <TaskStatusIcon status="in-progress" />
+            <span className="text-sm">In Progress</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <TaskStatusIcon status="in-progress" progress={60} />
+            <span className="text-sm">60%</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <TaskStatusIcon status="completed" />
+            <span className="text-sm">Completed</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <TaskStatusIcon status="failed" />
+            <span className="text-sm">Failed</span>
+          </div>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Plan Display"
+        description="Full plan with tasks and progress"
+      >
+        <PlanDisplay
+          plan={{
+            id: "plan-1",
+            title: "Implement User Authentication",
+            description: "Add secure login and registration flow",
+            status: "executing",
+            createdAt: new Date(),
+            tasks: [
+              { id: "1", title: "Create user schema", status: "completed", duration: "2m" },
+              { id: "2", title: "Implement registration endpoint", status: "completed", duration: "5m" },
+              { id: "3", title: "Add password hashing", status: "in-progress", progress: 60 },
+              { id: "4", title: "Create login endpoint", status: "pending" },
+              { id: "5", title: "Add JWT tokens", status: "pending" },
+              { id: "6", title: "Write tests", status: "pending" },
+            ],
+          }}
+          editable
+          onTaskStatusChange={(id, status) => console.log("Status:", id, status)}
+          onAddTask={() => console.log("Add task")}
+          onPause={() => console.log("Pause")}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Compact Task List"
+        description="Minimal task display"
+      >
+        <div className="max-w-sm">
+          <CompactTaskList
+            tasks={[
+              { id: "1", title: "Research competitors", status: "completed" },
+              { id: "2", title: "Draft proposal", status: "in-progress" },
+              { id: "3", title: "Review with team", status: "pending" },
+              { id: "4", title: "Submit final version", status: "pending" },
+            ]}
+            onTaskClick={(task) => console.log("Clicked:", task)}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Inline Plan"
+        description="Collapsible plan in messages"
+      >
+        <div className="max-w-md space-y-2">
+          <InlinePlan
+            plan={{
+              id: "plan-1",
+              title: "Code Review Tasks",
+              status: "executing",
+              createdAt: new Date(),
+              tasks: [
+                { id: "1", title: "Check code style", status: "completed" },
+                { id: "2", title: "Review logic", status: "in-progress" },
+                { id: "3", title: "Test edge cases", status: "pending" },
+              ],
+            }}
+            expanded
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Task Input"
+        description="Add new tasks inline"
+      >
+        <div className="max-w-sm border rounded-lg p-4">
+          <TaskInput
+            onAdd={(title) => console.log("Added:", title)}
+            placeholder="Add a new task..."
+          />
+        </div>
       </ComponentCard>
     </div>
   );
