@@ -5,8 +5,10 @@ import { AgentTaskDashboard } from "@/components/ai/dashboards/agent-dashboard";
 import { TokenOptimizationDashboard } from "@/components/ai/dashboards/token-dashboard";
 import { PromptLibraryDashboard } from "@/components/ai/dashboards/prompt-dashboard";
 import { ConversationHistoryDashboard } from "@/components/ai/dashboards/context-dashboard";
+import { DashboardContainer, DashboardWidgetCard, QuickStatCard, AIDashboardStats, DashboardLayoutSelector } from "@/components/ai/dashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bot, Zap, FileText, History } from "lucide-react";
+import { ComponentCard } from "./ComponentCard";
+import { Bot, Zap, FileText, History, MessageSquare, Users, Activity } from "lucide-react";
 
 export function DashboardsComponents() {
   return (
@@ -63,6 +65,111 @@ export function DashboardsComponents() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Dashboard Building Blocks */}
+      <div className="pt-8 border-t">
+        <h3 className="text-xl font-bold mb-6">Dashboard Building Blocks</h3>
+
+        <div className="space-y-8">
+          <ComponentCard
+            title="Quick Stat Cards"
+            description="Compact stat displays for key metrics"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <QuickStatCard
+                title="Total Messages"
+                value="12,847"
+                change="+12%"
+                changeType="positive"
+                icon={<MessageSquare className="h-4 w-4" />}
+              />
+              <QuickStatCard
+                title="Active Users"
+                value="1,234"
+                change="+8%"
+                changeType="positive"
+                icon={<Users className="h-4 w-4" />}
+              />
+              <QuickStatCard
+                title="Token Usage"
+                value="2.4M"
+                change="-5%"
+                changeType="negative"
+                icon={<Zap className="h-4 w-4" />}
+              />
+              <QuickStatCard
+                title="Response Time"
+                value="1.2s"
+                change="0%"
+                changeType="neutral"
+                icon={<Activity className="h-4 w-4" />}
+              />
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
+            title="AI Dashboard Stats"
+            description="Pre-built AI metrics overview"
+          >
+            <AIDashboardStats />
+          </ComponentCard>
+
+          <ComponentCard
+            title="Dashboard Widget Card"
+            description="Customizable dashboard widget container"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <DashboardWidgetCard
+                title="Recent Activity"
+                description="Latest actions in your workspace"
+                actions={[
+                  { label: "View All", onClick: () => console.log("View all") },
+                ]}
+              >
+                <div className="space-y-2">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm">
+                      <div className="h-2 w-2 rounded-full bg-green-500" />
+                      <span>Activity item {i}</span>
+                    </div>
+                  ))}
+                </div>
+              </DashboardWidgetCard>
+              <DashboardWidgetCard
+                title="Quick Actions"
+                description="Frequently used operations"
+              >
+                <div className="flex flex-wrap gap-2">
+                  <button className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md">
+                    New Chat
+                  </button>
+                  <button className="px-3 py-1.5 text-sm bg-muted rounded-md">
+                    View Reports
+                  </button>
+                  <button className="px-3 py-1.5 text-sm bg-muted rounded-md">
+                    Settings
+                  </button>
+                </div>
+              </DashboardWidgetCard>
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Dashboard Layout Selector"
+            description="Switch between different dashboard layouts"
+          >
+            <DashboardLayoutSelector
+              layouts={[
+                { id: "grid", label: "Grid View", icon: "grid" },
+                { id: "list", label: "List View", icon: "list" },
+                { id: "compact", label: "Compact", icon: "compact" },
+              ]}
+              activeLayout="grid"
+              onLayoutChange={(layout) => console.log("Layout:", layout)}
+            />
+          </ComponentCard>
+        </div>
+      </div>
     </div>
   );
 }

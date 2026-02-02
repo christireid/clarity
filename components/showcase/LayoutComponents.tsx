@@ -22,9 +22,11 @@ import {
   ToolbarPanel,
 } from "@/components/ai/panels";
 import { SimpleFooter, FullFooter, MinimalFooter, BuiltWithFooter } from "@/components/ai/footer";
+import { BlogPostCard, BlogPostList, BlogArticleHeader, BlogCategories, AuthorCard } from "@/components/ai/blog";
+import { DocSidebar, DocHeader, CodeExample, APIReference, Callout, QuickLinks } from "@/components/ai/docs";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
-import { Settings, FileText, Code, Sparkles } from "lucide-react";
+import { Settings, FileText, Code, Sparkles, BookOpen, AlertCircle } from "lucide-react";
 
 export function LayoutComponents() {
   return (
@@ -354,6 +356,153 @@ export function LayoutComponents() {
             { name: "Next.js", href: "https://nextjs.org" },
             { name: "Tailwind CSS", href: "https://tailwindcss.com" },
             { name: "Radix UI", href: "https://radix-ui.com" },
+          ]}
+        />
+      </ComponentCard>
+
+      {/* Blog Components */}
+      <ComponentCard
+        title="Blog Post Card"
+        description="Card layout for blog post previews"
+      >
+        <div className="max-w-md">
+          <BlogPostCard
+            title="Getting Started with AI Components"
+            excerpt="Learn how to build beautiful AI-powered interfaces with our comprehensive component library."
+            author={{ name: "Jane Doe", avatar: "https://i.pravatar.cc/150?u=jane" }}
+            date={new Date(Date.now() - 86400000 * 3)}
+            category="Tutorial"
+            readTime="5 min read"
+            image="https://picsum.photos/400/200"
+            href="#"
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Blog Article Header"
+        description="Header section for full blog articles"
+      >
+        <BlogArticleHeader
+          title="Building Modern AI Interfaces"
+          author={{ name: "John Smith", avatar: "https://i.pravatar.cc/150?u=john", role: "Senior Developer" }}
+          date={new Date()}
+          category="Development"
+          readTime="8 min read"
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Blog Categories"
+        description="Category filter navigation"
+      >
+        <BlogCategories
+          categories={[
+            { name: "All", count: 42 },
+            { name: "Tutorial", count: 15 },
+            { name: "Development", count: 12 },
+            { name: "Design", count: 8 },
+            { name: "News", count: 7 },
+          ]}
+          activeCategory="All"
+          onSelect={(cat) => console.log("Selected:", cat)}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Author Card"
+        description="Author profile display"
+      >
+        <div className="max-w-md">
+          <AuthorCard
+            author={{ name: "Sarah Johnson", avatar: "https://i.pravatar.cc/150?u=sarah" }}
+            bio="Full-stack developer with a passion for building AI-powered applications and sharing knowledge with the community."
+          />
+        </div>
+      </ComponentCard>
+
+      {/* Documentation Components */}
+      <ComponentCard
+        title="Doc Sidebar"
+        description="Documentation navigation sidebar"
+      >
+        <div className="h-[300px] border rounded-lg overflow-hidden">
+          <DocSidebar
+            sections={[
+              {
+                title: "Getting Started",
+                items: [
+                  { label: "Introduction", href: "#", active: true },
+                  { label: "Installation", href: "#" },
+                  { label: "Quick Start", href: "#" },
+                ],
+              },
+              {
+                title: "Components",
+                items: [
+                  { label: "Chat", href: "#" },
+                  { label: "Input", href: "#" },
+                  { label: "Agent", href: "#" },
+                ],
+              },
+            ]}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Doc Header"
+        description="Documentation page header with breadcrumbs"
+      >
+        <DocHeader
+          title="Installation"
+          description="Get started by installing the AI Components library in your project."
+          breadcrumbs={[
+            { label: "Docs", href: "#" },
+            { label: "Getting Started", href: "#" },
+            { label: "Installation" },
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Code Example"
+        description="Syntax-highlighted code snippets"
+      >
+        <CodeExample
+          title="Basic Usage"
+          language="tsx"
+          code={`import { Chat } from '@ai/components';\n\nfunction App() {\n  return <Chat model="gpt-4" />;\n}`}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Callout"
+        description="Highlighted information boxes"
+      >
+        <div className="space-y-4">
+          <Callout type="info" title="Note">
+            This is an informational callout for helpful tips.
+          </Callout>
+          <Callout type="warning" title="Warning">
+            Be careful with this configuration in production.
+          </Callout>
+          <Callout type="error" title="Error">
+            This action cannot be undone.
+          </Callout>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Quick Links"
+        description="Navigation shortcuts"
+      >
+        <QuickLinks
+          title="Resources"
+          links={[
+            { label: "GitHub Repository", href: "#", icon: <Code className="h-4 w-4" /> },
+            { label: "Documentation", href: "#", icon: <BookOpen className="h-4 w-4" /> },
+            { label: "Report Issue", href: "#", icon: <AlertCircle className="h-4 w-4" /> },
           ]}
         />
       </ComponentCard>

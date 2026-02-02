@@ -8,6 +8,7 @@ import { Terminal as TerminalComponent } from "@/components/ai/terminal";
 import { FileTree } from "@/components/ai/file-tree";
 import { WebPreview } from "@/components/ai/web-preview";
 import { CodeEditor, MultiFileEditor, InlineEditor } from "@/components/ai/code-editor";
+import { MDXHeading1, MDXHeading2, MDXParagraph, MDXBlockquote, MDXCodeBlock, MDXCallout, MDXTabs, MDXAccordion, MDXCard, MDXCardGrid, MDXSteps, MDXStep, MDXComponents } from "@/components/ai/mdx";
 import { ComponentCard } from "./ComponentCard";
 
 export function CodeComponents() {
@@ -168,6 +169,113 @@ export default Button;`;
           language="javascript"
           onChange={(code) => console.log("Changed:", code)}
         />
+      </ComponentCard>
+
+      {/* MDX Components */}
+      <ComponentCard
+        title="MDX Headings"
+        description="Styled markdown headings with anchor links"
+      >
+        <div className="space-y-4">
+          <MDXHeading1 id="intro">Introduction</MDXHeading1>
+          <MDXHeading2 id="getting-started">Getting Started</MDXHeading2>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="MDX Paragraph & Quote"
+        description="Styled text blocks for documentation"
+      >
+        <div className="space-y-4">
+          <MDXParagraph>
+            This is a standard paragraph with proper typography for documentation. It supports **bold** and *italic* text naturally.
+          </MDXParagraph>
+          <MDXBlockquote>
+            This is a highlighted blockquote for important information or quotes from documentation.
+          </MDXBlockquote>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="MDX Code Block"
+        description="Syntax-highlighted code with copy functionality"
+      >
+        <MDXCodeBlock language="typescript" filename="example.ts">
+{`interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+function createUser(data: Partial<User>): User {
+  return { id: crypto.randomUUID(), ...data } as User;
+}`}
+        </MDXCodeBlock>
+      </ComponentCard>
+
+      <ComponentCard
+        title="MDX Callouts"
+        description="Highlighted information boxes"
+      >
+        <div className="space-y-4">
+          <MDXCallout type="note" title="Note">
+            This is a helpful tip for users reading the documentation.
+          </MDXCallout>
+          <MDXCallout type="warning" title="Warning">
+            Be careful with this configuration option.
+          </MDXCallout>
+          <MDXCallout type="danger" title="Danger">
+            This action cannot be undone!
+          </MDXCallout>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="MDX Tabs"
+        description="Tabbed content for multiple code examples"
+      >
+        <MDXTabs
+          items={[
+            { label: "npm", value: "npm", content: <code>npm install @ai/components</code> },
+            { label: "yarn", value: "yarn", content: <code>yarn add @ai/components</code> },
+            { label: "pnpm", value: "pnpm", content: <code>pnpm add @ai/components</code> },
+          ]}
+          defaultValue="npm"
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="MDX Steps"
+        description="Step-by-step instructions"
+      >
+        <MDXSteps>
+          <MDXStep title="Install Dependencies" number={1}>
+            Run the install command to add the package to your project.
+          </MDXStep>
+          <MDXStep title="Configure Your App" number={2}>
+            Add the provider to your root component.
+          </MDXStep>
+          <MDXStep title="Start Building" number={3}>
+            Import and use the components in your application.
+          </MDXStep>
+        </MDXSteps>
+      </ComponentCard>
+
+      <ComponentCard
+        title="MDX Card Grid"
+        description="Grid layout for feature cards"
+      >
+        <MDXCardGrid columns={3}>
+          <MDXCard title="Fast" icon="⚡">
+            Optimized for performance with lazy loading and code splitting.
+          </MDXCard>
+          <MDXCard title="Accessible" icon="♿">
+            Built with accessibility in mind, following WCAG guidelines.
+          </MDXCard>
+          <MDXCard title="Customizable" icon="🎨">
+            Fully themeable with CSS variables and Tailwind support.
+          </MDXCard>
+        </MDXCardGrid>
       </ComponentCard>
     </div>
   );

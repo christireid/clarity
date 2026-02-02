@@ -18,6 +18,7 @@ import { InlineCitation } from "@/components/ai/inline-citation";
 import { DraftEditor, DraftIndicator, DraftList } from "@/components/ai/message-draft";
 import { SystemMessage, DividerMessage, DateDivider, TypingIndicator, NotificationBubble, SystemBubble } from "@/components/ai/system-message";
 import { UnreadBadge, NewMessagesBanner, JumpToUnread, ConversationUnreadIndicator } from "@/components/ai/unread-indicator";
+import { Conversation, ConversationContent, MessageGroup, OpenInChat, ContextDisplay } from "@/components/ai/conversation";
 import { ComponentCard } from "./ComponentCard";
 
 export function ChatComponents() {
@@ -425,6 +426,61 @@ console.log(greeting);
             timestamp={new Date(Date.now() - 3600000)}
           />
         </div>
+      </ComponentCard>
+
+      {/* Conversation Components */}
+      <ComponentCard
+        title="Conversation Container"
+        description="Full conversation wrapper with context"
+      >
+        <div className="h-[300px] border rounded-lg overflow-hidden">
+          <Conversation>
+            <ConversationContent
+              messages={[
+                { id: "1", role: "user" as const, content: "Hello!" },
+                { id: "2", role: "assistant" as const, content: "Hi there! How can I help you today?" },
+              ]}
+            />
+          </Conversation>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Message Group"
+        description="Grouped consecutive messages from same sender"
+      >
+        <MessageGroup
+          sender="assistant"
+          messages={[
+            { id: "1", content: "Here's what I found:" },
+            { id: "2", content: "First, you'll need to install the dependencies." },
+            { id: "3", content: "Then, run the build command." },
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Open in Chat"
+        description="Button to continue conversation in full chat"
+      >
+        <OpenInChat
+          conversationId="conv-123"
+          onClick={() => console.log("Open in chat")}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Context Display"
+        description="Show conversation context and metadata"
+      >
+        <ContextDisplay
+          context={{
+            model: "gpt-4",
+            tokens: 1234,
+            temperature: 0.7,
+            systemPrompt: "You are a helpful assistant.",
+          }}
+        />
       </ComponentCard>
     </div>
   );
