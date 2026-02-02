@@ -6,16 +6,16 @@ import { ThinkingIndicator, ThinkingSteps } from "@/components/ai/thinking-indic
 import { ToolCall } from "@/components/ai/tool-call";
 import { CitationChip, SourceCard } from "@/components/ai/citation-chip";
 import { MarkdownRenderer } from "@/components/ai/markdown-renderer";
-import { ChatSidebar, ConversationList } from "@/components/ai/chat-sidebar";
-import { ChatContainer, ChatHeader, ChatMessages } from "@/components/ai/chat-container";
+import { ChatSidebar } from "@/components/ai/chat-sidebar";
+import { ChatContainer, ChatMessages } from "@/components/ai/chat-container";
 import { ExpandableChat, ChatWidget } from "@/components/ai/expandable-chat";
 import { Bubble, BubbleList } from "@/components/ai/bubble";
-import { Welcome, QuickPrompts, Suggestions } from "@/components/ai/welcome";
-import { ConversationsList, ConversationItem } from "@/components/ai/conversations-list";
-import { MessageActionsBar, InlineActions } from "@/components/ai/message-actions";
+import { Welcome, QuickPrompts } from "@/components/ai/welcome";
+import { ConversationsList } from "@/components/ai/conversations-list";
+import { MessageActionsBar } from "@/components/ai/message-actions";
 import { MessageEditor } from "@/components/ai/message-editor";
 import { InlineCitation } from "@/components/ai/inline-citation";
-import { DraftEditor, DraftIndicator, DraftList } from "@/components/ai/message-draft";
+import { DraftIndicator } from "@/components/ai/message-draft";
 import { SystemMessage, DividerMessage, DateDivider, TypingIndicator, NotificationBubble, SystemBubble } from "@/components/ai/system-message";
 import { UnreadBadge, NewMessagesBanner, JumpToUnread, ConversationUnreadIndicator } from "@/components/ai/unread-indicator";
 import { Conversation, ConversationContent, MessageGroup, OpenInChat, ContextDisplay, Message as ConversationMessage } from "@/components/ai/conversation";
@@ -192,13 +192,13 @@ console.log(greeting);
         <div className="h-[400px] border rounded-lg overflow-hidden">
           <ChatSidebar
             conversations={[
-              { id: "1", title: "React Best Practices", lastMessage: "Thanks for the help!", timestamp: new Date(), unread: 0 },
-              { id: "2", title: "API Design Discussion", lastMessage: "Let me explain...", timestamp: new Date(Date.now() - 3600000), unread: 2 },
-              { id: "3", title: "Code Review", lastMessage: "Looks good!", timestamp: new Date(Date.now() - 86400000), unread: 0 },
+              { id: "1", title: "React Best Practices", preview: "Thanks for the help!", createdAt: new Date(), updatedAt: new Date() },
+              { id: "2", title: "API Design Discussion", preview: "Let me explain...", createdAt: new Date(Date.now() - 3600000), updatedAt: new Date(Date.now() - 3600000) },
+              { id: "3", title: "Code Review", preview: "Looks good!", createdAt: new Date(Date.now() - 86400000), updatedAt: new Date(Date.now() - 86400000) },
             ]}
-            selectedId="1"
-            onSelect={(id) => console.log("Selected:", id)}
-            onNewChat={() => console.log("New chat")}
+            activeConversationId="1"
+            onConversationSelect={(id: string) => console.log("Selected:", id)}
+            onNewConversation={() => console.log("New chat")}
           />
         </div>
       </ComponentCard>
@@ -209,14 +209,14 @@ console.log(greeting);
         description="Filterable conversation list"
       >
         <ConversationsList
-          conversations={[
-            { id: "1", title: "Project Planning", preview: "Let's discuss the timeline", date: new Date(), pinned: true },
-            { id: "2", title: "Bug Investigation", preview: "I found the issue", date: new Date(Date.now() - 7200000) },
-            { id: "3", title: "Feature Request", preview: "Can you add...", date: new Date(Date.now() - 86400000) },
+          items={[
+            { key: "1", label: "Project Planning", preview: "Let's discuss the timeline", timestamp: new Date(), pinned: true },
+            { key: "2", label: "Bug Investigation", preview: "I found the issue", timestamp: new Date(Date.now() - 7200000) },
+            { key: "3", label: "Feature Request", preview: "Can you add...", timestamp: new Date(Date.now() - 86400000) },
           ]}
-          onSelect={(id) => console.log("Selected:", id)}
-          onDelete={(id) => console.log("Delete:", id)}
-          onPin={(id) => console.log("Pin:", id)}
+          onActiveChange={(key) => console.log("Selected:", key)}
+          onDelete={(key) => console.log("Delete:", key)}
+          onPin={(key) => console.log("Pin:", key)}
         />
       </ComponentCard>
 
@@ -240,15 +240,16 @@ console.log(greeting);
       >
         <Welcome
           title="How can I help you today?"
-          subtitle="I'm an AI assistant ready to help with coding, writing, and more."
+          description="I'm an AI assistant ready to help with coding, writing, and more."
         >
           <QuickPrompts
             prompts={[
-              { label: "Write code", icon: "code", onClick: () => {} },
-              { label: "Explain concept", icon: "lightbulb", onClick: () => {} },
-              { label: "Debug issue", icon: "bug", onClick: () => {} },
-              { label: "Generate ideas", icon: "sparkles", onClick: () => {} },
+              { label: "Write code", prompt: "Write code to " },
+              { label: "Explain concept", prompt: "Explain " },
+              { label: "Debug issue", prompt: "Help me debug " },
+              { label: "Generate ideas", prompt: "Help me brainstorm ideas for " },
             ]}
+            onSelect={(prompt) => console.log("Selected prompt:", prompt)}
           />
         </Welcome>
       </ComponentCard>
@@ -259,12 +260,14 @@ console.log(greeting);
         description="Action toolbar for messages"
       >
         <MessageActionsBar
+          messageId="msg-123"
+          content="This is the message content that can be copied."
           onCopy={() => console.log("Copy")}
-          onEdit={() => console.log("Edit")}
-          onDelete={() => console.log("Delete")}
-          onRegenerate={() => console.log("Regenerate")}
-          onShare={() => console.log("Share")}
-          onBookmark={() => console.log("Bookmark")}
+          onEdit={(id) => console.log("Edit:", id)}
+          onDelete={(id) => console.log("Delete:", id)}
+          onRegenerate={(id) => console.log("Regenerate:", id)}
+          onShare={(id) => console.log("Share:", id)}
+          onBookmark={(id) => console.log("Bookmark:", id)}
         />
       </ComponentCard>
 
@@ -286,22 +289,27 @@ console.log(greeting);
         description="Hover to preview sources"
       >
         <p className="text-foreground">
-          The React framework was developed by Facebook <InlineCitation source={{ title: "React History", url: "https://react.dev/blog", snippet: "React was first deployed on Facebook's News Feed in 2011" }} /> and has since become one of the most popular frontend libraries <InlineCitation source={{ title: "Stack Overflow Survey", url: "https://stackoverflow.com/survey", snippet: "React remains the most wanted web framework" }} />.
+          The React framework was developed by Facebook{" "}
+          <InlineCitation
+            citation={{ id: "1", number: 1, title: "React History", url: "https://react.dev/blog", snippet: "React was first deployed on Facebook's News Feed in 2011" }}
+          />{" "}
+          and has since become one of the most popular frontend libraries{" "}
+          <InlineCitation
+            citation={{ id: "2", number: 2, title: "Stack Overflow Survey", url: "https://stackoverflow.com/survey", snippet: "React remains the most wanted web framework" }}
+          />.
         </p>
       </ComponentCard>
 
       {/* Message Draft */}
       <ComponentCard
-        title="Message Draft"
-        description="Save and restore message drafts"
+        title="Draft Indicator"
+        description="Show draft status"
       >
-        <div className="space-y-4">
-          <DraftIndicator hasDraft onRestore={() => console.log("Restore draft")} onDiscard={() => console.log("Discard draft")} />
-          <MessageDraft
-            content="This is a saved draft message that the user was working on..."
-            savedAt={new Date(Date.now() - 300000)}
-          />
-        </div>
+        <DraftIndicator
+          hasDraft
+          lastSaved={new Date(Date.now() - 300000)}
+          onClick={() => console.log("Draft clicked")}
+        />
       </ComponentCard>
 
       {/* Expandable Chat Widget */}
@@ -314,7 +322,6 @@ console.log(greeting);
             <ChatWidget
               title="Support Chat"
               subtitle="We typically reply in a few minutes"
-              onSend={(message) => console.log("Send:", message)}
             />
           </div>
         </div>
@@ -346,7 +353,7 @@ console.log(greeting);
         description="Visual separators for chat sections"
       >
         <div className="space-y-4">
-          <DividerMessage text="New messages below" />
+          <DividerMessage content="New messages below" />
           <DateDivider date={new Date()} />
         </div>
       </ComponentCard>
@@ -357,7 +364,7 @@ console.log(greeting);
       >
         <div className="space-y-4">
           <TypingIndicator />
-          <TypingIndicator label="Assistant is thinking" />
+          <TypingIndicator users={["Assistant"]} showNames />
         </div>
       </ComponentCard>
 
@@ -367,9 +374,9 @@ console.log(greeting);
       >
         <div className="space-y-4">
           <NotificationBubble
-            icon="info"
+            type="info"
             title="New feature available"
-            description="Check out the new voice input capability"
+            content="Check out the new voice input capability"
           />
           <SystemBubble
             content="The model has been updated to the latest version."
@@ -404,7 +411,8 @@ console.log(greeting);
         description="Quick navigation to unread"
       >
         <JumpToUnread
-          count={12}
+          hasUnread
+          unreadCount={12}
           onClick={() => console.log("Jump")}
         />
       </ComponentCard>
@@ -415,15 +423,15 @@ console.log(greeting);
       >
         <div className="space-y-2 max-w-xs">
           <ConversationUnreadIndicator
-            title="Team Discussion"
-            preview="Hey, did you see the new..."
             unreadCount={3}
-            timestamp={new Date()}
+            lastMessagePreview="Hey, did you see the new..."
+            lastMessageTime={new Date()}
+            onClick={() => console.log("Click")}
           />
           <ConversationUnreadIndicator
-            title="Project Updates"
-            preview="The deployment is..."
-            timestamp={new Date(Date.now() - 3600000)}
+            unreadCount={1}
+            lastMessagePreview="The deployment is..."
+            lastMessageTime={new Date(Date.now() - 3600000)}
           />
         </div>
       </ComponentCard>

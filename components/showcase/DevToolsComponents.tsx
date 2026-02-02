@@ -6,8 +6,8 @@ import { CommitCard, PullRequestCard, BranchSelector } from "@/components/ai/git
 import { EnvVariablesManager } from "@/components/ai/env-variables";
 import { ErrorPage, NotFoundPage, ServerErrorPage } from "@/components/ai/error-pages";
 import { ErrorBoundary, ErrorFallback } from "@/components/ai/error-boundary";
-import { DebugPanel, DebugLog, DebugInspector } from "@/components/ai/trace-viewer";
-import { SnippetManager, SnippetCard, SnippetEditor } from "@/components/ai/snippet-manager";
+import { DebugPanel, TraceViewer } from "@/components/ai/trace-viewer";
+import { SnippetManager, QuickSnippet } from "@/components/ai/snippet-manager";
 import { BrowserFrame, URLBar, DevToolsPanel } from "@/components/ai/web-browser";
 import { PluginManager, PluginCard } from "@/components/ai/plugin-manager";
 import { MCPManager, MCPServerCard } from "@/components/ai/mcp-manager";
@@ -186,13 +186,13 @@ export function DevToolsComponents() {
 
       {/* Web Browser Preview */}
       <ComponentCard
-        title="Web Browser"
+        title="Web Browser Frame"
         description="In-app browser preview"
       >
         <div className="h-[300px] border rounded-lg overflow-hidden">
-          <WebBrowser
+          <BrowserFrame
             url="https://example.com"
-            onNavigate={(url) => console.log("Navigate:", url)}
+            onUrlChange={(url: string) => console.log("Navigate:", url)}
             onRefresh={() => console.log("Refresh")}
           />
         </div>

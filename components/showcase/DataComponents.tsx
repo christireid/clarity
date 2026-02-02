@@ -3,11 +3,11 @@
 import * as React from "react";
 import { DataTable, type Column } from "@/components/ai/data-table";
 import { StatCard, BarChartCard, LineChartCard, TokenUsage, RadialProgress, BenchmarkChart, PieChartCard, AreaChartCard } from "@/components/ai/charts";
-import { Filters, FilterBar, FilterChip } from "@/components/ai/filters";
+import { FilterBar, FilterChip, FilterPanel, SearchWithFilters, QuickFilterTabs } from "@/components/ai/filters";
 import { SchemaDisplay, JSONSchemaViewer, DatabaseSchema } from "@/components/ai/schema-display";
 import { SortableList, SortableItem } from "@/components/ai/sortable-list";
 import { StatCard as StatCardDisplay, StatsGrid, BenchmarkDisplay } from "@/components/ai/stats-display";
-import { TableOfContents, TOCItem } from "@/components/ai/table-of-contents";
+import { TableOfContents, FloatingTOC, ProgressTOC } from "@/components/ai/table-of-contents";
 import { ComponentCard } from "./ComponentCard";
 
 export function DataComponents() {
@@ -143,16 +143,19 @@ export function DataComponents() {
       {/* Filter Bar */}
       <ComponentCard
         title="Filter Bar"
-        description="Filter and search data"
+        description="Active filter display"
       >
         <FilterBar
           filters={[
-            { id: "status", label: "Status", options: ["Active", "Completed", "Paused"] },
-            { id: "model", label: "Model", options: ["GPT-4", "Claude", "Gemini"] },
-            { id: "date", label: "Date", type: "date" },
+            { groupId: "status", value: "Active" },
+            { groupId: "model", value: "GPT-4" },
           ]}
-          onFilterChange={(filters) => console.log("Filters:", filters)}
-          onSearch={(query) => console.log("Search:", query)}
+          groups={[
+            { id: "status", label: "Status", options: [{ value: "Active", label: "Active" }, { value: "Completed", label: "Completed" }] },
+            { id: "model", label: "Model", options: [{ value: "GPT-4", label: "GPT-4" }, { value: "Claude", label: "Claude" }] },
+          ]}
+          onRemove={(groupId) => console.log("Remove:", groupId)}
+          onClearAll={() => console.log("Clear all")}
         />
       </ComponentCard>
 
@@ -187,27 +190,41 @@ export function DataComponents() {
         />
       </ComponentCard>
 
-      {/* JSON Viewer */}
+      {/* JSON Schema Viewer */}
       <ComponentCard
-        title="JSON Viewer"
-        description="Interactive JSON display"
+        title="JSON Schema Viewer"
+        description="Interactive JSON schema display"
       >
-        <JSONViewer
-          data={{
-            user: {
-              id: "123",
-              name: "John Doe",
-              settings: {
-                theme: "dark",
-                notifications: true,
+        <JSONSchemaViewer
+          schema={{
+            type: "object",
+            properties: {
+              user: {
+                type: "object",
+                properties: {
+                  id: { type: "string" },
+                  name: { type: "string" },
+                  settings: {
+                    type: "object",
+                    properties: {
+                      theme: { type: "string", enum: ["light", "dark"] },
+                      notifications: { type: "boolean" },
+                    },
+                  },
+                },
+              },
+              messages: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    id: { type: "string" },
+                    content: { type: "string" },
+                  },
+                },
               },
             },
-            messages: [
-              { id: "1", content: "Hello" },
-              { id: "2", content: "World" },
-            ],
           }}
-          collapsed={1}
         />
       </ComponentCard>
 
@@ -232,12 +249,15 @@ export function DataComponents() {
         title="Stats Grid"
         description="Display multiple stats"
       >
-        <StatGrid>
-          <StatRow label="Total Users" value="12,345" change="+5.2%" />
-          <StatRow label="Active Sessions" value="1,234" change="+12%" />
-          <StatRow label="API Calls" value="89,012" change="-2.1%" />
-          <StatRow label="Error Rate" value="0.12%" change="-8%" />
-        </StatGrid>
+        <StatsGrid
+          stats={[
+            { label: "Total Users", value: "12,345", change: 5.2 },
+            { label: "Active Sessions", value: "1,234", change: 12 },
+            { label: "API Calls", value: "89,012", change: -2.1 },
+            { label: "Error Rate", value: "0.12%", change: -8 },
+          ]}
+          columns={4}
+        />
       </ComponentCard>
 
       {/* Table of Contents */}

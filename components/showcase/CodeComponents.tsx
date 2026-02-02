@@ -44,7 +44,7 @@ export default Button;`;
           filename="Button.tsx"
           showLineNumbers
           highlightLines={[4, 5, 6]}
-          onCopy={() => console.log("Copied")}
+          showCopy
         />
       </ComponentCard>
 
@@ -54,11 +54,9 @@ export default Button;`;
       >
         <Sandbox
           title="React Component"
+          code={sampleCode}
+          language="tsx"
           status="success"
-          files={[
-            { name: "App.tsx", content: sampleCode, language: "tsx" },
-            { name: "styles.css", content: ".btn { padding: 8px 16px; }", language: "css" },
-          ]}
           output="Component rendered successfully"
         />
       </ComponentCard>
@@ -71,8 +69,7 @@ export default Button;`;
           oldCode={oldCode}
           newCode={newCode}
           language="typescript"
-          oldTitle="Before"
-          newTitle="After"
+          filename="greet.ts"
         />
       </ComponentCard>
 
@@ -101,18 +98,19 @@ export default Button;`;
             {
               id: "1",
               name: "src",
+              path: "/src",
               type: "directory",
               children: [
-                { id: "2", name: "components", type: "directory", children: [
-                  { id: "3", name: "Button.tsx", type: "file" },
-                  { id: "4", name: "Card.tsx", type: "file" },
+                { id: "2", name: "components", path: "/src/components", type: "directory", children: [
+                  { id: "3", name: "Button.tsx", path: "/src/components/Button.tsx", type: "file" },
+                  { id: "4", name: "Card.tsx", path: "/src/components/Card.tsx", type: "file" },
                 ]},
-                { id: "5", name: "App.tsx", type: "file" },
-                { id: "6", name: "index.tsx", type: "file" },
+                { id: "5", name: "App.tsx", path: "/src/App.tsx", type: "file" },
+                { id: "6", name: "index.tsx", path: "/src/index.tsx", type: "file" },
               ],
             },
-            { id: "7", name: "package.json", type: "file" },
-            { id: "8", name: "tsconfig.json", type: "file" },
+            { id: "7", name: "package.json", path: "/package.json", type: "file" },
+            { id: "8", name: "tsconfig.json", path: "/tsconfig.json", type: "file" },
           ]}
           onSelect={(file) => console.log("Selected:", file)}
         />

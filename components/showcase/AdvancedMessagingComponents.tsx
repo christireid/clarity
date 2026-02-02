@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { ThreadReply, ThreadView, ReplyInput } from "@/components/ai/thread-replies";
+import { ThreadView, InlineThread, ThreadMessageItem, ReplyPreview, QuotedMessage } from "@/components/ai/thread-replies";
 import { PinnedMessage, PinnedMessagesList, PinnedMessageBanner } from "@/components/ai/pinned-messages";
 import { SearchBar, SearchResultsList, HighlightedText } from "@/components/ai/search-messages";
-import { MentionInput, MentionList, MentionBadge } from "@/components/ai/mentions";
+import { MentionInput, MentionChip, MentionBadge, MentionedText } from "@/components/ai/mentions";
 import { QuickReplyBar } from "@/components/ai/quick-replies";
-import { ForwardDialog, ForwardPreview } from "@/components/ai/message-forwarding";
+import { ForwardButton, ForwardedMessageCard } from "@/components/ai/message-forwarding";
 import { MessageGroup, DateSeparator, UnreadSeparator } from "@/components/ai/message-grouping";
 import {
   SchedulePicker,
@@ -17,6 +17,21 @@ import {
 import { MessageArchive, ArchivedMessageViewer } from "@/components/ai/message-archive";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
+
+function SearchDemo() {
+  const [value, setValue] = React.useState("");
+  return (
+    <div className="space-y-4">
+      <SearchBar
+        value={value}
+        onChange={setValue}
+        onSearch={(q) => console.log("Search:", q)}
+        placeholder="Search messages..."
+      />
+      <HighlightedText text="This is a search result example." query="search" />
+    </div>
+  );
+}
 
 export function AdvancedMessagingComponents() {
   return (
@@ -60,14 +75,16 @@ export function AdvancedMessagingComponents() {
         title="Pinned Messages"
         description="Important messages pinned to top"
       >
-        <PinnedMessageBanner 
-          message={{ 
-            id: "1", 
-            content: "Please read the guidelines before posting.", 
-            author: { id: "admin", name: "Admin" }, 
-            timestamp: new Date() 
+        <PinnedMessageBanner
+          message={{
+            id: "1",
+            content: "Please read the guidelines before posting.",
+            author: { id: "admin", name: "Admin" },
+            pinnedAt: new Date(),
+            pinnedBy: "Admin",
+            messageTimestamp: new Date(),
           }}
-          onUnpin={() => {}}
+          onUnpin={(id) => console.log("Unpin:", id)}
         />
       </ComponentCard>
 
@@ -75,19 +92,23 @@ export function AdvancedMessagingComponents() {
         title="Search Messages"
         description="Find content within chat"
       >
-        <div className="space-y-4">
-          <SearchBar onSearch={(q) => console.log("Search:", q)} />
-          <HighlightedText text="This is a search result example." query="search" />
-        </div>
+        <SearchDemo />
       </ComponentCard>
 
       <ComponentCard
         title="Mentions"
-        description="Tagging users"
+        description="Tagging users and showing mention badges"
       >
-        <div className="flex gap-2">
-          <MentionBadge name="Alice" />
-          <MentionBadge name="Bob" />
+        <div className="space-y-4">
+          <div className="flex gap-2">
+            <MentionChip mention={{ type: "user", id: "1", name: "Alice", displayText: "@Alice" }} />
+            <MentionChip mention={{ type: "user", id: "2", name: "Bob", displayText: "@Bob" }} />
+            <MentionChip mention={{ type: "channel", id: "3", name: "general", displayText: "#general" }} />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Unread mentions:</span>
+            <MentionBadge count={5} />
+          </div>
         </div>
       </ComponentCard>
 
@@ -110,19 +131,19 @@ export function AdvancedMessagingComponents() {
         title="Message Forwarding"
         description="Share messages with others"
       >
-        <ForwardDialog 
-          message={{ 
-            id: "1", 
-            content: "Check this out!", 
-            author: { id: "alice", name: "Alice" }, 
-            timestamp: new Date() 
+        <ForwardButton
+          message={{
+            id: "1",
+            content: "Check this out!",
+            author: { name: "Alice" },
+            timestamp: new Date()
           }}
           targets={[
             { id: "1", type: "user", name: "Bob", description: "Team member" },
             { id: "2", type: "channel", name: "#general", description: "General discussion" },
-            { id: "3", type: "user", name: "Charlie", description: "Project lead" }
+            { id: "3", type: "conversation", name: "Project Chat", description: "Project lead and team" }
           ]}
-          trigger={<Button variant="outline">Forward</Button>}
+          onForward={(targetIds, note) => console.log("Forward to:", targetIds, note)}
         />
       </ComponentCard>
 
@@ -245,27 +266,30 @@ export function AdvancedMessagingComponents() {
                 title: "React Performance Discussion",
                 messageCount: 24,
                 archivedAt: new Date(Date.now() - 86400000 * 7),
-                participants: ["Alice", "Bob"],
+                lastMessageAt: new Date(Date.now() - 86400000 * 8),
+                preview: "Let me explain the optimization...",
               },
               {
                 id: "conv-2",
                 title: "API Design Review",
                 messageCount: 18,
                 archivedAt: new Date(Date.now() - 86400000 * 14),
-                participants: ["Charlie", "Diana"],
+                lastMessageAt: new Date(Date.now() - 86400000 * 15),
+                preview: "The endpoint structure looks good...",
               },
               {
                 id: "conv-3",
                 title: "Bug Investigation",
                 messageCount: 42,
                 archivedAt: new Date(Date.now() - 86400000 * 30),
-                participants: ["Eve"],
+                lastMessageAt: new Date(Date.now() - 86400000 * 31),
+                preview: "Found the root cause...",
               },
             ]}
-            onConversationSelect={(id) => console.log("Select:", id)}
-            onRestore={(id) => console.log("Restore:", id)}
-            onDelete={(id) => console.log("Delete:", id)}
-            onExport={(id) => console.log("Export:", id)}
+            onView={(id) => console.log("View:", id)}
+            onRestore={(ids) => console.log("Restore:", ids)}
+            onDelete={(ids) => console.log("Delete:", ids)}
+            onExport={(ids) => console.log("Export:", ids)}
           />
         </div>
       </ComponentCard>
@@ -275,13 +299,13 @@ export function AdvancedMessagingComponents() {
         description="View messages in archived conversation"
       >
         <ArchivedMessageViewer
+          title="React Performance Discussion"
           messages={[
-            { id: "1", role: "user", content: "How do we optimize this query?", timestamp: new Date(Date.now() - 86400000) },
-            { id: "2", role: "assistant", content: "There are several approaches we can take...", timestamp: new Date(Date.now() - 86400000 + 60000) },
-            { id: "3", role: "user", content: "Can you show me an example?", timestamp: new Date(Date.now() - 86400000 + 120000) },
+            { id: "1", conversationId: "conv-1", conversationTitle: "React Performance Discussion", role: "user", content: "How do we optimize this query?", timestamp: new Date(Date.now() - 86400000) },
+            { id: "2", conversationId: "conv-1", conversationTitle: "React Performance Discussion", role: "assistant", content: "There are several approaches we can take...", timestamp: new Date(Date.now() - 86400000 + 60000) },
+            { id: "3", conversationId: "conv-1", conversationTitle: "React Performance Discussion", role: "user", content: "Can you show me an example?", timestamp: new Date(Date.now() - 86400000 + 120000) },
           ]}
-          onCopy={(id) => console.log("Copy:", id)}
-          onRestore={(id) => console.log("Restore:", id)}
+          onClose={() => console.log("Close")}
         />
       </ComponentCard>
     </div>

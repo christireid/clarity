@@ -2,21 +2,18 @@
 
 import * as React from "react";
 import { AgentStatus, SubAgentCard, HumanInTheLoop, TaskOrchestrator } from "@/components/ai/agent";
-import { ChainOfThought, ReasoningStep, ThinkingProcess } from "@/components/ai/chain-of-thought";
-import { Subgraphs, SubgraphNode, SubgraphConnection } from "@/components/ai/subgraphs";
-import { Persona, PersonaSelector, PersonaCard } from "@/components/ai/persona";
-import { HumanInLoopCard, ApprovalQueue, ApprovalRequest as ApprovalReq } from "@/components/ai/human-in-loop";
-import { ModelFallback, FallbackChain, ModelStatus } from "@/components/ai/model-fallback";
-import { ContextWindowManager, ContextSourceCard, ContextInjectionPanel } from "@/components/ai/context-management";
-import { RetrievalResults, KnowledgeBaseList, ChunkDisplay } from "@/components/ai/rag";
-import { InlineConfirmation, ConfirmationDialog } from "@/components/ai/confirmation";
+import { ChainOfThought, ReasoningSummary } from "@/components/ai/chain-of-thought";
+import { SubgraphSummary } from "@/components/ai/subgraphs";
+import { PersonaSelector } from "@/components/ai/persona";
+import { ApprovalQueue, InterventionButton, FeedbackCollector } from "@/components/ai/human-in-loop";
+import { FallbackChain, ModelHealthBadge } from "@/components/ai/model-fallback";
+import { ContextWindowManager } from "@/components/ai/context-management";
+import { RetrievalResults, ChunkDisplay } from "@/components/ai/rag";
 import {
   TaskStatusIcon,
   TaskItem,
   PlanDisplay,
   CompactTaskList,
-  InlinePlan,
-  TaskInput,
 } from "@/components/ai/plan";
 import { ComponentCard } from "./ComponentCard";
 
@@ -30,16 +27,18 @@ export function AgentComponents() {
         <div className="space-y-4">
           <AgentStatus
             name="Research Agent"
-            status="running"
-            currentTask="Analyzing documents"
-            progress={65}
-            stepsCompleted={3}
-            totalSteps={5}
+            status="working"
+            message="Analyzing documents..."
           />
           <AgentStatus
             name="Code Assistant"
             status="idle"
-            description="Ready to help with coding tasks"
+            message="Ready to help"
+          />
+          <AgentStatus
+            name="Data Agent"
+            status="completed"
+            message="Task finished"
           />
         </div>
       </ComponentCard>
@@ -53,8 +52,7 @@ export function AgentComponents() {
             name="Data Analyzer"
             status="completed"
             task="Process CSV data"
-            result="Found 1,234 records"
-            duration={2500}
+            description="Analyzed 1,234 records"
           />
           <SubAgentCard
             name="Web Scraper"
@@ -72,11 +70,12 @@ export function AgentComponents() {
         <HumanInTheLoop
           title="Confirm Database Update"
           description="The agent wants to update 150 records in the users table."
-          action="UPDATE users SET status = 'active' WHERE last_login > '2024-01-01'"
-          type="warning"
-          onApprove={() => console.log("Approved")}
+          options={[
+            { label: "Approve", value: "approve", description: "Allow the update" },
+            { label: "Approve with review", value: "review", description: "Run in dry-run mode first" },
+          ]}
+          onApprove={(value) => console.log("Approved:", value)}
           onReject={() => console.log("Rejected")}
-          onModify={(modified) => console.log("Modified:", modified)}
         />
       </ComponentCard>
 
@@ -90,9 +89,9 @@ export function AgentComponents() {
             { id: "2", name: "Analysis", status: "running", agent: "Data Agent", progress: 60 },
             { id: "3", name: "Report", status: "pending", agent: "Writer Agent" },
           ]}
-          onPause={(id) => console.log("Pause:", id)}
-          onResume={(id) => console.log("Resume:", id)}
-          onCancel={(id) => console.log("Cancel:", id)}
+          onPause={() => console.log("Pause")}
+          onResume={() => console.log("Resume")}
+          onCancel={() => console.log("Cancel")}
         />
       </ComponentCard>
 
@@ -103,10 +102,25 @@ export function AgentComponents() {
       >
         <ChainOfThought
           steps={[
-            { id: "1", title: "Understanding the problem", content: "Analyzing the user's request to identify key requirements", status: "complete" },
-            { id: "2", title: "Gathering information", content: "Searching for relevant data and context", status: "complete" },
-            { id: "3", title: "Formulating approach", content: "Determining the best solution strategy", status: "active" },
-            { id: "4", title: "Generating response", content: "Creating a comprehensive answer", status: "pending" },
+            { id: "1", type: "analysis", title: "Understanding the problem", content: "Analyzing the user's request to identify key requirements", status: "complete" },
+            { id: "2", type: "search", title: "Gathering information", content: "Searching for relevant data and context", status: "complete" },
+            { id: "3", type: "reasoning", title: "Formulating approach", content: "Determining the best solution strategy", status: "thinking" },
+            { id: "4", type: "conclusion", title: "Generating response", content: "Creating a comprehensive answer", status: "pending" },
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Reasoning Summary"
+        description="Collapsed view of AI reasoning"
+      >
+        <ReasoningSummary
+          reasoning="Analyzed 5 sources and identified 3 key patterns to solve the problem. The approach combines pattern matching with contextual understanding."
+          conclusion="The recommended solution addresses all requirements while maintaining simplicity."
+          confidence={0.92}
+          sources={[
+            { title: "Primary source", relevance: 0.95 },
+            { title: "Supporting evidence", relevance: 0.85 },
           ]}
         />
       </ComponentCard>
@@ -118,13 +132,13 @@ export function AgentComponents() {
       >
         <PersonaSelector
           personas={[
-            { id: "1", name: "Professional", description: "Formal and precise communication", avatar: "👔", tone: "formal" },
-            { id: "2", name: "Friendly", description: "Casual and approachable style", avatar: "😊", tone: "casual" },
-            { id: "3", name: "Technical", description: "Detailed and technical explanations", avatar: "🔧", tone: "technical" },
-            { id: "4", name: "Creative", description: "Imaginative and expressive", avatar: "🎨", tone: "creative" },
+            { id: "1", name: "Professional", description: "Formal and precise", avatar: "briefcase", type: "assistant", style: "professional" },
+            { id: "2", name: "Friendly", description: "Casual and approachable", avatar: "smile", type: "assistant", style: "friendly" },
+            { id: "3", name: "Technical", description: "Detailed explanations", avatar: "code", type: "assistant", style: "technical" },
+            { id: "4", name: "Creative", description: "Imaginative and expressive", avatar: "palette", type: "assistant", style: "creative" },
           ]}
           selectedId="1"
-          onSelect={(id) => console.log("Selected persona:", id)}
+          onSelect={(persona) => console.log("Selected:", persona.name)}
         />
       </ComponentCard>
 
@@ -135,77 +149,114 @@ export function AgentComponents() {
       >
         <ApprovalQueue
           requests={[
-            { id: "1", title: "Delete user records", description: "Remove 50 inactive accounts", risk: "high", createdAt: new Date() },
-            { id: "2", title: "Send notification", description: "Notify 1000 users about update", risk: "medium", createdAt: new Date(Date.now() - 3600000) },
-            { id: "3", title: "Update config", description: "Change rate limit settings", risk: "low", createdAt: new Date(Date.now() - 7200000) },
+            { id: "1", type: "action", title: "Delete user records", description: "Remove 50 inactive accounts", status: "pending", createdAt: new Date() },
+            { id: "2", type: "decision", title: "Send notification", description: "Notify 1000 users", status: "pending", createdAt: new Date(Date.now() - 3600000) },
+            { id: "3", type: "tool_call", title: "Update config", description: "Change rate limits", status: "pending", createdAt: new Date(Date.now() - 7200000) },
           ]}
           onApprove={(id) => console.log("Approve:", id)}
-          onReject={(id) => console.log("Reject:", id)}
-          onViewDetails={(id) => console.log("View:", id)}
+          onReject={(id, reason) => console.log("Reject:", id, reason)}
         />
       </ComponentCard>
 
+      <ComponentCard
+        title="Intervention Button"
+        description="Pause or intervene in agent execution"
+      >
+        <div className="flex gap-4">
+          <InterventionButton onIntervene={() => console.log("Intervene")} />
+          <InterventionButton onIntervene={() => console.log("Resume")} isPaused />
+        </div>
+      </ComponentCard>
+
       {/* Model Fallback */}
+      <ComponentCard
+        title="Model Health"
+        description="Monitor model availability"
+      >
+        <div className="flex gap-4">
+          <div className="flex items-center gap-2">
+            <ModelHealthBadge status="healthy" />
+            <span className="text-sm">GPT-4</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <ModelHealthBadge status="degraded" />
+            <span className="text-sm">Claude 3</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <ModelHealthBadge status="down" />
+            <span className="text-sm">Gemini Pro</span>
+          </div>
+        </div>
+      </ComponentCard>
+
       <ComponentCard
         title="Model Fallback Chain"
         description="Automatic model failover"
       >
         <FallbackChain
           models={[
-            { id: "1", name: "GPT-4", status: "primary", latency: 450, available: true },
-            { id: "2", name: "Claude 3", status: "fallback", latency: 380, available: true },
-            { id: "3", name: "Gemini Pro", status: "fallback", latency: 320, available: false },
+            { id: "1", name: "GPT-4", provider: "openai", priority: 1, enabled: true, maxRetries: 3, timeout: 30000, healthStatus: "healthy" },
+            { id: "2", name: "Claude 3", provider: "anthropic", priority: 2, enabled: true, maxRetries: 3, timeout: 30000, healthStatus: "healthy" },
+            { id: "3", name: "Gemini Pro", provider: "google", priority: 3, enabled: true, maxRetries: 3, timeout: 30000, healthStatus: "down" },
           ]}
-          currentModel="1"
-          onModelSelect={(id) => console.log("Select model:", id)}
+          currentAttempt={0}
         />
       </ComponentCard>
 
       {/* Context Management */}
       <ComponentCard
-        title="Context Window"
+        title="Context Window Manager"
         description="Manage conversation context"
       >
-        <ContextWindow
-          items={[
-            { id: "1", type: "system", content: "You are a helpful assistant", tokens: 15 },
-            { id: "2", type: "user", content: "What is React?", tokens: 5 },
-            { id: "3", type: "assistant", content: "React is a JavaScript library for building user interfaces...", tokens: 120 },
-            { id: "4", type: "user", content: "How do hooks work?", tokens: 6 },
-          ]}
-          maxTokens={4096}
-          usedTokens={146}
-          onRemove={(id) => console.log("Remove:", id)}
-          onClear={() => console.log("Clear context")}
+        <ContextWindowManager
+          window={{
+            id: "window-1",
+            name: "Main Context",
+            sources: [
+              { id: "1", type: "document", name: "API Documentation", tokens: 1200, content: "REST API endpoints...", enabled: true, priority: 1 },
+              { id: "2", type: "conversation", name: "Previous Chat", tokens: 800, content: "Earlier discussion...", enabled: true, priority: 2 },
+              { id: "3", type: "code", name: "config.json", tokens: 150, content: "Configuration file...", enabled: true, priority: 3 },
+            ],
+            totalTokens: 2150,
+            maxTokens: 4096,
+            strategy: "priority",
+          }}
+          onSourcesChange={(sources) => console.log("Sources changed:", sources)}
         />
       </ComponentCard>
 
-      {/* RAG Panel */}
+      {/* RAG Retrieval */}
       <ComponentCard
-        title="RAG Retrieval"
+        title="RAG Retrieval Results"
         description="Retrieved documents for context"
       >
-        <RAGPanel
-          query="How to implement authentication?"
-          results={[
-            { id: "1", title: "Auth Guide", content: "Implementing secure authentication with JWT...", score: 0.95, source: "docs/auth.md" },
-            { id: "2", title: "Security Best Practices", content: "Always hash passwords using bcrypt...", score: 0.87, source: "docs/security.md" },
-            { id: "3", title: "Session Management", content: "Managing user sessions effectively...", score: 0.82, source: "docs/sessions.md" },
-          ]}
-          onSourceClick={(id) => console.log("View source:", id)}
+        <RetrievalResults
+          results={{
+            chunks: [
+              { id: "1", content: "Implementing secure authentication with JWT...", score: 0.95, metadata: { source: "docs/auth.md" } },
+              { id: "2", content: "Always hash passwords using bcrypt...", score: 0.87, metadata: { source: "docs/security.md" } },
+            ],
+            query: "How to implement authentication?",
+            totalResults: 2,
+            searchTime: 150,
+          }}
+          onChunkSelect={(chunk) => console.log("Select:", chunk)}
         />
       </ComponentCard>
 
-      {/* Confirmation Dialog */}
       <ComponentCard
-        title="Inline Confirmation"
-        description="Confirm destructive actions inline"
+        title="Chunk Display"
+        description="Display a single document chunk"
       >
-        <InlineConfirmation
-          message="Are you sure you want to delete this?"
-          confirmLabel="Delete"
-          onConfirm={() => console.log("Confirmed")}
-          onCancel={() => console.log("Cancelled")}
+        <ChunkDisplay
+          chunk={{
+            id: "chunk-1",
+            content: "To implement JWT authentication, first install the jsonwebtoken package...",
+            metadata: { page: 1, section: "Getting Started" },
+            score: 0.95,
+            source: "docs/auth.md",
+          }}
+          showMetadata
         />
       </ComponentCard>
 
@@ -224,10 +275,6 @@ export function AgentComponents() {
             <span className="text-sm">In Progress</span>
           </div>
           <div className="flex items-center gap-2">
-            <TaskStatusIcon status="in-progress" progress={60} />
-            <span className="text-sm">60%</span>
-          </div>
-          <div className="flex items-center gap-2">
             <TaskStatusIcon status="completed" />
             <span className="text-sm">Completed</span>
           </div>
@@ -239,81 +286,97 @@ export function AgentComponents() {
       </ComponentCard>
 
       <ComponentCard
-        title="Plan Display"
-        description="Full plan with tasks and progress"
+        title="Task Items"
+        description="Individual task display"
       >
-        <PlanDisplay
-          plan={{
-            id: "plan-1",
-            title: "Implement User Authentication",
-            description: "Add secure login and registration flow",
-            status: "executing",
-            createdAt: new Date(),
-            tasks: [
-              { id: "1", title: "Create user schema", status: "completed", duration: "2m" },
-              { id: "2", title: "Implement registration endpoint", status: "completed", duration: "5m" },
-              { id: "3", title: "Add password hashing", status: "in-progress", progress: 60 },
-              { id: "4", title: "Create login endpoint", status: "pending" },
-              { id: "5", title: "Add JWT tokens", status: "pending" },
-              { id: "6", title: "Write tests", status: "pending" },
-            ],
-          }}
-          editable
-          onTaskStatusChange={(id, status) => console.log("Status:", id, status)}
-          onAddTask={() => console.log("Add task")}
-          onPause={() => console.log("Pause")}
-        />
+        <div className="space-y-2">
+          <TaskItem
+            task={{ id: "1", title: "Research competitors", status: "completed" }}
+            onStatusChange={(status) => console.log("Status:", status)}
+          />
+          <TaskItem
+            task={{ id: "2", title: "Design mockups", status: "in-progress" }}
+            onStatusChange={(status) => console.log("Status:", status)}
+          />
+          <TaskItem
+            task={{ id: "3", title: "Write documentation", status: "pending" }}
+            onStatusChange={(status) => console.log("Status:", status)}
+          />
+        </div>
       </ComponentCard>
 
       <ComponentCard
         title="Compact Task List"
-        description="Minimal task display"
+        description="Condensed task overview"
       >
-        <div className="max-w-sm">
-          <CompactTaskList
-            tasks={[
-              { id: "1", title: "Research competitors", status: "completed" },
-              { id: "2", title: "Draft proposal", status: "in-progress" },
-              { id: "3", title: "Review with team", status: "pending" },
-              { id: "4", title: "Submit final version", status: "pending" },
-            ]}
-            onTaskClick={(task) => console.log("Clicked:", task)}
-          />
-        </div>
+        <CompactTaskList
+          tasks={[
+            { id: "1", title: "Setup project", status: "completed" },
+            { id: "2", title: "Implement features", status: "in-progress" },
+            { id: "3", title: "Write tests", status: "pending" },
+            { id: "4", title: "Deploy", status: "pending" },
+          ]}
+        />
       </ComponentCard>
 
       <ComponentCard
-        title="Inline Plan"
-        description="Collapsible plan in messages"
+        title="Plan Display"
+        description="Full plan with all tasks"
       >
-        <div className="max-w-md space-y-2">
-          <InlinePlan
-            plan={{
-              id: "plan-1",
-              title: "Code Review Tasks",
-              status: "executing",
-              createdAt: new Date(),
-              tasks: [
-                { id: "1", title: "Check code style", status: "completed" },
-                { id: "2", title: "Review logic", status: "in-progress" },
-                { id: "3", title: "Test edge cases", status: "pending" },
-              ],
-            }}
-            expanded
-          />
-        </div>
+        <PlanDisplay
+          plan={{
+            id: "plan-1",
+            title: "Project Launch Plan",
+            status: "executing",
+            createdAt: new Date(),
+            tasks: [
+              { id: "1", title: "Finalize features", status: "completed" },
+              { id: "2", title: "QA testing", status: "in-progress" },
+              { id: "3", title: "Documentation", status: "pending" },
+              { id: "4", title: "Marketing prep", status: "pending" },
+              { id: "5", title: "Launch", status: "pending" },
+            ],
+          }}
+          onTaskStatusChange={(taskId, status) => console.log("Task:", taskId, status)}
+        />
+      </ComponentCard>
+
+      {/* Subgraph Visualization */}
+      <ComponentCard
+        title="Subgraph Summary"
+        description="Overview of agent coordination"
+      >
+        <SubgraphSummary
+          data={{
+            id: "graph-1",
+            name: "Research Pipeline",
+            status: "running",
+            progress: 65,
+            agents: [
+              { id: "1", name: "Coordinator", role: "coordinator", status: "running" },
+              { id: "2", name: "Researcher", role: "worker", status: "running" },
+              { id: "3", name: "Analyzer", role: "processor", status: "idle" },
+            ],
+            connections: [
+              { from: "1", to: "2", label: "delegates" },
+              { from: "2", to: "3", label: "sends" },
+            ],
+          }}
+        />
       </ComponentCard>
 
       <ComponentCard
-        title="Task Input"
-        description="Add new tasks inline"
+        title="Feedback Collector"
+        description="Collect user feedback on agent outputs"
       >
-        <div className="max-w-sm border rounded-lg p-4">
-          <TaskInput
-            onAdd={(title) => console.log("Added:", title)}
-            placeholder="Add a new task..."
-          />
-        </div>
+        <FeedbackCollector
+          messageId="msg-123"
+          onFeedback={(messageId, feedback, comment) =>
+            console.log("Feedback:", messageId, feedback, comment)
+          }
+          variant="card"
+          showComment
+        />
       </ComponentCard>
     </div>
   );

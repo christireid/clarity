@@ -25,7 +25,7 @@ export function CloneComponents() {
         <div className="h-[500px] border border-border rounded-lg overflow-hidden">
           <ChatGPTClone
             messages={sampleMessages}
-            onSendMessage={(msg) => console.log("Send:", msg)}
+            onSend={(msg: string) => console.log("Send:", msg)}
           />
         </div>
       </ComponentCard>
@@ -38,7 +38,7 @@ export function CloneComponents() {
         <div className="h-[500px] border border-border rounded-lg overflow-hidden">
           <ClaudeClone
             messages={sampleMessages}
-            onSendMessage={(msg) => console.log("Send:", msg)}
+            onSend={(msg: string) => console.log("Send:", msg)}
           />
         </div>
       </ComponentCard>
@@ -55,14 +55,10 @@ export function CloneComponents() {
               {
                 id: "4",
                 role: "assistant" as const,
-                content: "Here's a simple Python example that demonstrates basic concepts:",
-                sources: [
-                  { title: "Python Documentation", url: "https://docs.python.org" },
-                  { title: "Real Python", url: "https://realpython.com" },
-                ],
+                content: "Here's a simple Python example that demonstrates basic concepts:\n\n```python\nprint('Hello, World!')\n```\n\nSources: [Python Documentation](https://docs.python.org), [Real Python](https://realpython.com)",
               },
             ]}
-            onSendMessage={(msg) => console.log("Send:", msg)}
+            onSend={(msg: string) => console.log("Send:", msg)}
           />
         </div>
       </ComponentCard>
@@ -103,7 +99,7 @@ export function CloneComponents() {
               handle: "aidev",
               verified: true,
             }}
-            content="Just shipped a new feature using AI-assisted coding! 🚀 The future of development is here. What tools are you using to boost your productivity?"
+            content="Just shipped a new feature using AI-assisted coding! The future of development is here. What tools are you using to boost your productivity?"
             timestamp={new Date(Date.now() - 3600000)}
             stats={{
               replies: 42,
@@ -129,7 +125,7 @@ export function CloneComponents() {
               title: "VP of Engineering at TechCorp",
               connection: "2nd",
             }}
-            content="Excited to share that our team has successfully implemented AI-powered code review! 🎉\n\nKey learnings from this journey:\n\n1. Start small - pilot with one team first\n2. Focus on developer experience\n3. Measure impact with real metrics\n4. Iterate based on feedback\n\nThe results: 40% faster reviews, 25% fewer bugs in production.\n\nWhat's your experience with AI in the development workflow?"
+            content="Excited to share that our team has successfully implemented AI-powered code review!\n\nKey learnings from this journey:\n\n1. Start small - pilot with one team first\n2. Focus on developer experience\n3. Measure impact with real metrics\n4. Iterate based on feedback\n\nThe results: 40% faster reviews, 25% fewer bugs in production.\n\nWhat's your experience with AI in the development workflow?"
             timestamp={new Date(Date.now() - 7200000)}
             stats={{
               reactions: 234,
@@ -137,9 +133,9 @@ export function CloneComponents() {
               reposts: 12,
             }}
             reactions={[
-              { type: "👍", count: 180 },
-              { type: "🎉", count: 42 },
-              { type: "💡", count: 12 },
+              { type: "like", count: 180 },
+              { type: "celebrate", count: 42 },
+              { type: "insightful", count: 12 },
             ]}
           />
         </div>
@@ -159,7 +155,7 @@ export function CloneComponents() {
             stats={{
               upvotes: 342,
               comments: 89,
-              awards: ["🥇", "💡"],
+              awards: ["gold", "helpful"],
             }}
             flair="Discussion"
           />
@@ -173,14 +169,7 @@ export function CloneComponents() {
       >
         <div className="h-[600px] border border-border rounded-lg overflow-hidden">
           <V0Clone
-            onGenerate={(prompt) => console.log("Generate:", prompt)}
-            generatedCode={`export function Button({ children }) {
-  return (
-    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-      {children}
-    </button>
-  );
-}`}
+            onSendMessage={(msg: string) => console.log("Generate:", msg)}
           />
         </div>
       </ComponentCard>
@@ -194,10 +183,10 @@ export function CloneComponents() {
             title="Button Component"
             description="A customizable button with hover states"
             code={`<Button variant="primary">Click me</Button>`}
-            preview="https://picsum.photos/400/200"
+            previewUrl="https://picsum.photos/400/200"
             onCopy={() => console.log("Copied")}
-            onEdit={() => console.log("Edit")}
-            onFork={() => console.log("Fork")}
+            onOpen={() => console.log("Open")}
+            onDownload={() => console.log("Download")}
           />
         </div>
       </ComponentCard>

@@ -7,7 +7,6 @@ import { BranchingView } from "@/components/ai/conversation-manager";
 import { Canvas, CanvasToolbar } from "@/components/ai/canvas";
 import { WorkflowNode, AINode, TriggerNode, ConditionNode, ActionNode, NodePalette, WorkflowStatus } from "@/components/ai/workflow-nodes";
 import { MindMap, Diagram } from "@/components/ai/mind-map";
-import { ResizablePanel, SplitPane, FloatingPanel, PanelGroup } from "@/components/ai/draggable-panels";
 import { ComponentCard } from "./ComponentCard";
 
 export function CanvasComponents() {
@@ -39,11 +38,13 @@ export function CanvasComponents() {
         description="Toolbar controls for canvas operations"
       >
         <CanvasToolbar
-          onZoomIn={() => console.log("Zoom in")}
-          onZoomOut={() => console.log("Zoom out")}
-          onFitView={() => console.log("Fit view")}
+          onAddNode={() => console.log("Add node")}
+          onDelete={() => console.log("Delete")}
+          onCopy={() => console.log("Copy")}
           onUndo={() => console.log("Undo")}
           onRedo={() => console.log("Redo")}
+          canUndo={true}
+          canRedo={false}
         />
       </ComponentCard>
 
@@ -53,11 +54,11 @@ export function CanvasComponents() {
         description="Different node types for visual workflows"
       >
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <TriggerNode data={{ label: "On Message", trigger: "message" }} />
-          <AINode data={{ label: "GPT-4", model: "gpt-4", prompt: "Analyze..." }} />
-          <ConditionNode data={{ label: "If Valid", condition: "response.valid" }} />
-          <ActionNode data={{ label: "Send Email", action: "email" }} />
-          <WorkflowNode data={{ label: "Custom Node" }} type="default" />
+          <TriggerNode id="trigger-1" label="On Message" triggerType="webhook" />
+          <AINode id="ai-1" label="GPT-4" model="gpt-4" />
+          <ConditionNode id="condition-1" label="If Valid" condition="response.valid" />
+          <ActionNode id="action-1" label="Send Email" actionType="email" />
+          <WorkflowNode id="custom-1" type="default" label="Custom Node" />
         </div>
       </ComponentCard>
 
@@ -76,12 +77,7 @@ export function CanvasComponents() {
           status="running"
           currentNode="Process Data"
           progress={65}
-          startTime={new Date(Date.now() - 30000)}
-          logs={[
-            { timestamp: new Date(Date.now() - 25000), message: "Workflow started", level: "info" },
-            { timestamp: new Date(Date.now() - 20000), message: "Processing input data", level: "info" },
-            { timestamp: new Date(Date.now() - 10000), message: "AI model invoked", level: "info" },
-          ]}
+          startedAt={new Date(Date.now() - 30000)}
         />
       </ComponentCard>
 
@@ -92,14 +88,17 @@ export function CanvasComponents() {
       >
         <div className="h-[350px] border rounded-lg overflow-hidden">
           <MindMap
-            nodes={[
-              { id: "root", label: "AI Features", x: 300, y: 150, isRoot: true },
-              { id: "chat", label: "Chat", x: 150, y: 80, parentId: "root" },
-              { id: "voice", label: "Voice", x: 450, y: 80, parentId: "root" },
-              { id: "vision", label: "Vision", x: 150, y: 220, parentId: "root" },
-              { id: "agents", label: "Agents", x: 450, y: 220, parentId: "root" },
-            ]}
-            onNodeClick={(id) => console.log("Clicked:", id)}
+            data={{
+              id: "root",
+              label: "AI Features",
+              children: [
+                { id: "chat", label: "Chat" },
+                { id: "voice", label: "Voice" },
+                { id: "vision", label: "Vision" },
+                { id: "agents", label: "Agents" },
+              ],
+            }}
+            onNodeClick={(node) => console.log("Clicked:", node)}
             onNodeAdd={(parentId) => console.log("Add to:", parentId)}
           />
         </div>
@@ -112,39 +111,15 @@ export function CanvasComponents() {
         <div className="h-[250px] border rounded-lg overflow-hidden">
           <Diagram
             nodes={[
-              { id: "a", label: "Input", x: 50, y: 100 },
-              { id: "b", label: "Process", x: 200, y: 100 },
-              { id: "c", label: "Output", x: 350, y: 100 },
+              { id: "a", label: "Input", type: "start", x: 50, y: 100 },
+              { id: "b", label: "Process", type: "process", x: 200, y: 100 },
+              { id: "c", label: "Output", type: "end", x: 350, y: 100 },
             ]}
             edges={[
-              { from: "a", to: "b" },
-              { from: "b", to: "c" },
+              { id: "e1", from: "a", to: "b" },
+              { id: "e2", from: "b", to: "c" },
             ]}
           />
-        </div>
-      </ComponentCard>
-
-      {/* Draggable Panels */}
-      <ComponentCard
-        title="Draggable Panels"
-        description="Resizable panel layout system"
-      >
-        <div className="h-[300px] border rounded-lg overflow-hidden">
-          <DraggablePanels>
-            <Panel defaultSize={30} minSize={20}>
-              <div className="h-full bg-muted/50 p-4">
-                <h4 className="font-medium">Sidebar</h4>
-                <p className="text-sm text-muted-foreground">Drag to resize</p>
-              </div>
-            </Panel>
-            <PanelResizer />
-            <Panel defaultSize={70}>
-              <div className="h-full bg-background p-4">
-                <h4 className="font-medium">Main Content</h4>
-                <p className="text-sm text-muted-foreground">Flexible layout</p>
-              </div>
-            </Panel>
-          </DraggablePanels>
         </div>
       </ComponentCard>
 
@@ -155,18 +130,28 @@ export function CanvasComponents() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <Artifact
-            type="code"
-            title="API Handler"
-            language="typescript"
-            content={`export async function handler(req: Request) {
+            artifact={{
+              id: "artifact-1",
+              type: "code",
+              title: "API Handler",
+              language: "typescript",
+              content: `export async function handler(req: Request) {
   const data = await req.json();
   return Response.json({ success: true });
-}`}
+}`,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            }}
           />
           <Artifact
-            type="document"
-            title="Project Proposal"
-            content="# Project Overview\n\nThis document outlines the key objectives and milestones for Q1 2024."
+            artifact={{
+              id: "artifact-2",
+              type: "document",
+              title: "Project Proposal",
+              content: "# Project Overview\n\nThis document outlines the key objectives and milestones for Q1 2024.",
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            }}
           />
         </div>
       </ComponentCard>
