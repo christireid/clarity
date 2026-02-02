@@ -6,13 +6,14 @@ import { HotkeyHelpDialog, ShortcutHint, type HotkeyCategory } from "@/component
 import { NotificationCenter, type Notification } from "@/components/ai/notifications";
 import { UserAvatar, ModelAvatar, AvatarGroup, SenderDisplay, TypingAvatar } from "@/components/ai/avatars";
 import { EmptyChatState, EmptyState, WelcomeScreen } from "@/components/ai/empty-states";
-import { LoadingButton, CopyButton, FeedbackButtons, ActionButtonGroup, SendButton, GenerateButton, RegenerateButton, ShareButton as ShareBtn } from "@/components/ai/buttons";
+import { LoadingButton, CopyButton as CopyBtn, FeedbackButtons as FeedbackBtns, ActionButtonGroup, SendButton, GenerateButton, RegenerateButton, ShareButton as ShareBtn } from "@/components/ai/buttons";
+import { Actions, CopyButton, FeedbackButtons, MessageActionBar, FeedbackBar, QuickActions } from "@/components/ai/actions";
 import { StatusBadge, StatusDot, OnlineStatus, ConnectionStatus, SystemHealth, ActivityIndicator } from "@/components/ai/status";
 import { Timestamp, DurationDisplay, LiveTimer, LastUpdated, MessageTimestamp } from "@/components/ai/timestamp";
-import { ScrollToBottomButton } from "@/components/ai/scroll-button";
-import { DatePicker, DateRangePicker, TimePicker } from "@/components/ai/date-picker";
-import { EmojiPicker, EmojiButton, ReactionPicker } from "@/components/ai/emoji-picker";
-import { ColorPicker, ColorSwatch, ColorPalette } from "@/components/ai/color-picker";
+import { ScrollButton, ScrollToBottom, NewMessagesIndicator } from "@/components/ai/scroll-button";
+import { DatePicker, DateRangePicker, TimeAgo } from "@/components/ai/date-picker";
+import { EmojiPicker, EmojiReaction, EmojiInput } from "@/components/ai/emoji-picker";
+import { ColorPicker, ColorSwatch, GradientPicker } from "@/components/ai/color-picker";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 import { Search, Wifi, Server } from "lucide-react";
@@ -423,6 +424,85 @@ export function UIComponents() {
       >
         <div className="relative h-20 border rounded flex items-center justify-center">
           <ScrollToBottomButton onClick={() => console.log("Scroll to bottom")} visible />
+        </div>
+      </ComponentCard>
+
+      {/* Actions Components */}
+      <ComponentCard
+        title="Actions"
+        description="Flexible action buttons with tooltips"
+      >
+        <div className="space-y-4">
+          <Actions
+            items={[
+              { key: "copy", icon: <span>📋</span>, label: "Copy", tooltip: "Copy to clipboard", onClick: () => console.log("Copy") },
+              { key: "edit", icon: <span>✏️</span>, label: "Edit", tooltip: "Edit content", onClick: () => console.log("Edit") },
+              { key: "delete", icon: <span>🗑️</span>, label: "Delete", tooltip: "Delete item", onClick: () => console.log("Delete"), danger: true },
+            ]}
+            direction="horizontal"
+            variant="default"
+            showLabels
+          />
+          <Actions
+            items={[
+              { key: "copy", icon: <span>📋</span>, tooltip: "Copy", onClick: () => {} },
+              { key: "share", icon: <span>📤</span>, tooltip: "Share", onClick: () => {} },
+              { key: "bookmark", icon: <span>🔖</span>, tooltip: "Bookmark", onClick: () => {} },
+            ]}
+            direction="horizontal"
+            variant="ghost"
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Message Action Bar"
+        description="Complete action bar for AI messages"
+      >
+        <div className="space-y-4 p-4 border rounded-lg bg-muted/30">
+          <p className="text-sm">This is an AI response that you can interact with using the action bar below.</p>
+          <MessageActionBar
+            content="This is an AI response that you can interact with using the action bar below."
+            onCopy={() => console.log("Copied")}
+            onRegenerate={() => console.log("Regenerate")}
+            onEdit={() => console.log("Edit")}
+            onShare={() => console.log("Share")}
+            onBookmark={() => console.log("Bookmark")}
+            showCopy
+            showRegenerate
+            showFeedback
+            showMore
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Feedback Bar"
+        description="Star rating with optional feedback text"
+      >
+        <div className="space-y-6">
+          <div>
+            <span className="text-sm text-muted-foreground mb-2 block">Simple Rating</span>
+            <FeedbackBar
+              variant="simple"
+              onFeedback={(rating) => console.log("Rating:", rating)}
+            />
+          </div>
+          <div>
+            <span className="text-sm text-muted-foreground mb-2 block">Detailed with Text Input</span>
+            <FeedbackBar
+              variant="detailed"
+              showTextInput
+              onFeedback={(rating, feedback) => console.log("Rating:", rating, "Feedback:", feedback)}
+            />
+          </div>
+          <div>
+            <span className="text-sm text-muted-foreground mb-2 block">Inline Feedback</span>
+            <FeedbackBar
+              variant="inline"
+              onFeedback={(rating) => console.log("Inline rating:", rating)}
+            />
+          </div>
         </div>
       </ComponentCard>
     </div>

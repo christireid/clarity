@@ -5,11 +5,11 @@ import { SourcesList, WebSearchResults, LinkPreview } from "@/components/ai/sour
 import { AudioPlayer, MicrophoneInput, ImageGallery } from "@/components/ai/media";
 import { DownloadButton, DownloadCard, DownloadManager } from "@/components/ai/download";
 import { ShareButton, ShareDialog, QRCodeShare, EmbedCode } from "@/components/ai/share";
-import { ImageGeneration, ImageGenerationPreview, GeneratedImageCard } from "@/components/ai/image-generation";
-import { FileViewer, PDFViewer, ImageViewer, CodeFileViewer } from "@/components/ai/file-viewer";
+import { ImageGenerationCard, ImageGenerationPreview, ImageGenerationGrid } from "@/components/ai/image-generation";
+import { FilePreview, FileAttachmentCard, FileList, FileIcon } from "@/components/ai/file-viewer";
 import { Attachments, AttachmentCard, AttachmentPreview } from "@/components/ai/attachments";
-import { RichEmbed, VideoEmbed, TwitterEmbed } from "@/components/ai/rich-embeds";
-import { Carousel, CarouselItem } from "@/components/ai/carousel";
+import { URLPreview, TweetEmbed, YouTubeEmbed, GitHubRepoEmbed } from "@/components/ai/rich-embeds";
+import { Carousel, ItemCarousel, HeroCarousel } from "@/components/ai/carousel";
 import { ComponentCard } from "./ComponentCard";
 
 export function MediaComponents() {

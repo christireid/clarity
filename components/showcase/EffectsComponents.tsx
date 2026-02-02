@@ -20,6 +20,8 @@ import {
   CounterAnimation,
 } from "@/components/ai/text-effects";
 import { AuroraText, AuroraCard } from "@/components/ai/animated/aurora-background";
+import { AnimatedGradient, MeshGradient, GradientBorder, ShimmerEffect } from "@/components/ai/animated/gradient-effects";
+import { Spotlight, SpotlightCard, MultiSpotlight } from "@/components/ai/animated/spotlight";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 
@@ -323,6 +325,99 @@ export function EffectsComponents() {
                 </p>
               </div>
             </AuroraCard>
+          </ComponentCard>
+        </div>
+      </div>
+
+      {/* SECTION: Gradient Effects */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4 text-muted-foreground">Gradient Effects</h3>
+        <div className="space-y-8">
+          <ComponentCard
+            title="Animated Gradient"
+            description="Smoothly transitioning color gradient"
+          >
+            <div className="h-40 rounded-lg overflow-hidden">
+              <AnimatedGradient
+                colors={["#3b82f6", "#8b5cf6", "#ec4899"]}
+                speed={3}
+              />
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Mesh Gradient"
+            description="Multi-point organic gradient"
+          >
+            <div className="h-40 rounded-lg overflow-hidden">
+              <MeshGradient
+                colors={["#06b6d4", "#3b82f6", "#8b5cf6", "#ec4899"]}
+              />
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Gradient Border"
+            description="Animated gradient border effect"
+          >
+            <GradientBorder className="inline-block">
+              <div className="px-6 py-4 bg-background rounded-lg">
+                <p className="font-medium">Content with gradient border</p>
+              </div>
+            </GradientBorder>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Shimmer Effect"
+            description="Loading shimmer animation"
+          >
+            <div className="space-y-2">
+              <ShimmerEffect className="h-4 w-3/4 rounded" />
+              <ShimmerEffect className="h-4 w-1/2 rounded" />
+              <ShimmerEffect className="h-4 w-2/3 rounded" />
+            </div>
+          </ComponentCard>
+        </div>
+      </div>
+
+      {/* SECTION: Spotlight Effects */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4 text-muted-foreground">Spotlight Effects</h3>
+        <div className="space-y-8">
+          <ComponentCard
+            title="Spotlight"
+            description="Animated spotlight effect"
+          >
+            <div className="relative h-40 bg-zinc-900 rounded-lg overflow-hidden flex items-center justify-center">
+              <Spotlight />
+              <span className="z-10 text-white font-bold">Spotlight Effect</span>
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Spotlight Card"
+            description="Card with spotlight hover effect"
+          >
+            <div className="grid gap-4 md:grid-cols-2">
+              <SpotlightCard className="p-6">
+                <h4 className="font-bold mb-2">Feature One</h4>
+                <p className="text-sm text-muted-foreground">Hover to see the spotlight effect</p>
+              </SpotlightCard>
+              <SpotlightCard className="p-6">
+                <h4 className="font-bold mb-2">Feature Two</h4>
+                <p className="text-sm text-muted-foreground">Interactive lighting follows cursor</p>
+              </SpotlightCard>
+            </div>
+          </ComponentCard>
+
+          <ComponentCard
+            title="Multi Spotlight"
+            description="Multiple spotlights effect"
+          >
+            <div className="relative h-40 bg-zinc-900 rounded-lg overflow-hidden flex items-center justify-center">
+              <MultiSpotlight count={3} />
+              <span className="z-10 text-white font-bold">Multi Spotlight</span>
+            </div>
           </ComponentCard>
         </div>
       </div>

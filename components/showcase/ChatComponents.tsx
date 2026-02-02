@@ -15,7 +15,9 @@ import { ConversationsList, ConversationItem } from "@/components/ai/conversatio
 import { MessageActionsBar, InlineActions } from "@/components/ai/message-actions";
 import { MessageEditor } from "@/components/ai/message-editor";
 import { InlineCitation } from "@/components/ai/inline-citation";
-import { MessageDraft, DraftIndicator } from "@/components/ai/message-draft";
+import { DraftEditor, DraftIndicator, DraftList } from "@/components/ai/message-draft";
+import { SystemMessage, DividerMessage, DateDivider, TypingIndicator, NotificationBubble, SystemBubble } from "@/components/ai/system-message";
+import { UnreadBadge, NewMessagesBanner, JumpToUnread, ConversationUnreadIndicator } from "@/components/ai/unread-indicator";
 import { ComponentCard } from "./ComponentCard";
 
 export function ChatComponents() {
@@ -314,6 +316,114 @@ console.log(greeting);
               onSend={(message) => console.log("Send:", message)}
             />
           </div>
+        </div>
+      </ComponentCard>
+
+      {/* System Messages */}
+      <ComponentCard
+        title="System Message"
+        description="System notifications in chat"
+      >
+        <div className="space-y-4">
+          <SystemMessage
+            type="info"
+            content="The conversation context has been updated."
+          />
+          <SystemMessage
+            type="warning"
+            content="You're approaching your usage limit."
+          />
+          <SystemMessage
+            type="success"
+            content="File uploaded successfully."
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Dividers"
+        description="Visual separators for chat sections"
+      >
+        <div className="space-y-4">
+          <DividerMessage text="New messages below" />
+          <DateDivider date={new Date()} />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Typing Indicator"
+        description="Show when someone is typing"
+      >
+        <div className="space-y-4">
+          <TypingIndicator />
+          <TypingIndicator label="Assistant is thinking" />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="System Bubbles"
+        description="System notifications as bubbles"
+      >
+        <div className="space-y-4">
+          <NotificationBubble
+            icon="info"
+            title="New feature available"
+            description="Check out the new voice input capability"
+          />
+          <SystemBubble
+            content="The model has been updated to the latest version."
+          />
+        </div>
+      </ComponentCard>
+
+      {/* Unread Indicators */}
+      <ComponentCard
+        title="Unread Badge"
+        description="Show unread message count"
+      >
+        <div className="flex items-center gap-4">
+          <UnreadBadge count={3} />
+          <UnreadBadge count={99} />
+          <UnreadBadge count={150} max={99} />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="New Messages Banner"
+        description="Alert for new messages"
+      >
+        <NewMessagesBanner
+          count={5}
+          onClick={() => console.log("Scroll to new")}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Jump to Unread"
+        description="Quick navigation to unread"
+      >
+        <JumpToUnread
+          count={12}
+          onClick={() => console.log("Jump")}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Conversation Unread"
+        description="Unread state for conversation list"
+      >
+        <div className="space-y-2 max-w-xs">
+          <ConversationUnreadIndicator
+            title="Team Discussion"
+            preview="Hey, did you see the new..."
+            unreadCount={3}
+            timestamp={new Date()}
+          />
+          <ConversationUnreadIndicator
+            title="Project Updates"
+            preview="The deployment is..."
+            timestamp={new Date(Date.now() - 3600000)}
+          />
         </div>
       </ComponentCard>
     </div>

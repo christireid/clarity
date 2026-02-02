@@ -7,7 +7,7 @@ import { BranchingView } from "@/components/ai/conversation-manager";
 import { Canvas, CanvasToolbar } from "@/components/ai/canvas";
 import { WorkflowNode, AINode, TriggerNode, ConditionNode, ActionNode, NodePalette, WorkflowStatus } from "@/components/ai/workflow-nodes";
 import { MindMap, Diagram } from "@/components/ai/mind-map";
-import { DraggablePanels, Panel, PanelResizer } from "@/components/ai/draggable-panels";
+import { ResizablePanel, SplitPane, FloatingPanel, PanelGroup } from "@/components/ai/draggable-panels";
 import { ComponentCard } from "./ComponentCard";
 
 export function CanvasComponents() {

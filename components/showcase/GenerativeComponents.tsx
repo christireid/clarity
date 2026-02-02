@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { StreamingText, SuggestionChips, GeneratedForm, ProcessSteps, PredictiveAction, ApprovalRequest, CollapsibleOutput, QuickActions } from "@/components/ai/generative-ui";
-import { ContentPart, TextPart, CodePart, ImagePart, FilePart, ToolResultPart } from "@/components/ai/content-parts";
-import { Steps, Step, StepIndicator } from "@/components/ai/steps";
-import { Generators, TextGenerator, CodeGenerator, ImageGenerator as ImgGen } from "@/components/ai/generators";
+import { ContentPartRenderer, ContentPartsList, ImageGallery as ContentGallery } from "@/components/ai/content-parts";
+import { Steps, ReasoningSteps, ThoughtChain } from "@/components/ai/steps";
+import { CodeGenerator, EmailGenerator, WritingGenerator, ImagePromptGenerator } from "@/components/ai/generators";
 import { QuestionFlow, Question, QuestionOption } from "@/components/ai/question-flow";
 import { AIPromptPanel, PromptInput, PromptHistory } from "@/components/ai/ai-prompt-panel";
 import { ComponentCard } from "./ComponentCard";

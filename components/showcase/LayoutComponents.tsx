@@ -21,9 +21,10 @@ import {
   PanelToggle,
   ToolbarPanel,
 } from "@/components/ai/panels";
+import { SimpleFooter, FullFooter, MinimalFooter, BuiltWithFooter } from "@/components/ai/footer";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
-import { Settings, FileText, Code } from "lucide-react";
+import { Settings, FileText, Code, Sparkles } from "lucide-react";
 
 export function LayoutComponents() {
   return (
@@ -257,6 +258,104 @@ export function LayoutComponents() {
           <PanelToggle position="right" isOpen={false} onClick={() => {}} />
           <PanelToggle position="bottom" isOpen={true} onClick={() => {}} />
         </div>
+      </ComponentCard>
+
+      {/* Footer Components */}
+      <ComponentCard
+        title="Simple Footer"
+        description="Compact footer with links and social icons"
+      >
+        <SimpleFooter
+          companyName="AI Components"
+          links={[
+            { label: "Privacy", href: "#" },
+            { label: "Terms", href: "#" },
+            { label: "Contact", href: "#" },
+          ]}
+          socialLinks={{
+            twitter: "https://twitter.com",
+            github: "https://github.com",
+            linkedin: "https://linkedin.com",
+          }}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Full Footer"
+        description="Complete footer with sections, newsletter, and contact"
+      >
+        <FullFooter
+          companyName="AI Components"
+          description="Build beautiful AI-powered chat interfaces with our comprehensive component library."
+          logo={
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-primary-foreground" />
+              </div>
+              <span className="font-semibold">AI Components</span>
+            </div>
+          }
+          sections={[
+            {
+              title: "Product",
+              links: [
+                { label: "Features", href: "#" },
+                { label: "Pricing", href: "#" },
+                { label: "Documentation", href: "#" },
+              ],
+            },
+            {
+              title: "Company",
+              links: [
+                { label: "About", href: "#" },
+                { label: "Blog", href: "#" },
+                { label: "Careers", href: "#" },
+              ],
+            },
+          ]}
+          socialLinks={{
+            twitter: "https://twitter.com",
+            github: "https://github.com",
+          }}
+          newsletter={{
+            title: "Stay Updated",
+            description: "Subscribe for product updates",
+            onSubscribe: (email) => console.log("Subscribe:", email),
+          }}
+          contact={{
+            email: "hello@example.com",
+            phone: "+1 (555) 123-4567",
+          }}
+          bottomLinks={[
+            { label: "Privacy", href: "#" },
+            { label: "Terms", href: "#" },
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Minimal Footer"
+        description="Clean, minimalist footer"
+      >
+        <MinimalFooter
+          links={[
+            { label: "Privacy", href: "#" },
+            { label: "Terms", href: "#" },
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Built With Footer"
+        description="Show tech stack attribution"
+      >
+        <BuiltWithFooter
+          builtWith={[
+            { name: "Next.js", href: "https://nextjs.org" },
+            { name: "Tailwind CSS", href: "https://tailwindcss.com" },
+            { name: "Radix UI", href: "https://radix-ui.com" },
+          ]}
+        />
       </ComponentCard>
     </div>
   );

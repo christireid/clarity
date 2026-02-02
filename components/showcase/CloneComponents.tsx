@@ -4,6 +4,7 @@ import * as React from "react";
 import { ChatGPTClone, ClaudeClone, PerplexityClone } from "@/components/ai/chat-clones";
 import { ManusChat, EmergentChat, LoveableChat } from "@/components/ai/chat-clones-extended";
 import { TwitterPost, LinkedInPost, RedditPost } from "@/components/ai/social-posts";
+import { V0Clone, V0ArtifactCard, V0GenerationStatus } from "@/components/ai/v0-clone";
 import { ComponentCard } from "./ComponentCard";
 
 // Consolidated Platform Clones - each with distinct UX patterns
@@ -162,6 +163,53 @@ export function CloneComponents() {
             }}
             flair="Discussion"
           />
+        </div>
+      </ComponentCard>
+
+      {/* v0 Clone - Code Generation Interface */}
+      <ComponentCard
+        title="v0 Clone"
+        description="AI-powered component generation interface"
+      >
+        <div className="h-[600px] border border-border rounded-lg overflow-hidden">
+          <V0Clone
+            onGenerate={(prompt) => console.log("Generate:", prompt)}
+            generatedCode={`export function Button({ children }) {
+  return (
+    <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      {children}
+    </button>
+  );
+}`}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="v0 Artifact Card"
+        description="Generated component preview card"
+      >
+        <div className="max-w-md">
+          <V0ArtifactCard
+            title="Button Component"
+            description="A customizable button with hover states"
+            code={`<Button variant="primary">Click me</Button>`}
+            preview="https://picsum.photos/400/200"
+            onCopy={() => console.log("Copied")}
+            onEdit={() => console.log("Edit")}
+            onFork={() => console.log("Fork")}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="v0 Generation Status"
+        description="Progress indicator for code generation"
+      >
+        <div className="space-y-4 max-w-md">
+          <V0GenerationStatus status="generating" progress={45} message="Generating component..." />
+          <V0GenerationStatus status="complete" progress={100} message="Component ready!" />
+          <V0GenerationStatus status="error" message="Generation failed. Please try again." />
         </div>
       </ComponentCard>
     </div>

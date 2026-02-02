@@ -8,9 +8,11 @@ import { ErrorPage, NotFoundPage, ServerErrorPage } from "@/components/ai/error-
 import { ErrorBoundary, ErrorFallback } from "@/components/ai/error-boundary";
 import { DebugPanel, DebugLog, DebugInspector } from "@/components/ai/trace-viewer";
 import { SnippetManager, SnippetCard, SnippetEditor } from "@/components/ai/snippet-manager";
-import { WebBrowser, BrowserToolbar } from "@/components/ai/web-browser";
+import { BrowserFrame, URLBar, DevToolsPanel } from "@/components/ai/web-browser";
 import { PluginManager, PluginCard } from "@/components/ai/plugin-manager";
 import { MCPManager, MCPServerCard } from "@/components/ai/mcp-manager";
+import { BranchPicker, BranchTree, ForkButton, MessageBranchIndicator } from "@/components/ai/branch-picker";
+import { SDKDevTools } from "@/components/ai/devtools/SDKDevTools";
 import { ComponentCard } from "./ComponentCard";
 
 export function DevToolsComponents() {
@@ -228,6 +230,52 @@ export function DevToolsComponents() {
           onDisconnect={(id) => console.log("Disconnect:", id)}
           onConfigure={(id) => console.log("Configure:", id)}
         />
+      </ComponentCard>
+
+      {/* Branch Picker */}
+      <ComponentCard
+        title="Branch Picker"
+        description="Navigate conversation branches"
+      >
+        <BranchPicker
+          branches={[
+            { id: "main", name: "Main conversation", messageCount: 12, createdAt: new Date() },
+            { id: "alt-1", name: "Alternative approach", messageCount: 5, createdAt: new Date(Date.now() - 3600000) },
+            { id: "alt-2", name: "Different solution", messageCount: 8, createdAt: new Date(Date.now() - 7200000) },
+          ]}
+          currentBranchId="main"
+          onBranchSelect={(id) => console.log("Select branch:", id)}
+          onBranchCreate={() => console.log("Create branch")}
+          onBranchDelete={(id) => console.log("Delete:", id)}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Fork Button"
+        description="Create a new conversation branch"
+      >
+        <div className="flex items-center gap-4">
+          <ForkButton onClick={() => console.log("Fork")} />
+          <MessageBranchIndicator branchCount={3} currentBranch={1} onNavigate={(idx) => console.log("Navigate to:", idx)} />
+        </div>
+      </ComponentCard>
+
+      {/* SDK DevTools */}
+      <ComponentCard
+        title="SDK DevTools"
+        description="Development tools for AI SDK integration"
+      >
+        <div className="h-[400px] border rounded-lg overflow-hidden">
+          <SDKDevTools
+            config={{
+              apiKey: "sk-***",
+              model: "gpt-4",
+              temperature: 0.7,
+              maxTokens: 4096,
+            }}
+            onConfigChange={(config) => console.log("Config:", config)}
+          />
+        </div>
       </ComponentCard>
     </div>
   );

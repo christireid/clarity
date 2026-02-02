@@ -7,6 +7,7 @@ import { CodeDiff } from "@/components/ai/code-diff";
 import { Terminal as TerminalComponent } from "@/components/ai/terminal";
 import { FileTree } from "@/components/ai/file-tree";
 import { WebPreview } from "@/components/ai/web-preview";
+import { CodeEditor, MultiFileEditor, InlineEditor } from "@/components/ai/code-editor";
 import { ComponentCard } from "./ComponentCard";
 
 export function CodeComponents() {
@@ -123,6 +124,49 @@ export default Button;`;
         <WebPreview
           url="https://example.com"
           title="Example Website"
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Code Editor"
+        description="Full-featured code editor with syntax highlighting"
+      >
+        <div className="h-[300px]">
+          <CodeEditor
+            value={sampleCode}
+            language="tsx"
+            onChange={(code) => console.log("Changed:", code)}
+            theme="dark"
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Multi-File Editor"
+        description="Editor with multiple file tabs"
+      >
+        <div className="h-[350px]">
+          <MultiFileEditor
+            files={[
+              { id: "1", name: "App.tsx", content: sampleCode, language: "tsx" },
+              { id: "2", name: "styles.css", content: ".btn { padding: 8px 16px; }", language: "css" },
+              { id: "3", name: "utils.ts", content: "export const add = (a: number, b: number) => a + b;", language: "typescript" },
+            ]}
+            activeFileId="1"
+            onFileChange={(id, content) => console.log("File changed:", id)}
+            onFileSelect={(id) => console.log("Selected:", id)}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Inline Editor"
+        description="Compact inline code editing"
+      >
+        <InlineEditor
+          value="const greeting = 'Hello, World!';"
+          language="javascript"
+          onChange={(code) => console.log("Changed:", code)}
         />
       </ComponentCard>
     </div>

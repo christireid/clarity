@@ -4,9 +4,9 @@ import * as React from "react";
 import { DataTable, type Column } from "@/components/ai/data-table";
 import { StatCard, BarChartCard, LineChartCard, TokenUsage, RadialProgress, BenchmarkChart, PieChartCard, AreaChartCard } from "@/components/ai/charts";
 import { Filters, FilterBar, FilterChip } from "@/components/ai/filters";
-import { SchemaDisplay, JSONViewer, SchemaTree } from "@/components/ai/schema-display";
+import { SchemaDisplay, JSONSchemaViewer, DatabaseSchema } from "@/components/ai/schema-display";
 import { SortableList, SortableItem } from "@/components/ai/sortable-list";
-import { StatsDisplay, StatRow, StatGrid } from "@/components/ai/stats-display";
+import { StatCard as StatCardDisplay, StatsGrid, BenchmarkDisplay } from "@/components/ai/stats-display";
 import { TableOfContents, TOCItem } from "@/components/ai/table-of-contents";
 import { ComponentCard } from "./ComponentCard";
 

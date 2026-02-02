@@ -5,7 +5,7 @@ import { MessageSkeleton, CodeBlockSkeleton, ShimmerText, CardSkeleton, TableSke
 import { LoadingDots, TypingCursor, PulseRing } from "@/components/ai/animations";
 import { Loader, MessageLoading, ProgressLoader, StreamingLoader } from "@/components/ai/loaders";
 import { RetryLogic, RetryIndicator, OfflineQueue } from "@/components/ai/retry-logic";
-import { StreamingText, StreamingIndicator } from "@/components/ai/streaming";
+import { StreamingResponse, StreamStatus, WordStream } from "@/components/ai/streaming";
 import { ComponentCard } from "./ComponentCard";
 
 export function LoaderComponents() {

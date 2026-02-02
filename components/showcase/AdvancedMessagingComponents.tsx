@@ -14,6 +14,7 @@ import {
   ScheduledMessagesList,
   ScheduleIndicator,
 } from "@/components/ai/scheduled-messages";
+import { MessageArchive, ArchivedMessageViewer } from "@/components/ai/message-archive";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 
@@ -228,6 +229,59 @@ export function AdvancedMessagingComponents() {
           onDelete={(m) => console.log("Delete:", m)}
           onSendNow={(m) => console.log("Send now:", m)}
           onReschedule={(m, d) => console.log("Reschedule:", m, d)}
+        />
+      </ComponentCard>
+
+      {/* Message Archive */}
+      <ComponentCard
+        title="Message Archive"
+        description="Browse archived conversations"
+      >
+        <div className="h-[400px] border rounded-lg overflow-hidden">
+          <MessageArchive
+            conversations={[
+              {
+                id: "conv-1",
+                title: "React Performance Discussion",
+                messageCount: 24,
+                archivedAt: new Date(Date.now() - 86400000 * 7),
+                participants: ["Alice", "Bob"],
+              },
+              {
+                id: "conv-2",
+                title: "API Design Review",
+                messageCount: 18,
+                archivedAt: new Date(Date.now() - 86400000 * 14),
+                participants: ["Charlie", "Diana"],
+              },
+              {
+                id: "conv-3",
+                title: "Bug Investigation",
+                messageCount: 42,
+                archivedAt: new Date(Date.now() - 86400000 * 30),
+                participants: ["Eve"],
+              },
+            ]}
+            onConversationSelect={(id) => console.log("Select:", id)}
+            onRestore={(id) => console.log("Restore:", id)}
+            onDelete={(id) => console.log("Delete:", id)}
+            onExport={(id) => console.log("Export:", id)}
+          />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Archived Message Viewer"
+        description="View messages in archived conversation"
+      >
+        <ArchivedMessageViewer
+          messages={[
+            { id: "1", role: "user", content: "How do we optimize this query?", timestamp: new Date(Date.now() - 86400000) },
+            { id: "2", role: "assistant", content: "There are several approaches we can take...", timestamp: new Date(Date.now() - 86400000 + 60000) },
+            { id: "3", role: "user", content: "Can you show me an example?", timestamp: new Date(Date.now() - 86400000 + 120000) },
+          ]}
+          onCopy={(id) => console.log("Copy:", id)}
+          onRestore={(id) => console.log("Restore:", id)}
         />
       </ComponentCard>
     </div>

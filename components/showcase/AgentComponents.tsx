@@ -7,8 +7,8 @@ import { Subgraphs, SubgraphNode, SubgraphConnection } from "@/components/ai/sub
 import { Persona, PersonaSelector, PersonaCard } from "@/components/ai/persona";
 import { HumanInLoopCard, ApprovalQueue, ApprovalRequest as ApprovalReq } from "@/components/ai/human-in-loop";
 import { ModelFallback, FallbackChain, ModelStatus } from "@/components/ai/model-fallback";
-import { ContextManager, ContextWindow, ContextItem } from "@/components/ai/context-management";
-import { RAGPanel, DocumentList, RetrievalResults } from "@/components/ai/rag";
+import { ContextWindowManager, ContextSourceCard, ContextInjectionPanel } from "@/components/ai/context-management";
+import { RetrievalResults, KnowledgeBaseList, ChunkDisplay } from "@/components/ai/rag";
 import { InlineConfirmation, ConfirmationDialog } from "@/components/ai/confirmation";
 import {
   TaskStatusIcon,
