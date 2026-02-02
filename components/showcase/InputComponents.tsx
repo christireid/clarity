@@ -5,6 +5,12 @@ import { ChatInput } from "@/components/ai/chat-input";
 import { ModelSelector } from "@/components/ai/model-selector";
 import { CommandPalette } from "@/components/ai/command-palette";
 import { FileUpload } from "@/components/ai/file-upload";
+import { AITextarea, AutocompleteTextarea } from "@/components/ai/ai-textarea";
+import { Composer, ComposerToolbar } from "@/components/ai/composer";
+import { Autocomplete, AutocompleteItem } from "@/components/ai/autocomplete";
+import { MentionInput, MentionList } from "@/components/ai/mentions";
+import { SuggestionChips, SuggestionBar } from "@/components/ai/suggestion-chips";
+import { QuickReplyBar, QuickReply } from "@/components/ai/quick-replies";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 import { Search, Settings, PanelLeft, MessageSquare } from "lucide-react";
@@ -96,6 +102,105 @@ export function InputComponents() {
           accept="image/*,.pdf,.txt,.md,.json"
           maxSize={10 * 1024 * 1024}
         />
+      </ComponentCard>
+
+      {/* AI Textarea */}
+      <ComponentCard
+        title="AI Textarea"
+        description="Textarea with AI autocomplete suggestions"
+      >
+        <AITextarea
+          placeholder="Start typing and AI will suggest completions..."
+          onSubmit={(text) => console.log("Submit:", text)}
+          suggestions={[
+            "Write a function that...",
+            "Explain the concept of...",
+            "Create a component for...",
+          ]}
+        />
+      </ComponentCard>
+
+      {/* Composer */}
+      <ComponentCard
+        title="Message Composer"
+        description="Full-featured message composer with toolbar"
+      >
+        <Composer
+          placeholder="Compose your message..."
+          onSend={(content, attachments) => console.log("Send:", content, attachments)}
+          showToolbar
+          showAttachments
+          showVoice
+        >
+          <ComposerToolbar
+            onBold={() => {}}
+            onItalic={() => {}}
+            onCode={() => {}}
+            onLink={() => {}}
+          />
+        </Composer>
+      </ComponentCard>
+
+      {/* Autocomplete */}
+      <ComponentCard
+        title="Autocomplete Input"
+        description="Input with dropdown suggestions"
+      >
+        <Autocomplete
+          placeholder="Search for a command..."
+          items={[
+            { id: "1", label: "New file", description: "Create a new file" },
+            { id: "2", label: "Open folder", description: "Open a folder" },
+            { id: "3", label: "Save all", description: "Save all open files" },
+            { id: "4", label: "Find in files", description: "Search across project" },
+          ]}
+          onSelect={(item) => console.log("Selected:", item)}
+        />
+      </ComponentCard>
+
+      {/* Mention Input */}
+      <ComponentCard
+        title="Mention Input"
+        description="@ mentions with user suggestions"
+      >
+        <MentionInput
+          placeholder="Type @ to mention someone..."
+          users={[
+            { id: "1", name: "Alice Johnson", avatar: "https://i.pravatar.cc/40?1" },
+            { id: "2", name: "Bob Smith", avatar: "https://i.pravatar.cc/40?2" },
+            { id: "3", name: "Carol White", avatar: "https://i.pravatar.cc/40?3" },
+          ]}
+          onMention={(user) => console.log("Mentioned:", user)}
+          onSubmit={(text, mentions) => console.log("Submit:", text, mentions)}
+        />
+      </ComponentCard>
+
+      {/* Suggestion Chips */}
+      <ComponentCard
+        title="Suggestion Chips"
+        description="Quick action suggestions"
+      >
+        <SuggestionChips
+          suggestions={[
+            { id: "1", label: "Explain this code", onClick: () => {} },
+            { id: "2", label: "Add error handling", onClick: () => {} },
+            { id: "3", label: "Write tests", onClick: () => {} },
+            { id: "4", label: "Optimize performance", onClick: () => {} },
+          ]}
+        />
+      </ComponentCard>
+
+      {/* Quick Replies */}
+      <ComponentCard
+        title="Quick Reply Bar"
+        description="Predefined quick responses"
+      >
+        <QuickReplyBar>
+          <QuickReply onClick={() => {}}>Yes, please continue</QuickReply>
+          <QuickReply onClick={() => {}}>Show me an example</QuickReply>
+          <QuickReply onClick={() => {}}>Explain more</QuickReply>
+          <QuickReply onClick={() => {}}>Start over</QuickReply>
+        </QuickReplyBar>
       </ComponentCard>
     </div>
   );

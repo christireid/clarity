@@ -2,7 +2,12 @@
 
 import * as React from "react";
 import { DataTable, type Column } from "@/components/ai/data-table";
-import { StatCard, BarChartCard, LineChartCard, TokenUsage, RadialProgress, BenchmarkChart } from "@/components/ai/charts";
+import { StatCard, BarChartCard, LineChartCard, TokenUsage, RadialProgress, BenchmarkChart, PieChartCard, AreaChartCard } from "@/components/ai/charts";
+import { Filters, FilterBar, FilterChip } from "@/components/ai/filters";
+import { SchemaDisplay, JSONViewer, SchemaTree } from "@/components/ai/schema-display";
+import { SortableList, SortableItem } from "@/components/ai/sortable-list";
+import { StatsDisplay, StatRow, StatGrid } from "@/components/ai/stats-display";
+import { TableOfContents, TOCItem } from "@/components/ai/table-of-contents";
 import { ComponentCard } from "./ComponentCard";
 
 export function DataComponents() {
@@ -132,6 +137,125 @@ export function DataComponents() {
             { name: "Gemini Pro", score: 86, baseline: 85 },
             { name: "Llama 3", score: 82, baseline: 85 },
           ]}
+        />
+      </ComponentCard>
+
+      {/* Filter Bar */}
+      <ComponentCard
+        title="Filter Bar"
+        description="Filter and search data"
+      >
+        <FilterBar
+          filters={[
+            { id: "status", label: "Status", options: ["Active", "Completed", "Paused"] },
+            { id: "model", label: "Model", options: ["GPT-4", "Claude", "Gemini"] },
+            { id: "date", label: "Date", type: "date" },
+          ]}
+          onFilterChange={(filters) => console.log("Filters:", filters)}
+          onSearch={(query) => console.log("Search:", query)}
+        />
+      </ComponentCard>
+
+      {/* Filter Chips */}
+      <ComponentCard
+        title="Filter Chips"
+        description="Active filter tags"
+      >
+        <div className="flex flex-wrap gap-2">
+          <FilterChip label="Status: Active" onRemove={() => {}} />
+          <FilterChip label="Model: GPT-4" onRemove={() => {}} />
+          <FilterChip label="Date: Last 7 days" onRemove={() => {}} />
+        </div>
+      </ComponentCard>
+
+      {/* Schema Display */}
+      <ComponentCard
+        title="Schema Display"
+        description="Visualize data schemas"
+      >
+        <SchemaDisplay
+          schema={{
+            type: "object",
+            properties: {
+              id: { type: "string", description: "Unique identifier" },
+              name: { type: "string", description: "User name" },
+              email: { type: "string", format: "email" },
+              roles: { type: "array", items: { type: "string" } },
+            },
+            required: ["id", "name", "email"],
+          }}
+        />
+      </ComponentCard>
+
+      {/* JSON Viewer */}
+      <ComponentCard
+        title="JSON Viewer"
+        description="Interactive JSON display"
+      >
+        <JSONViewer
+          data={{
+            user: {
+              id: "123",
+              name: "John Doe",
+              settings: {
+                theme: "dark",
+                notifications: true,
+              },
+            },
+            messages: [
+              { id: "1", content: "Hello" },
+              { id: "2", content: "World" },
+            ],
+          }}
+          collapsed={1}
+        />
+      </ComponentCard>
+
+      {/* Sortable List */}
+      <ComponentCard
+        title="Sortable List"
+        description="Drag and drop reordering"
+      >
+        <SortableList
+          items={[
+            { id: "1", content: "First item" },
+            { id: "2", content: "Second item" },
+            { id: "3", content: "Third item" },
+            { id: "4", content: "Fourth item" },
+          ]}
+          onReorder={(items) => console.log("Reordered:", items)}
+        />
+      </ComponentCard>
+
+      {/* Stats Grid */}
+      <ComponentCard
+        title="Stats Grid"
+        description="Display multiple stats"
+      >
+        <StatGrid>
+          <StatRow label="Total Users" value="12,345" change="+5.2%" />
+          <StatRow label="Active Sessions" value="1,234" change="+12%" />
+          <StatRow label="API Calls" value="89,012" change="-2.1%" />
+          <StatRow label="Error Rate" value="0.12%" change="-8%" />
+        </StatGrid>
+      </ComponentCard>
+
+      {/* Table of Contents */}
+      <ComponentCard
+        title="Table of Contents"
+        description="Document navigation"
+      >
+        <TableOfContents
+          items={[
+            { id: "intro", title: "Introduction", level: 1 },
+            { id: "setup", title: "Getting Started", level: 1 },
+            { id: "install", title: "Installation", level: 2 },
+            { id: "config", title: "Configuration", level: 2 },
+            { id: "usage", title: "Usage", level: 1 },
+            { id: "api", title: "API Reference", level: 1 },
+          ]}
+          activeId="setup"
+          onItemClick={(id) => console.log("Navigate to:", id)}
         />
       </ComponentCard>
     </div>

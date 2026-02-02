@@ -4,6 +4,13 @@ import * as React from "react";
 import { TestResults } from "@/components/ai/test-results";
 import { CommitCard, PullRequestCard, BranchSelector } from "@/components/ai/git-components";
 import { EnvVariablesManager } from "@/components/ai/env-variables";
+import { ErrorPage, NotFoundPage, ServerErrorPage } from "@/components/ai/error-pages";
+import { ErrorBoundary, ErrorFallback } from "@/components/ai/error-boundary";
+import { DebugPanel, DebugLog, DebugInspector } from "@/components/ai/trace-viewer";
+import { SnippetManager, SnippetCard, SnippetEditor } from "@/components/ai/snippet-manager";
+import { WebBrowser, BrowserToolbar } from "@/components/ai/web-browser";
+import { PluginManager, PluginCard } from "@/components/ai/plugin-manager";
+import { MCPManager, MCPServerCard } from "@/components/ai/mcp-manager";
 import { ComponentCard } from "./ComponentCard";
 
 export function DevToolsComponents() {
@@ -114,6 +121,112 @@ export function DevToolsComponents() {
           onAdd={(v) => console.log("Add:", v)}
           onEdit={(id, v) => console.log("Edit:", id, v)}
           onDelete={(id) => console.log("Delete:", id)}
+        />
+      </ComponentCard>
+
+      {/* Error Pages */}
+      <ComponentCard
+        title="Error Pages"
+        description="Styled error page templates"
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="border rounded-lg p-4 h-[200px] flex items-center justify-center">
+            <NotFoundPage compact onGoHome={() => console.log("Go home")} />
+          </div>
+          <div className="border rounded-lg p-4 h-[200px] flex items-center justify-center">
+            <ServerErrorPage compact onRetry={() => console.log("Retry")} />
+          </div>
+        </div>
+      </ComponentCard>
+
+      {/* Error Boundary */}
+      <ComponentCard
+        title="Error Boundary"
+        description="Graceful error handling"
+      >
+        <ErrorFallback
+          error={new Error("Something went wrong")}
+          resetErrorBoundary={() => console.log("Reset")}
+        />
+      </ComponentCard>
+
+      {/* Debug Panel */}
+      <ComponentCard
+        title="Debug Panel"
+        description="Development debugging tools"
+      >
+        <DebugPanel
+          logs={[
+            { id: "1", level: "info", message: "Application started", timestamp: new Date(Date.now() - 5000) },
+            { id: "2", level: "debug", message: "Fetching user data...", timestamp: new Date(Date.now() - 4000) },
+            { id: "3", level: "warn", message: "Cache miss for key: user_123", timestamp: new Date(Date.now() - 3000) },
+            { id: "4", level: "error", message: "Failed to connect to database", timestamp: new Date(Date.now() - 2000) },
+          ]}
+          onClear={() => console.log("Clear logs")}
+        />
+      </ComponentCard>
+
+      {/* Snippet Manager */}
+      <ComponentCard
+        title="Snippet Manager"
+        description="Save and reuse code snippets"
+      >
+        <SnippetManager
+          snippets={[
+            { id: "1", title: "API Request", language: "typescript", code: "const res = await fetch('/api/data');" },
+            { id: "2", title: "React Component", language: "tsx", code: "export function Component() { return <div>Hello</div>; }" },
+          ]}
+          onSelect={(snippet) => console.log("Selected:", snippet)}
+          onCreate={() => console.log("Create new")}
+          onDelete={(id) => console.log("Delete:", id)}
+        />
+      </ComponentCard>
+
+      {/* Web Browser Preview */}
+      <ComponentCard
+        title="Web Browser"
+        description="In-app browser preview"
+      >
+        <div className="h-[300px] border rounded-lg overflow-hidden">
+          <WebBrowser
+            url="https://example.com"
+            onNavigate={(url) => console.log("Navigate:", url)}
+            onRefresh={() => console.log("Refresh")}
+          />
+        </div>
+      </ComponentCard>
+
+      {/* Plugin Manager */}
+      <ComponentCard
+        title="Plugin Manager"
+        description="Manage installed plugins"
+      >
+        <PluginManager
+          plugins={[
+            { id: "1", name: "Code Formatter", description: "Auto-format code on save", enabled: true, version: "1.2.0" },
+            { id: "2", name: "Git Integration", description: "Git commands in chat", enabled: true, version: "2.0.1" },
+            { id: "3", name: "Image Generator", description: "DALL-E integration", enabled: false, version: "0.9.0" },
+          ]}
+          onToggle={(id) => console.log("Toggle:", id)}
+          onConfigure={(id) => console.log("Configure:", id)}
+          onUninstall={(id) => console.log("Uninstall:", id)}
+        />
+      </ComponentCard>
+
+      {/* MCP Manager */}
+      <ComponentCard
+        title="MCP Server Manager"
+        description="Manage Model Context Protocol servers"
+      >
+        <MCPManager
+          servers={[
+            { id: "1", name: "File System", status: "connected", tools: ["read_file", "write_file", "list_dir"] },
+            { id: "2", name: "Database", status: "connected", tools: ["query", "insert", "update"] },
+            { id: "3", name: "Browser", status: "disconnected", tools: ["navigate", "screenshot", "click"] },
+          ]}
+          onConnect={(id) => console.log("Connect:", id)}
+          onDisconnect={(id) => console.log("Disconnect:", id)}
+          onConfigure={(id) => console.log("Configure:", id)}
         />
       </ComponentCard>
     </div>

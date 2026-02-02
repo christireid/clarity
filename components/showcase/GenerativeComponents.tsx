@@ -2,6 +2,11 @@
 
 import * as React from "react";
 import { StreamingText, SuggestionChips, GeneratedForm, ProcessSteps, PredictiveAction, ApprovalRequest, CollapsibleOutput, QuickActions } from "@/components/ai/generative-ui";
+import { ContentPart, TextPart, CodePart, ImagePart, FilePart, ToolResultPart } from "@/components/ai/content-parts";
+import { Steps, Step, StepIndicator } from "@/components/ai/steps";
+import { Generators, TextGenerator, CodeGenerator, ImageGenerator as ImgGen } from "@/components/ai/generators";
+import { QuestionFlow, Question, QuestionOption } from "@/components/ai/question-flow";
+import { AIPromptPanel, PromptInput, PromptHistory } from "@/components/ai/ai-prompt-panel";
 import { ComponentCard } from "./ComponentCard";
 
 export function GenerativeComponents() {
@@ -110,13 +115,108 @@ export function GenerativeComponents() {
         title="Quick Actions"
         description="Context-aware shortcuts"
       >
-        <QuickActions 
+        <QuickActions
           actions={[
             { icon: "copy", label: "Copy", onClick: () => {} },
             { icon: "refresh", label: "Regenerate", onClick: () => {} },
             { icon: "share", label: "Share", onClick: () => {} },
             { icon: "save", label: "Save", onClick: () => {} }
           ]}
+        />
+      </ComponentCard>
+
+      {/* Content Parts */}
+      <ComponentCard
+        title="Content Parts"
+        description="Render different content types"
+      >
+        <div className="space-y-4">
+          <TextPart content="This is a text content part with **markdown** support." />
+          <CodePart language="typescript" code={`function hello() {\n  console.log("Hello!");\n}`} />
+          <FilePart name="document.pdf" size="2.4 MB" type="application/pdf" />
+          <ToolResultPart
+            tool="web_search"
+            result={{ found: 5, query: "React hooks" }}
+            status="success"
+          />
+        </div>
+      </ComponentCard>
+
+      {/* Steps Component */}
+      <ComponentCard
+        title="Steps Indicator"
+        description="Multi-step process visualization"
+      >
+        <Steps current={2}>
+          <Step title="Setup" description="Configure your environment" />
+          <Step title="Install" description="Install dependencies" />
+          <Step title="Build" description="Build your project" />
+          <Step title="Deploy" description="Deploy to production" />
+        </Steps>
+      </ComponentCard>
+
+      {/* Question Flow */}
+      <ComponentCard
+        title="Question Flow"
+        description="Interactive questionnaire"
+      >
+        <QuestionFlow
+          questions={[
+            {
+              id: "1",
+              text: "What type of project are you building?",
+              options: [
+                { label: "Web Application", value: "web" },
+                { label: "Mobile App", value: "mobile" },
+                { label: "API/Backend", value: "api" },
+              ],
+            },
+          ]}
+          currentQuestion={0}
+          onAnswer={(q, a) => console.log("Answer:", q, a)}
+          onComplete={(answers) => console.log("Complete:", answers)}
+        />
+      </ComponentCard>
+
+      {/* AI Prompt Panel */}
+      <ComponentCard
+        title="AI Prompt Panel"
+        description="Dedicated prompt interface"
+      >
+        <AIPromptPanel
+          placeholder="Describe what you want to create..."
+          suggestions={[
+            "Generate a landing page",
+            "Create a dashboard",
+            "Build an API endpoint",
+          ]}
+          onSubmit={(prompt) => console.log("Prompt:", prompt)}
+          showHistory
+        />
+      </ComponentCard>
+
+      {/* Text Generator */}
+      <ComponentCard
+        title="Text Generator"
+        description="Generate text content"
+      >
+        <TextGenerator
+          placeholder="Enter a topic or prompt..."
+          modes={["creative", "professional", "casual"]}
+          onGenerate={(prompt, mode) => console.log("Generate:", prompt, mode)}
+          isGenerating={false}
+        />
+      </ComponentCard>
+
+      {/* Code Generator */}
+      <ComponentCard
+        title="Code Generator"
+        description="Generate code snippets"
+      >
+        <CodeGenerator
+          languages={["typescript", "python", "rust", "go"]}
+          onGenerate={(prompt, language) => console.log("Generate code:", prompt, language)}
+          isGenerating={false}
         />
       </ComponentCard>
     </div>

@@ -6,9 +6,16 @@ import { HotkeyHelpDialog, ShortcutHint, type HotkeyCategory } from "@/component
 import { NotificationCenter, type Notification } from "@/components/ai/notifications";
 import { UserAvatar, ModelAvatar, AvatarGroup, SenderDisplay, TypingAvatar } from "@/components/ai/avatars";
 import { EmptyChatState, EmptyState, WelcomeScreen } from "@/components/ai/empty-states";
+import { LoadingButton, CopyButton, FeedbackButtons, ActionButtonGroup, SendButton, GenerateButton, RegenerateButton, ShareButton as ShareBtn } from "@/components/ai/buttons";
+import { StatusBadge, StatusDot, OnlineStatus, ConnectionStatus, SystemHealth, ActivityIndicator } from "@/components/ai/status";
+import { Timestamp, DurationDisplay, LiveTimer, LastUpdated, MessageTimestamp } from "@/components/ai/timestamp";
+import { ScrollToBottomButton } from "@/components/ai/scroll-button";
+import { DatePicker, DateRangePicker, TimePicker } from "@/components/ai/date-picker";
+import { EmojiPicker, EmojiButton, ReactionPicker } from "@/components/ai/emoji-picker";
+import { ColorPicker, ColorSwatch, ColorPalette } from "@/components/ai/color-picker";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, Wifi, Server } from "lucide-react";
 
 export function UIComponents() {
   const [hotkeyDialogOpen, setHotkeyDialogOpen] = React.useState(false);
@@ -207,6 +214,216 @@ export function UIComponents() {
             { label: "Create content", description: "Write articles, emails, and more", onClick: () => {} },
           ]}
         />
+      </ComponentCard>
+
+      {/* Buttons */}
+      <ComponentCard
+        title="Action Buttons"
+        description="Specialized buttons for AI interactions"
+      >
+        <div className="flex flex-wrap gap-3">
+          <LoadingButton loading={false} onClick={() => {}}>Submit</LoadingButton>
+          <LoadingButton loading={true} onClick={() => {}}>Processing...</LoadingButton>
+          <CopyButton text="Hello World" />
+          <SendButton onClick={() => {}} />
+          <GenerateButton onClick={() => {}} />
+          <RegenerateButton onClick={() => {}} />
+          <ShareBtn onShare={() => {}} />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Feedback Buttons"
+        description="Collect user feedback on AI responses"
+      >
+        <FeedbackButtons
+          onLike={() => console.log("Liked")}
+          onDislike={() => console.log("Disliked")}
+          onCopy={() => console.log("Copied")}
+          onRegenerate={() => console.log("Regenerate")}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Action Button Group"
+        description="Grouped action buttons with menu"
+      >
+        <ActionButtonGroup
+          actions={[
+            { label: "Copy", onClick: () => console.log("Copy"), icon: "copy" },
+            { label: "Share", onClick: () => console.log("Share"), icon: "share" },
+            { label: "Download", onClick: () => console.log("Download"), icon: "download" },
+          ]}
+        />
+      </ComponentCard>
+
+      {/* Status Indicators */}
+      <ComponentCard
+        title="Status Badges"
+        description="Visual status indicators"
+      >
+        <div className="flex flex-wrap gap-3">
+          <StatusBadge status="online" label="Online" />
+          <StatusBadge status="offline" label="Offline" />
+          <StatusBadge status="busy" label="Busy" />
+          <StatusBadge status="away" label="Away" />
+          <StatusBadge status="error" label="Error" />
+          <StatusBadge status="warning" label="Warning" />
+          <StatusBadge status="success" label="Success" />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Status Dots"
+        description="Minimal status indicators"
+      >
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <StatusDot status="online" />
+            <span className="text-sm">Online</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <StatusDot status="busy" />
+            <span className="text-sm">Busy</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <StatusDot status="away" pulse />
+            <span className="text-sm">Away (pulse)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <StatusDot status="offline" />
+            <span className="text-sm">Offline</span>
+          </div>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Connection Status"
+        description="Network connection indicator"
+      >
+        <div className="flex gap-4">
+          <ConnectionStatus status="connected" />
+          <ConnectionStatus status="connecting" />
+          <ConnectionStatus status="disconnected" />
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="System Health"
+        description="Monitor system service status"
+      >
+        <SystemHealth
+          services={[
+            { name: "API Server", status: "healthy", latency: 45 },
+            { name: "Database", status: "healthy", latency: 12 },
+            { name: "Cache", status: "degraded", latency: 234 },
+            { name: "AI Model", status: "healthy", latency: 890 },
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Activity Indicator"
+        description="Show ongoing activity"
+      >
+        <div className="flex items-center gap-4">
+          <ActivityIndicator active={true} label="Processing" />
+          <ActivityIndicator active={false} label="Idle" />
+        </div>
+      </ComponentCard>
+
+      {/* Timestamps */}
+      <ComponentCard
+        title="Timestamps"
+        description="Display dates and times"
+      >
+        <div className="space-y-3">
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground w-32">Relative:</span>
+            <Timestamp date={new Date(Date.now() - 60000)} format="relative" />
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground w-32">Absolute:</span>
+            <Timestamp date={new Date()} format="absolute" />
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground w-32">Message:</span>
+            <MessageTimestamp date={new Date()} edited />
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground w-32">Last Updated:</span>
+            <LastUpdated date={new Date(Date.now() - 3600000)} />
+          </div>
+        </div>
+      </ComponentCard>
+
+      <ComponentCard
+        title="Duration & Timer"
+        description="Display durations and live timers"
+      >
+        <div className="flex items-center gap-6">
+          <DurationDisplay seconds={3661} />
+          <LiveTimer startTime={new Date(Date.now() - 30000)} />
+        </div>
+      </ComponentCard>
+
+      {/* Date & Time Pickers */}
+      <ComponentCard
+        title="Date Picker"
+        description="Select dates with calendar"
+      >
+        <div className="flex gap-4">
+          <DatePicker
+            value={new Date()}
+            onChange={(date) => console.log("Date:", date)}
+          />
+          <TimePicker
+            value="14:30"
+            onChange={(time) => console.log("Time:", time)}
+          />
+        </div>
+      </ComponentCard>
+
+      {/* Emoji Picker */}
+      <ComponentCard
+        title="Emoji Picker"
+        description="Select emojis and reactions"
+      >
+        <div className="flex gap-4">
+          <EmojiButton onSelect={(emoji) => console.log("Emoji:", emoji)} />
+          <ReactionPicker
+            onSelect={(emoji) => console.log("Reaction:", emoji)}
+            reactions={["👍", "❤️", "😂", "😮", "😢", "😡"]}
+          />
+        </div>
+      </ComponentCard>
+
+      {/* Color Picker */}
+      <ComponentCard
+        title="Color Picker"
+        description="Select colors for customization"
+      >
+        <div className="flex items-center gap-4">
+          <ColorPicker
+            value="#3b82f6"
+            onChange={(color) => console.log("Color:", color)}
+          />
+          <ColorPalette
+            colors={["#ef4444", "#f97316", "#eab308", "#22c55e", "#3b82f6", "#8b5cf6"]}
+            value="#3b82f6"
+            onChange={(color) => console.log("Palette color:", color)}
+          />
+        </div>
+      </ComponentCard>
+
+      {/* Scroll Button */}
+      <ComponentCard
+        title="Scroll to Bottom"
+        description="Jump to bottom of chat"
+      >
+        <div className="relative h-20 border rounded flex items-center justify-center">
+          <ScrollToBottomButton onClick={() => console.log("Scroll to bottom")} visible />
+        </div>
       </ComponentCard>
     </div>
   );
