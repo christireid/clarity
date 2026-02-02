@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { ChatGPTClone, ClaudeClone, PerplexityClone, GrokClone } from "@/components/ai/chat-clones";
+import { ChatGPTClone, ClaudeClone, PerplexityClone } from "@/components/ai/chat-clones";
+import { ManusChat, EmergentChat, LoveableChat } from "@/components/ai/chat-clones-extended";
 import { ComponentCard } from "./ComponentCard";
 
+// Consolidated Platform Clones - each with distinct UX patterns
 export function CloneComponents() {
   const sampleMessages = [
     { id: "1", role: "user" as const, content: "What is the best way to learn programming?" },
@@ -13,9 +15,10 @@ export function CloneComponents() {
 
   return (
     <div className="space-y-8">
+      {/* Sidebar Navigation Pattern */}
       <ComponentCard
         title="ChatGPT Clone"
-        description="OpenAI ChatGPT-style interface with dark theme"
+        description="Sidebar navigation with conversation history"
       >
         <div className="h-[500px] border border-border rounded-lg overflow-hidden">
           <ChatGPTClone
@@ -25,9 +28,10 @@ export function CloneComponents() {
         </div>
       </ComponentCard>
 
+      {/* Minimal Clean Design Pattern */}
       <ComponentCard
         title="Claude Clone"
-        description="Anthropic Claude-style interface with clean design"
+        description="Minimal clean interface with model selector"
       >
         <div className="h-[500px] border border-border rounded-lg overflow-hidden">
           <ClaudeClone
@@ -37,9 +41,10 @@ export function CloneComponents() {
         </div>
       </ComponentCard>
 
+      {/* Search + Sources Pattern */}
       <ComponentCard
         title="Perplexity Clone"
-        description="Perplexity-style interface with sources"
+        description="Search-focused with inline sources and focus modes"
       >
         <div className="h-[500px] border border-border rounded-lg overflow-hidden">
           <PerplexityClone
@@ -60,16 +65,28 @@ export function CloneComponents() {
         </div>
       </ComponentCard>
 
+      {/* Developer Tools Pattern */}
       <ComponentCard
-        title="Grok Clone"
-        description="xAI Grok-style interface with personality"
+        title="Manus Chat"
+        description="Developer-focused with slash commands"
       >
-        <div className="h-[500px] border border-border rounded-lg overflow-hidden">
-          <GrokClone
-            messages={sampleMessages}
-            onSendMessage={(msg) => console.log("Send:", msg)}
-          />
-        </div>
+        <ManusChat className="h-[600px]" />
+      </ComponentCard>
+
+      {/* Agent/Tool Display Pattern */}
+      <ComponentCard
+        title="Emergent Chat"
+        description="Agent-focused with tool metadata display"
+      >
+        <EmergentChat className="h-[600px]" />
+      </ComponentCard>
+
+      {/* Creative/Emotional Pattern */}
+      <ComponentCard
+        title="Loveable Chat"
+        description="Friendly creative interface with reactions"
+      >
+        <LoveableChat className="h-[600px]" />
       </ComponentCard>
     </div>
   );

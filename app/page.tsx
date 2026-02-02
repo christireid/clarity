@@ -22,7 +22,6 @@ import {
   Users,
   User,
   Sparkles,
-  Layers,
   Menu,
   X,
   ChevronRight,
@@ -37,7 +36,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
-// Import Refactored Sections
+// Import Showcase Sections - Consolidated with no overlaps
 import { ChatComponents } from "@/components/showcase/ChatComponents";
 import { CodeComponents } from "@/components/showcase/CodeComponents";
 import { InputComponents } from "@/components/showcase/InputComponents";
@@ -59,60 +58,48 @@ import { SafetyComponents } from "@/components/showcase/SafetyComponents";
 import { ObservabilityComponents } from "@/components/showcase/ObservabilityComponents";
 import { CollaborationComponents } from "@/components/showcase/CollaborationComponents";
 import { AuthComponents } from "@/components/showcase/AuthComponents";
-import { DashboardTokenSection } from "@/components/showcase/DashboardTokenSection";
-import { DashboardAgentSection } from "@/components/showcase/DashboardAgentSection";
-import { DashboardPromptSection } from "@/components/showcase/DashboardPromptSection";
-import { DashboardContextSection } from "@/components/showcase/DashboardContextSection";
 import { RealtimeComponents } from "@/components/showcase/RealtimeComponents";
 import { AdvancedMessagingComponents } from "@/components/showcase/AdvancedMessagingComponents";
 import { VoiceComponents } from "@/components/showcase/VoiceComponents";
-import { VisualEffectsComponents } from "@/components/showcase/VisualEffectsComponents";
-import { InteractiveFxComponents } from "@/components/showcase/InteractiveFxComponents";
-import { TextFxComponents } from "@/components/showcase/TextFxComponents";
-import { BackgroundFxComponents } from "@/components/showcase/BackgroundFxComponents";
+import { EffectsComponents } from "@/components/showcase/EffectsComponents";
 import { UIPatternsComponents } from "@/components/showcase/UIPatternsComponents";
-import { AdvancedFxComponents } from "@/components/showcase/AdvancedFxComponents";
-import { ChatClonesExtendedComponents } from "@/components/showcase/ChatClonesExtendedComponents";
 import { HeroSection } from "@/components/showcase/HeroSection";
 
+// Consolidated categories - each with distinct value, no overlaps
 const componentCategories = [
+  // Core Chat
   { id: "chat", label: "Chat & Messages", icon: MessageSquare, description: "Core chat interface components" },
-  { id: "code", label: "Code & Preview", icon: Code, description: "Code blocks, diffs, and live previews" },
-  { id: "input", label: "Input & Commands", icon: Command, description: "Advanced input with palettes" },
-  { id: "agent", label: "Agent & Tools", icon: Bot, description: "Tool calling and agent workflows" },
-  { id: "canvas", label: "Canvas & Workflow", icon: Workflow, description: "Node-based visual editors" },
-  { id: "management", label: "Management", icon: Settings, description: "Settings, prompts, and queues" },
-  { id: "prompts", label: "Prompt Tooling", icon: FileText, description: "Prompt chains, testing, and versioning" },
-  { id: "tokens", label: "Token Management", icon: Zap, description: "Budget, optimization, and cost tracking" },
-  { id: "media", label: "Media & Sources", icon: FileText, description: "Audio, images, and citations" },
-  { id: "loaders", label: "Loaders & States", icon: Zap, description: "Skeletons and loading states" },
-  { id: "data", label: "Data & Charts", icon: BarChart3, description: "Tables, charts, and visualizations" },
-  { id: "dev", label: "Dev Tools", icon: TestTube, description: "Git, tests, and env variables" },
-  { id: "ui", label: "UI Components", icon: Keyboard, description: "Forms, hotkeys, and notifications" },
-  { id: "clones", label: "Chat Clones", icon: Laptop, description: "ChatGPT, Claude, Perplexity, Grok" },
-  { id: "diagrams", label: "Diagrams & Links", icon: Link2, description: "Mermaid, link previews, tooltips" },
-  { id: "generative", label: "Generative UI", icon: Boxes, description: "Streaming, suggestions, approvals" },
-  { id: "memory", label: "Memory & Context", icon: Database, description: "Memory management and persistence" },
-  { id: "safety", label: "Safety & Guardrails", icon: Shield, description: "Moderation, PII, fact-checking" },
-  { id: "observability", label: "Observability", icon: Activity, description: "Traces, costs, rate limits" },
-  { id: "collaboration", label: "Collaboration", icon: Users, description: "Real-time cursors, comments" },
-  { id: "auth", label: "Auth & Profile", icon: User, description: "Login, signup, profile management" },
-  // Dashboards
-  { id: "dashboard-token", label: "Token Dashboard", icon: Zap, description: "Token optimization & observability" },
-  { id: "dashboard-agent", label: "Agent Dashboard", icon: Bot, description: "Agentic task management" },
-  { id: "dashboard-prompt", label: "Prompt Dashboard", icon: FileText, description: "Prompt library & management" },
-  { id: "dashboard-context", label: "Context Dashboard", icon: Database, description: "Conversation history & memory" },
-  // Additional Categories
-  { id: "realtime", label: "Real-time Features", icon: Activity, description: "Presence, typing, reactions" },
+  { id: "input", label: "Input & Commands", icon: Command, description: "Advanced input with command palette" },
   { id: "messaging", label: "Advanced Messaging", icon: MessageSquare, description: "Threads, pins, search, forward" },
   { id: "voice", label: "Voice & Audio", icon: Activity, description: "Speech-to-text, TTS, recording" },
-  { id: "visual", label: "Visual Effects", icon: Sparkles, description: "Particles, beams, animations" },
-  { id: "interactive-fx", label: "Interactive Effects", icon: Sparkles, description: "Ripple, magnetic, 3D tilt effects" },
-  { id: "text-fx", label: "Text Animations", icon: FileText, description: "Typewriter, reveal, morphing text" },
-  { id: "background-fx", label: "Background Effects", icon: Layers, description: "Aurora, gradients, patterns" },
+  { id: "realtime", label: "Real-time Features", icon: Activity, description: "Presence, typing, reactions" },
+  // AI & Agents
+  { id: "agent", label: "Agent & Tools", icon: Bot, description: "Tool calling and agent workflows" },
+  { id: "generative", label: "Generative UI", icon: Boxes, description: "Streaming, suggestions, approvals" },
+  { id: "memory", label: "Memory & Context", icon: Database, description: "Memory management and RAG" },
+  { id: "tokens", label: "Token Management", icon: Zap, description: "Budget, optimization, and costs" },
+  // Development
+  { id: "code", label: "Code & Preview", icon: Code, description: "Code blocks, diffs, and previews" },
+  { id: "dev", label: "Dev Tools", icon: TestTube, description: "Git, tests, and env variables" },
+  { id: "prompts", label: "Prompt Tooling", icon: FileText, description: "Prompt chains and versioning" },
+  { id: "canvas", label: "Canvas & Workflow", icon: Workflow, description: "Node-based visual editors" },
+  // Data & Media
+  { id: "data", label: "Data & Charts", icon: BarChart3, description: "Tables, charts, visualizations" },
+  { id: "media", label: "Media & Sources", icon: FileText, description: "Audio, images, citations" },
+  { id: "diagrams", label: "Diagrams & Links", icon: Link2, description: "Mermaid, link previews" },
+  // UI Foundation
+  { id: "ui", label: "UI Primitives", icon: Keyboard, description: "Forms, hotkeys, notifications" },
+  { id: "loaders", label: "Loading States", icon: Zap, description: "Skeletons and indicators" },
+  { id: "effects", label: "Effects & Animations", icon: Sparkles, description: "Particles, text fx, interactions" },
   { id: "ui-patterns", label: "UI Patterns", icon: Boxes, description: "Marquee, tabs, carousels" },
-  { id: "advanced-fx", label: "Advanced Effects", icon: Sparkles, description: "Floating, morphing, 3D flips" },
-  { id: "chat-clones-extended", label: "Platform Clones", icon: MessageSquare, description: "Manus, Emergent, Loveable" },
+  // Platform & Safety
+  { id: "clones", label: "Platform Clones", icon: Laptop, description: "ChatGPT, Claude, Perplexity+" },
+  { id: "safety", label: "Safety & Guardrails", icon: Shield, description: "Moderation, PII, fact-check" },
+  { id: "observability", label: "Observability", icon: Activity, description: "Traces, costs, rate limits" },
+  // Collaboration & Auth
+  { id: "collaboration", label: "Collaboration", icon: Users, description: "Real-time cursors, comments" },
+  { id: "auth", label: "Auth & Profile", icon: User, description: "Login, signup, profiles" },
+  { id: "management", label: "Settings", icon: Settings, description: "App settings and config" },
 ];
 
 export default function ComponentShowcase() {
@@ -122,41 +109,39 @@ export default function ComponentShowcase() {
 
   const renderActiveComponent = () => {
     switch (activeCategory) {
+      // Core Chat
       case "chat": return <ChatComponents />;
-      case "code": return <CodeComponents />;
       case "input": return <InputComponents />;
-      case "agent": return <AgentComponents />;
-      case "canvas": return <CanvasComponents />;
-      case "management": return <ManagementComponents />;
-      case "prompts": return <PromptToolingComponents />;
-      case "tokens": return <TokenManagementComponents />;
-      case "media": return <MediaComponents />;
-      case "loaders": return <LoaderComponents />;
-      case "data": return <DataComponents />;
-      case "dev": return <DevToolsComponents />;
-      case "ui": return <UIComponents />;
-      case "clones": return <CloneComponents />;
-      case "diagrams": return <DiagramComponents />;
-      case "generative": return <GenerativeComponents />;
-      case "memory": return <MemoryComponents />;
-      case "safety": return <SafetyComponents />;
-      case "observability": return <ObservabilityComponents />;
-      case "collaboration": return <CollaborationComponents />;
-      case "auth": return <AuthComponents />;
-      case "dashboard-token": return <DashboardTokenSection />;
-      case "dashboard-agent": return <DashboardAgentSection />;
-      case "dashboard-prompt": return <DashboardPromptSection />;
-      case "dashboard-context": return <DashboardContextSection />;
-      case "realtime": return <RealtimeComponents />;
       case "messaging": return <AdvancedMessagingComponents />;
       case "voice": return <VoiceComponents />;
-      case "visual": return <VisualEffectsComponents />;
-      case "interactive-fx": return <InteractiveFxComponents />;
-      case "text-fx": return <TextFxComponents />;
-      case "background-fx": return <BackgroundFxComponents />;
+      case "realtime": return <RealtimeComponents />;
+      // AI & Agents
+      case "agent": return <AgentComponents />;
+      case "generative": return <GenerativeComponents />;
+      case "memory": return <MemoryComponents />;
+      case "tokens": return <TokenManagementComponents />;
+      // Development
+      case "code": return <CodeComponents />;
+      case "dev": return <DevToolsComponents />;
+      case "prompts": return <PromptToolingComponents />;
+      case "canvas": return <CanvasComponents />;
+      // Data & Media
+      case "data": return <DataComponents />;
+      case "media": return <MediaComponents />;
+      case "diagrams": return <DiagramComponents />;
+      // UI Foundation
+      case "ui": return <UIComponents />;
+      case "loaders": return <LoaderComponents />;
+      case "effects": return <EffectsComponents />;
       case "ui-patterns": return <UIPatternsComponents />;
-      case "advanced-fx": return <AdvancedFxComponents />;
-      case "chat-clones-extended": return <ChatClonesExtendedComponents />;
+      // Platform & Safety
+      case "clones": return <CloneComponents />;
+      case "safety": return <SafetyComponents />;
+      case "observability": return <ObservabilityComponents />;
+      // Collaboration & Auth
+      case "collaboration": return <CollaborationComponents />;
+      case "auth": return <AuthComponents />;
+      case "management": return <ManagementComponents />;
       default: return <ChatComponents />;
     }
   };
