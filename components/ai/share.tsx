@@ -131,7 +131,7 @@ export function ShareButton({
             <span className="ml-2">{option.label}</span>
           </DropdownMenuItem>
         ))}
-        {typeof navigator !== "undefined" && navigator.share && (
+        {typeof navigator !== "undefined" && typeof navigator.share === "function" && (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleNativeShare}>

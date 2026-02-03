@@ -85,8 +85,10 @@ export class MessageCompressor {
       }
     } else {
       // Browser environment - use CompressionStream if available
+      // Note: CompressionStream only supports 'gzip' and 'deflate', not 'brotli'
+      const browserAlgorithm: CompressionFormat = algorithm === 'brotli' ? 'gzip' : algorithm;
       if ('CompressionStream' in window) {
-        const stream = new CompressionStream(algorithm);
+        const stream = new CompressionStream(browserAlgorithm);
         const writer = stream.writable.getWriter();
         writer.write(new TextEncoder().encode(text));
         writer.close();
@@ -175,8 +177,10 @@ export class MessageCompressor {
       }
     } else {
       // Browser environment
+      // Note: DecompressionStream only supports 'gzip' and 'deflate', not 'brotli'
+      const browserAlgorithm: CompressionFormat = algorithm === 'brotli' ? 'gzip' : algorithm;
       if ('DecompressionStream' in window) {
-        const stream = new DecompressionStream(algorithm);
+        const stream = new DecompressionStream(browserAlgorithm);
         const writer = stream.writable.getWriter();
         
         const bytes = Uint8Array.from(atob(compressed), c => c.charCodeAt(0));

@@ -216,7 +216,7 @@ export function FilterDropdown({
           <div className="max-h-64 overflow-auto p-2">
             {filteredOptions?.map((option) => {
               const isSelected = Array.isArray(value)
-                ? value.includes(option.value)
+                ? (value as string[]).includes(option.value)
                 : value === option.value;
 
               return (
@@ -338,7 +338,7 @@ export function FilterPanel({
                 {group.options?.map((option) => {
                   const currentValue = filters[group.id];
                   const isSelected = Array.isArray(currentValue)
-                    ? currentValue.includes(option.value)
+                    ? (currentValue as string[]).includes(option.value)
                     : currentValue === option.value;
 
                   return (

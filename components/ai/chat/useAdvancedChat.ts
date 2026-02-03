@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { Message, Attachment } from './types';
+import { Message, Attachment, ThinkingStep } from './types';
 import { TokenOptimizer } from '@/lib/token-optimization';
 import { StreamParser } from '@/lib/streaming/StreamParser';
 import { StreamType } from '@/lib/streaming/StreamProtocol';
@@ -53,7 +53,7 @@ export function useAdvancedChat({
   api = process.env.NEXT_PUBLIC_BACKEND_URL ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chat/stream` : '/api/chat/stream',
   initialMessages = [],
   optimizerConfig = { enabled: true, contextWindow: 4000 },
-  initialConfig = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-5.2' },
+  initialConfig = { systemPrompt: 'You are a helpful assistant.', temperature: 0.7, model: 'gpt-5.2', provider: 'mock' as const },
   persistenceKey,
   middleware = [],
   onResponse,
@@ -118,7 +118,7 @@ export function useAdvancedChat({
       }
       
       const userMessage = processedMessages[0]; 
-      let newMessages = [...messages, userMessage];
+      const newMessages = [...messages, userMessage];
       setMessages(newMessages);
 
       // 2. Compile System Prompt
@@ -182,15 +182,15 @@ export function useAdvancedChat({
              
              // Better: Just append content for now, or create discrete steps.
              // Backend sends "8:Text\n". 
-             const newStep = { 
-               id: Math.random().toString(), 
-               type: 'thinking', 
-               content: part.content, 
-               status: 'active' 
+             const newStep: ThinkingStep = {
+               id: Math.random().toString(),
+               type: 'thinking' as const,
+               content: part.content,
+               status: 'active' as const
              };
              
              // Mark previous steps as complete
-             const updatedSteps = (m.thinkingSteps || []).map(s => ({ ...s, status: 'complete' }));
+             const updatedSteps = (m.thinkingSteps || []).map(s => ({ ...s, status: 'complete' as const }));
              return { ...m, thinkingSteps: [...updatedSteps, newStep], status: 'streaming' };
           }
 
@@ -233,7 +233,7 @@ export function useAdvancedChat({
       // Mark final message and thinking steps as sent/complete
       setMessages(prev => prev.map(m => {
         if (m.id === aiResponseId) {
-           const completedSteps = (m.thinkingSteps || []).map(s => ({ ...s, status: 'complete' }));
+           const completedSteps = (m.thinkingSteps || []).map(s => ({ ...s, status: 'complete' as const }));
            return { ...m, status: 'sent', thinkingSteps: completedSteps };
         }
         return m;

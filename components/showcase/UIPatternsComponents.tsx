@@ -24,22 +24,32 @@ export function UIPatternsComponents() {
         title="Bento Grid"
         description="Grid layout for features"
       >
-        <BentoGrid 
-          items={[
-            { title: "Feature 1", description: "Desc 1", header: <div className="h-full w-full bg-red-100" />, className: "md:col-span-2" },
-            { title: "Feature 2", description: "Desc 2", header: <div className="h-full w-full bg-blue-100" />, className: "md:col-span-1" },
-            { title: "Feature 3", description: "Desc 3", header: <div className="h-full w-full bg-green-100" />, className: "md:col-span-1" },
-          ]}
-        />
+        <BentoGrid>
+          <div className="md:col-span-2 bg-red-100/50 p-4 rounded-lg">
+            <h3 className="font-semibold">Feature 1</h3>
+            <p className="text-sm text-muted-foreground">Description 1</p>
+          </div>
+          <div className="bg-blue-100/50 p-4 rounded-lg">
+            <h3 className="font-semibold">Feature 2</h3>
+            <p className="text-sm text-muted-foreground">Description 2</p>
+          </div>
+          <div className="bg-green-100/50 p-4 rounded-lg">
+            <h3 className="font-semibold">Feature 3</h3>
+            <p className="text-sm text-muted-foreground">Description 3</p>
+          </div>
+        </BentoGrid>
       </ComponentCard>
 
       <ComponentCard
         title="Animated Tabs"
         description="Tabs with sliding indicator"
       >
-        <AnimatedTabs 
-          tabs={["Account", "Password", "Settings"]} 
-          onChange={(tab) => console.log(tab)}
+        <AnimatedTabs
+          tabs={[
+            { id: "account", label: "Account", content: <div className="p-4">Account settings content</div> },
+            { id: "password", label: "Password", content: <div className="p-4">Password settings content</div> },
+            { id: "settings", label: "Settings", content: <div className="p-4">General settings content</div> }
+          ]}
         />
       </ComponentCard>
     </div>

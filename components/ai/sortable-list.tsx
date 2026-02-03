@@ -173,7 +173,7 @@ export function SortableList({
 }
 
 // Priority List
-export interface PriorityItem {
+export interface PriorityItem extends Record<string, unknown> {
   id: string;
   title: string;
   priority: "high" | "medium" | "low";
@@ -394,7 +394,7 @@ export function NumberedList({ items, onReorder, className }: NumberedListProps)
 }
 
 // Kanban-style Column List
-export interface KanbanItem {
+export interface KanbanItem extends Record<string, unknown> {
   id: string;
   title: string;
   description?: string;

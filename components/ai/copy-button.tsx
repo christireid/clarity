@@ -326,7 +326,7 @@ export interface UseCopyReturn {
 export function useCopy(options: UseCopyOptions = {}): UseCopyReturn {
   const { timeout = 2000, onSuccess, onError } = options;
   const [status, setStatus] = React.useState<CopyStatus>("idle");
-  const timeoutRef = React.useRef<NodeJS.Timeout>();
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const reset = React.useCallback(() => {
     if (timeoutRef.current) {

@@ -6,6 +6,18 @@ import { CostDisplay, CostSummaryCard, BudgetProgress, ModelPricingTable } from 
 import { RateLimitBadge, RateLimitProgress, APIUsageDashboard } from "@/components/ai/rate-limiting";
 import { ComponentCard } from "./ComponentCard";
 
+const sampleSpans = [
+  { id: "s1", name: "Retrieve Context", type: "retrieval" as const, startTime: new Date("2024-01-01T10:00:00"), duration: 300, status: "success" as const },
+  { id: "s2", name: "LLM Call", type: "llm" as const, startTime: new Date("2024-01-01T10:00:00.300"), duration: 800, status: "success" as const },
+  { id: "s3", name: "Format Output", type: "custom" as const, startTime: new Date("2024-01-01T10:00:01.100"), duration: 100, status: "success" as const }
+];
+
+const sampleTraces = [
+  { id: "t1", name: "Generate Report", startTime: new Date("2024-01-01T10:00:00"), status: "success" as const, spans: sampleSpans },
+  { id: "t2", name: "Code Analysis", startTime: new Date("2024-01-01T09:59:00"), status: "error" as const, spans: [] },
+  { id: "t3", name: "Summarization", startTime: new Date("2024-01-01T09:58:00"), status: "success" as const, spans: [] }
+];
+
 export function ObservabilityComponents() {
   return (
     <div className="space-y-8">
@@ -13,19 +25,8 @@ export function ObservabilityComponents() {
         title="Trace Viewer"
         description="Visualize request traces"
       >
-        <TraceViewer 
-          trace={{
-            id: "t1",
-            name: "Generate Report",
-            startTime: new Date("2024-01-01T10:00:00"),
-            duration: 1200,
-            status: "success",
-            spans: [
-              { id: "s1", name: "Retrieve Context", startTime: 0, duration: 300, status: "success" },
-              { id: "s2", name: "LLM Call", startTime: 300, duration: 800, status: "success" },
-              { id: "s3", name: "Format Output", startTime: 1100, duration: 100, status: "success" }
-            ]
-          }}
+        <TraceViewer
+          trace={sampleTraces[0]}
         />
       </ComponentCard>
 
@@ -33,26 +34,22 @@ export function ObservabilityComponents() {
         title="Trace List"
         description="List of recent traces"
       >
-        <TraceList 
-          traces={[
-            { id: "t1", name: "Generate Report", timestamp: new Date("2024-01-01T10:00:00"), duration: 1200, status: "success" },
-            { id: "t2", name: "Code Analysis", timestamp: new Date("2024-01-01T09:59:00"), duration: 4500, status: "error" },
-            { id: "t3", name: "Summarization", timestamp: new Date("2024-01-01T09:58:00"), duration: 800, status: "success" }
-          ]}
-          onSelect={(id) => console.log("Selected trace:", id)}
+        <TraceList
+          traces={sampleTraces}
+          onTraceSelect={(trace) => console.log("Selected trace:", trace.id)}
         />
       </ComponentCard>
 
       <ComponentCard
         title="Debug Panel"
-        description="Inspect variables and state"
+        description="Inspect logs and state"
       >
-        <DebugPanel 
-          variables={{
-            user: "John Doe",
-            contextLength: 4096,
-            activePlugins: ["search", "code"]
-          }}
+        <DebugPanel
+          logs={[
+            { timestamp: new Date(), level: "info", message: "Starting request", data: { user: "John Doe" } },
+            { timestamp: new Date(), level: "debug", message: "Context length: 4096" },
+            { timestamp: new Date(), level: "warn", message: "High token usage detected" }
+          ]}
         />
       </ComponentCard>
 
@@ -61,15 +58,21 @@ export function ObservabilityComponents() {
         description="Monitor API costs"
       >
         <div className="grid gap-4 md:grid-cols-2">
-          <CostDisplay amount={0.045} currency="USD" label="Cost per request" />
-          <CostSummaryCard 
-            total={12.50} 
-            trend={+5} 
-            period="This Month" 
-            breakdown={[
-              { label: "GPT-4", amount: 10.00 },
-              { label: "GPT-3.5", amount: 2.50 }
-            ]}
+          <CostDisplay amount={0.045} />
+          <CostSummaryCard
+            summary={{
+              totalCost: 12.50,
+              periodStart: new Date("2024-01-01"),
+              periodEnd: new Date("2024-01-31"),
+              byModel: [
+                { model: "GPT-4", cost: 10.00, percentage: 80 },
+                { model: "GPT-3.5", cost: 2.50, percentage: 20 }
+              ],
+              byOperation: [
+                { operation: "Chat", cost: 12.50, percentage: 100 }
+              ],
+              trend: 5
+            }}
           />
         </div>
       </ComponentCard>
@@ -78,7 +81,14 @@ export function ObservabilityComponents() {
         title="Budget Progress"
         description="Track spending against budget"
       >
-        <BudgetProgress used={45} limit={100} currency="USD" />
+        <BudgetProgress
+          budget={{
+            limit: 100,
+            used: 45,
+            alertThreshold: 80,
+            period: "monthly"
+          }}
+        />
       </ComponentCard>
 
       <ComponentCard
@@ -87,15 +97,14 @@ export function ObservabilityComponents() {
       >
         <div className="space-y-4">
           <div className="flex gap-4">
-            <RateLimitBadge status="ok" limit={100} remaining={85} />
-            <RateLimitBadge status="warning" limit={100} remaining={15} />
-            <RateLimitBadge status="critical" limit={100} remaining={0} />
+            <RateLimitBadge status="ok" remaining={85} />
+            <RateLimitBadge status="warning" remaining={15} />
+            <RateLimitBadge status="critical" remaining={0} />
           </div>
-          <RateLimitProgress 
-            endpoint="/v1/chat/completions"
-            limit={60}
+          <RateLimitProgress
             used={45}
-            resetIn="15s"
+            limit={60}
+            label="API Calls"
           />
         </div>
       </ComponentCard>

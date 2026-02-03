@@ -104,7 +104,7 @@ export function Loader({
       )}
     >
       {renderLoader()}
-      {text && variant !== "shimmer" && (
+      {text && (
         <span className={cn("text-muted-foreground", sizes.text, textClassName)}>
           {text}
         </span>

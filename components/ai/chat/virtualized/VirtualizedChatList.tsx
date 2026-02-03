@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { VariableSizeList as List } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import React, { useEffect, useRef, useState } from 'react';
 import { useChat } from '../Chat';
 import { ChatBubble } from '../ChatBubble';
 import { cn } from '@/lib/utils';
@@ -13,103 +11,73 @@ interface VirtualizedChatListProps {
   renderBubble?: (message: Message) => React.ReactNode;
 }
 
-// Map to store row heights
-const rowHeights = new Map<number, number>();
-
+/**
+ * Virtualized Chat List Component
+ *
+ * Note: For full virtualization support, install:
+ * - react-window
+ * - react-virtualized-auto-sizer
+ *
+ * This component provides a basic scrollable chat list implementation.
+ * For large chat histories (1000+ messages), consider adding virtualization.
+ */
 export function VirtualizedChatList({ className, renderBubble }: VirtualizedChatListProps) {
   const { messages } = useChat();
-  const listRef = useRef<List>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [isSticky, setIsSticky] = useState(true);
-  
-  // Ref to hold the list instance to trigger resets
-  const setListRef = useCallback((ref: List | null) => {
-    listRef.current = ref;
-  }, []);
+  const lastMessageCountRef = useRef(messages.length);
 
   // Handle scroll events to detect if user scrolled up
-  const onScroll = useCallback(({ scrollOffset, scrollDirection }: any) => {
-    if (!listRef.current) return;
-    
-    // Simple sticky logic: if we scroll up, disable sticky
-    if (scrollDirection === 'backward') {
-      setIsSticky(false);
-    }
-    
-    // If we are near the bottom, re-enable sticky
-    // Note: react-window doesn't expose total scrollHeight easily in onScroll, 
-    // so we might need a more robust check or just rely on manual "Scroll to Bottom" button
-    // For now, we'll auto-scroll only if we were already sticky OR if new messages arrive and we haven't scrolled far up
-  }, []);
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+    const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
+    setIsSticky(isAtBottom);
+  };
 
   // Scroll to bottom when messages change, ONLY if sticky
   useEffect(() => {
-    if (messages.length > 0 && listRef.current) {
-      if (isSticky) {
-        // Small timeout to allow layout to settle
-        setTimeout(() => {
-          listRef.current?.scrollToItem(messages.length - 1, 'end');
-        }, 50);
-      }
+    if (messages.length > lastMessageCountRef.current && isSticky && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
+    lastMessageCountRef.current = messages.length;
   }, [messages.length, isSticky]);
 
-  const getItemKey = (index: number) => messages[index].id;
+  // Initial scroll to bottom
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, []);
 
-  // Custom Item Renderer that measures itself
-  const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
-    const rowRef = useRef<HTMLDivElement>(null);
-    const message = messages[index];
-
-    useEffect(() => {
-      if (rowRef.current) {
-        const height = rowRef.current.getBoundingClientRect().height;
-        // Add some padding
-        const totalHeight = height + 16; 
-        
-        if (rowHeights.get(index) !== totalHeight) {
-          rowHeights.set(index, totalHeight);
-          listRef.current?.resetAfterIndex(index);
-        }
-      }
-    }, [message, index]);
-
-    return (
-      <div style={style}>
-        <div ref={rowRef} className="px-4 pb-4">
-          {renderBubble ? renderBubble(message) : <ChatBubble message={message} />}
-        </div>
-      </div>
-    );
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      setIsSticky(true);
+    }
   };
-
-  const getItemSize = (index: number) => rowHeights.get(index) || 80; // Default estimate
 
   return (
     <div className={cn("flex-1 h-full min-h-0 relative", className)}>
-      <AutoSizer>
-        {({ height, width }: { height: number; width: number }) => (
-          <List
-            ref={setListRef}
-            height={height}
-            width={width}
-            itemCount={messages.length}
-            itemSize={getItemSize}
-            itemKey={getItemKey}
-            onScroll={onScroll}
-            className="scrollbar-thin"
-          >
-            {Row}
-          </List>
-        )}
-      </AutoSizer>
-      
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="h-full overflow-y-auto scrollbar-thin"
+      >
+        <div className="flex flex-col gap-4 p-4">
+          {messages.map((message) => (
+            <div key={message.id}>
+              {renderBubble ? renderBubble(message) : <ChatBubble message={message} />}
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Scroll to Bottom Button (Visible when not sticky) */}
       {!isSticky && (
-        <button 
-          onClick={() => {
-            setIsSticky(true);
-            listRef.current?.scrollToItem(messages.length - 1, 'end');
-          }}
+        <button
+          onClick={scrollToBottom}
           className="absolute bottom-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs shadow-lg animate-in fade-in"
         >
           Scroll to bottom

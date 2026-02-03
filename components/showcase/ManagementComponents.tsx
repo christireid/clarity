@@ -9,23 +9,23 @@ import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 
 export function ManagementComponents() {
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+
   return (
     <div className="space-y-8">
       <ComponentCard
         title="Settings Panel"
         description="Comprehensive settings interface"
       >
-        <SettingsPanel
-          settings={{
-            theme: "dark",
-            model: "gpt-4",
-            temperature: 0.7,
-            maxTokens: 4096,
-            streamResponse: true,
-            showThinking: true,
-          }}
-          onSettingsChange={(settings) => console.log("Settings:", settings)}
-        />
+        <div className="space-y-4">
+          <Button onClick={() => setSettingsOpen(true)}>Open Settings</Button>
+          <SettingsPanel
+            open={settingsOpen}
+            onClose={() => setSettingsOpen(false)}
+          />
+        </div>
       </ComponentCard>
 
       <ComponentCard
@@ -75,16 +75,26 @@ export function ManagementComponents() {
         description="Confirm destructive actions"
       >
         <div className="flex gap-4">
+          <Button variant="outline" onClick={() => setConfirmOpen(true)}>Open Confirm</Button>
           <ConfirmDialog
+            open={confirmOpen}
+            onOpenChange={setConfirmOpen}
             title="Confirm Action"
             description="Are you sure you want to proceed with this action?"
-            onConfirm={() => console.log("Confirmed")}
-            trigger={<Button variant="outline">Open Confirm</Button>}
+            onConfirm={() => {
+              console.log("Confirmed");
+              setConfirmOpen(false);
+            }}
           />
+          <Button variant="destructive" onClick={() => setDeleteOpen(true)}>Delete</Button>
           <DeleteConfirmDialog
+            open={deleteOpen}
+            onOpenChange={setDeleteOpen}
             itemName="conversation"
-            onDelete={() => console.log("Deleted")}
-            trigger={<Button variant="destructive">Delete</Button>}
+            onConfirm={() => {
+              console.log("Deleted");
+              setDeleteOpen(false);
+            }}
           />
         </div>
       </ComponentCard>

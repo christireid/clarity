@@ -280,7 +280,7 @@ export function MultiAutocomplete({
                       <CommandItem
                         key={option.value}
                         value={option.value}
-                        disabled={option.disabled || (max && value.length >= max && !value.includes(option.value))}
+                        disabled={option.disabled || (max !== undefined && max > 0 && value.length >= max && !value.includes(option.value))}
                         onSelect={() => handleSelect(option.value)}
                       >
                         <div className="flex items-center gap-2 flex-1">

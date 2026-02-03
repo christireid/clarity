@@ -3,15 +3,17 @@ import { ContextWindow } from '../lib/token-optimization/types';
 
 // Mock messages
 const messages = [
-  { role: 'system' as const, content: 'You are a helpful assistant.' },
-  { role: 'user' as const, content: 'Hello, how are you?' },
-  { role: 'assistant' as const, content: 'I am fine, thank you!' },
-  { role: 'user' as const, content: 'Tell me a joke.' },
-  { role: 'assistant' as const, content: 'Why did the chicken cross the road? To get to the other side.' },
+  { id: '1', role: 'system' as const, content: 'You are a helpful assistant.', timestamp: new Date() },
+  { id: '2', role: 'user' as const, content: 'Hello, how are you?', timestamp: new Date() },
+  { id: '3', role: 'assistant' as const, content: 'I am fine, thank you!', timestamp: new Date() },
+  { id: '4', role: 'user' as const, content: 'Tell me a joke.', timestamp: new Date() },
+  { id: '5', role: 'assistant' as const, content: 'Why did the chicken cross the road? To get to the other side.', timestamp: new Date() },
   // Add many more to force compression
   ...Array.from({ length: 50 }).map((_, i) => ({
+    id: `msg-${i}`,
     role: 'user' as const,
-    content: `Message ${i} with some content to take up tokens.`
+    content: `Message ${i} with some content to take up tokens.`,
+    timestamp: new Date()
   }))
 ];
 

@@ -191,7 +191,7 @@ function ImagePart({ part, className }: { part: ImageContentPart; className?: st
     <>
       <figure className={cn("space-y-2", className)}>
         <div className="relative group rounded-lg overflow-hidden bg-muted">
-          <ImageIcon
+          <img
             src={part.url || "/placeholder.svg"}
             alt={part.alt || "Image"}
             width={part.width}
@@ -241,7 +241,7 @@ function ImagePart({ part, className }: { part: ImageContentPart; className?: st
           >
             <X className="h-6 w-6" />
           </Button>
-          <ImageIcon
+          <img
             src={part.url || "/placeholder.svg"}
             alt={part.alt || "Image"}
             className="max-w-full max-h-full object-contain"
@@ -489,7 +489,7 @@ function EmbedPart({ part, className }: { part: EmbedContentPart; className?: st
     >
       {part.image && (
         <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-muted">
-          <ImageIcon
+          <img
             src={part.image || "/placeholder.svg"}
             alt={part.title || "Preview"}
             className="w-full h-full object-cover"
@@ -625,7 +625,7 @@ export function ImageGallery({ images, columns = 3, className }: ImageGalleryPro
             onClick={() => setSelectedIndex(i)}
             className="aspect-square rounded-lg overflow-hidden bg-muted hover:opacity-90 transition-opacity"
           >
-            <ImageIcon
+            <img
               src={image.url || "/placeholder.svg"}
               alt={image.alt || `Image ${i + 1}`}
               className="w-full h-full object-cover"
@@ -648,7 +648,7 @@ export function ImageGallery({ images, columns = 3, className }: ImageGalleryPro
           >
             <X className="h-6 w-6" />
           </Button>
-          <ImageIcon
+          <img
             src={images[selectedIndex].url || "/placeholder.svg"}
             alt={images[selectedIndex].alt || "Image"}
             className="max-w-full max-h-full object-contain"

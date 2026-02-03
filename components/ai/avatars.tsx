@@ -140,7 +140,7 @@ export function ModelAvatar({
               className
             )}
           >
-            {React.cloneElement(style.icon as React.ReactElement, {
+            {React.cloneElement(style.icon as React.ReactElement<{ className?: string }>, {
               className: iconSizes[size],
             })}
           </div>

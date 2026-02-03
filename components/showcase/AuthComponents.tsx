@@ -55,9 +55,12 @@ export function AuthComponents() {
         title="API Key Display"
         description="Secure key management"
       >
-        <APIKeyDisplay 
+        <APIKeyDisplay
           apiKey="sk-test-1234567890abcdef"
-          onCopy={() => console.log("Copied")}
+          name="Production API Key"
+          createdAt={new Date(Date.now() - 86400000 * 30)}
+          lastUsed={new Date(Date.now() - 3600000)}
+          onRevoke={() => console.log("Revoked")}
           onRegenerate={() => console.log("Regenerate")}
         />
       </ComponentCard>

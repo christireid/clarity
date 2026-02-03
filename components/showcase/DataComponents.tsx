@@ -2,7 +2,12 @@
 
 import * as React from "react";
 import { DataTable, type Column } from "@/components/ai/data-table";
-import { StatCard, BarChartCard, LineChartCard, TokenUsage, RadialProgress, BenchmarkChart } from "@/components/ai/charts";
+import { StatCard, BarChartCard, LineChartCard, TokenUsage, RadialProgress, BenchmarkChart, PieChartCard, AreaChartCard } from "@/components/ai/charts";
+import { FilterBar, FilterChip, FilterPanel, SearchWithFilters, QuickFilterTabs } from "@/components/ai/filters";
+import { SchemaDisplay, JSONSchemaViewer, DatabaseSchema } from "@/components/ai/schema-display";
+import { SortableList, SortableItem } from "@/components/ai/sortable-list";
+import { StatCard as StatCardDisplay, StatsGrid, BenchmarkDisplay } from "@/components/ai/stats-display";
+import { TableOfContents, FloatingTOC, ProgressTOC } from "@/components/ai/table-of-contents";
 import { ComponentCard } from "./ComponentCard";
 
 export function DataComponents() {
@@ -132,6 +137,145 @@ export function DataComponents() {
             { name: "Gemini Pro", score: 86, baseline: 85 },
             { name: "Llama 3", score: 82, baseline: 85 },
           ]}
+        />
+      </ComponentCard>
+
+      {/* Filter Bar */}
+      <ComponentCard
+        title="Filter Bar"
+        description="Active filter display"
+      >
+        <FilterBar
+          filters={[
+            { groupId: "status", value: "Active" },
+            { groupId: "model", value: "GPT-4" },
+          ]}
+          groups={[
+            { id: "status", label: "Status", type: "checkbox", options: [{ id: "active", value: "Active", label: "Active" }, { id: "completed", value: "Completed", label: "Completed" }] },
+            { id: "model", label: "Model", type: "checkbox", options: [{ id: "gpt4", value: "GPT-4", label: "GPT-4" }, { id: "claude", value: "Claude", label: "Claude" }] },
+          ]}
+          onRemove={(groupId) => console.log("Remove:", groupId)}
+          onClearAll={() => console.log("Clear all")}
+        />
+      </ComponentCard>
+
+      {/* Filter Chips */}
+      <ComponentCard
+        title="Filter Chips"
+        description="Active filter tags"
+      >
+        <div className="flex flex-wrap gap-2">
+          <FilterChip label="Status: Active" onRemove={() => {}} />
+          <FilterChip label="Model: GPT-4" onRemove={() => {}} />
+          <FilterChip label="Date: Last 7 days" onRemove={() => {}} />
+        </div>
+      </ComponentCard>
+
+      {/* Schema Display */}
+      <ComponentCard
+        title="Schema Display"
+        description="Visualize data schemas"
+      >
+        <SchemaDisplay
+          schema={{
+            type: "object",
+            properties: {
+              id: { type: "string", description: "Unique identifier" },
+              name: { type: "string", description: "User name" },
+              email: { type: "string", format: "email" },
+              roles: { type: "array", items: { type: "string" } },
+            },
+            required: ["id", "name", "email"],
+          }}
+        />
+      </ComponentCard>
+
+      {/* JSON Schema Viewer */}
+      <ComponentCard
+        title="JSON Schema Viewer"
+        description="Interactive JSON schema display"
+      >
+        <JSONSchemaViewer
+          schema={{
+            type: "object",
+            properties: {
+              user: {
+                type: "object",
+                properties: {
+                  id: { type: "string" },
+                  name: { type: "string" },
+                  settings: {
+                    type: "object",
+                    properties: {
+                      theme: { type: "string", enum: ["light", "dark"] },
+                      notifications: { type: "boolean" },
+                    },
+                  },
+                },
+              },
+              messages: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    id: { type: "string" },
+                    content: { type: "string" },
+                  },
+                },
+              },
+            },
+          }}
+        />
+      </ComponentCard>
+
+      {/* Sortable List */}
+      <ComponentCard
+        title="Sortable List"
+        description="Drag and drop reordering"
+      >
+        <SortableList
+          items={[
+            { id: "1", content: "First item" },
+            { id: "2", content: "Second item" },
+            { id: "3", content: "Third item" },
+            { id: "4", content: "Fourth item" },
+          ]}
+          onReorder={(items) => console.log("Reordered:", items)}
+        />
+      </ComponentCard>
+
+      {/* Stats Grid */}
+      <ComponentCard
+        title="Stats Grid"
+        description="Display multiple stats"
+      >
+        <StatsGrid
+          stats={[
+            { title: "Total Users", value: "12,345", change: { value: 5.2, type: "increase" } },
+            { title: "Active Sessions", value: "1,234", change: { value: 12, type: "increase" } },
+            { title: "API Calls", value: "89,012", change: { value: 2.1, type: "decrease" } },
+            { title: "Error Rate", value: "0.12%", change: { value: 8, type: "decrease" } },
+          ]}
+          columns={4}
+        />
+      </ComponentCard>
+
+      {/* Table of Contents */}
+      <ComponentCard
+        title="Table of Contents"
+        description="Document navigation"
+      >
+        <TableOfContents
+          items={[
+            { id: "intro", title: "Introduction", level: 1 },
+            { id: "setup", title: "Getting Started", level: 1 },
+            { id: "install", title: "Installation", level: 2 },
+            { id: "config", title: "Configuration", level: 2 },
+            { id: "usage", title: "Usage", level: 1 },
+            { id: "api", title: "API Reference", level: 1 },
+          ]}
+          activeId="setup"
+          onItemClick={(id) => console.log("Navigate to:", id)}
         />
       </ComponentCard>
     </div>
