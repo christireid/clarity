@@ -70,7 +70,7 @@ export class TokenOptimizer {
     const optimizedContext = this.context.optimize(context);
     
     // 3. Compress prompt if needed
-    let processedPrompt = prompt;
+    const processedPrompt = prompt;
     // ... logic to optimize prompt ...
 
     const optimizedTokens = this.estimateTokens(processedPrompt) +

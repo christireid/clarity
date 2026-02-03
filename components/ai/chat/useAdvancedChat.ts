@@ -118,7 +118,7 @@ export function useAdvancedChat({
       }
       
       const userMessage = processedMessages[0]; 
-      let newMessages = [...messages, userMessage];
+      const newMessages = [...messages, userMessage];
       setMessages(newMessages);
 
       // 2. Compile System Prompt

@@ -308,7 +308,7 @@ export function MentionedText({
   className,
 }: MentionedTextProps) {
   const parts = React.useMemo(() => {
-    let result: Array<{ type: "text" | "mention"; content: string; mention?: Mention }> = [];
+    const result: Array<{ type: "text" | "mention"; content: string; mention?: Mention }> = [];
     let currentIndex = 0;
 
     mentions.forEach((mention) => {
