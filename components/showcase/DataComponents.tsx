@@ -151,8 +151,8 @@ export function DataComponents() {
             { groupId: "model", value: "GPT-4" },
           ]}
           groups={[
-            { id: "status", label: "Status", options: [{ value: "Active", label: "Active" }, { value: "Completed", label: "Completed" }] },
-            { id: "model", label: "Model", options: [{ value: "GPT-4", label: "GPT-4" }, { value: "Claude", label: "Claude" }] },
+            { id: "status", label: "Status", type: "checkbox", options: [{ id: "active", value: "Active", label: "Active" }, { id: "completed", value: "Completed", label: "Completed" }] },
+            { id: "model", label: "Model", type: "checkbox", options: [{ id: "gpt4", value: "GPT-4", label: "GPT-4" }, { id: "claude", value: "Claude", label: "Claude" }] },
           ]}
           onRemove={(groupId) => console.log("Remove:", groupId)}
           onClearAll={() => console.log("Clear all")}
@@ -251,10 +251,10 @@ export function DataComponents() {
       >
         <StatsGrid
           stats={[
-            { label: "Total Users", value: "12,345", change: 5.2 },
-            { label: "Active Sessions", value: "1,234", change: 12 },
-            { label: "API Calls", value: "89,012", change: -2.1 },
-            { label: "Error Rate", value: "0.12%", change: -8 },
+            { title: "Total Users", value: "12,345", change: { value: 5.2, type: "increase" } },
+            { title: "Active Sessions", value: "1,234", change: { value: 12, type: "increase" } },
+            { title: "API Calls", value: "89,012", change: { value: 2.1, type: "decrease" } },
+            { title: "Error Rate", value: "0.12%", change: { value: 8, type: "decrease" } },
           ]}
           columns={4}
         />

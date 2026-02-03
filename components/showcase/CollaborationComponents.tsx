@@ -11,7 +11,12 @@ import {
   InviteParticipants,
 } from "@/components/ai/participants";
 import { ComponentCard } from "./ComponentCard";
-import { Button } from "@/components/ui/button";
+
+const sampleCollaborators = [
+  { id: "1", name: "Alice", email: "alice@example.com", color: "#ff5733", status: "online" as const, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice" },
+  { id: "2", name: "Bob", email: "bob@example.com", color: "#33ff57", status: "online" as const, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob" },
+  { id: "3", name: "Charlie", email: "charlie@example.com", color: "#3357ff", status: "away" as const, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie" },
+];
 
 export function CollaborationComponents() {
   return (
@@ -21,8 +26,24 @@ export function CollaborationComponents() {
         description="Real-time user pointers"
       >
         <div className="relative h-40 bg-muted/20 rounded-md border border-dashed border-border overflow-hidden">
-          <LiveCursor x={100} y={50} color="#ff5733" label="Alice" />
-          <LiveCursor x={250} y={120} color="#33ff57" label="Bob" />
+          <LiveCursor
+            collaborator={{
+              id: "1",
+              name: "Alice",
+              color: "#ff5733",
+              status: "online",
+              cursorPosition: { x: 100, y: 50 },
+            }}
+          />
+          <LiveCursor
+            collaborator={{
+              id: "2",
+              name: "Bob",
+              color: "#33ff57",
+              status: "online",
+              cursorPosition: { x: 250, y: 120 },
+            }}
+          />
         </div>
       </ComponentCard>
 
@@ -30,36 +51,64 @@ export function CollaborationComponents() {
         title="Collaborator Avatars"
         description="Active users on the page"
       >
-        <CollaboratorAvatars 
-          users={[
-            { id: "1", name: "Alice", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice" },
-            { id: "2", name: "Bob", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob" },
-            { id: "3", name: "Charlie", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie" }
-          ]}
-        />
+        <CollaboratorAvatars collaborators={sampleCollaborators} />
       </ComponentCard>
 
       <ComponentCard
         title="Presence Indicator"
         description="User online status"
       >
-        <div className="flex gap-4">
-          <PresenceIndicator status="online" label="Online" />
-          <PresenceIndicator status="idle" label="Idle" />
-          <PresenceIndicator status="offline" label="Offline" />
-        </div>
+        <PresenceIndicator
+          collaborators={sampleCollaborators}
+          currentUserId="1"
+        />
       </ComponentCard>
 
       <ComponentCard
-        title="Comments"
+        title="Comment Thread"
         description="Contextual discussions"
       >
-        <CommentThread 
-          comments={[
-            { id: "1", author: "Alice", content: "Should we update this prompt?", timestamp: new Date("2024-01-01T09:00:00") },
-            { id: "2", author: "Bob", content: "Yes, let's make it more specific.", timestamp: new Date("2024-01-01T10:00:00") }
-          ]}
+        <CommentThread
+          comment={{
+            id: "1",
+            content: "Should we update this prompt?",
+            author: sampleCollaborators[0],
+            createdAt: new Date("2024-01-01T09:00:00"),
+            replies: [
+              {
+                id: "2",
+                content: "Yes, let's make it more specific.",
+                author: sampleCollaborators[1],
+                createdAt: new Date("2024-01-01T10:00:00"),
+              },
+            ],
+          }}
           onReply={(text) => console.log("Reply:", text)}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Comments Panel"
+        description="Full comments list with actions"
+      >
+        <CommentsPanel
+          comments={[
+            {
+              id: "1",
+              content: "Great progress on this feature!",
+              author: sampleCollaborators[0],
+              createdAt: new Date("2024-01-01T09:00:00"),
+            },
+            {
+              id: "2",
+              content: "We might need to revisit the API design.",
+              author: sampleCollaborators[1],
+              createdAt: new Date("2024-01-01T10:00:00"),
+            },
+          ]}
+          onAddComment={(content) => console.log("Add:", content)}
+          onResolve={(id) => console.log("Resolve:", id)}
+          onReply={(id, content) => console.log("Reply:", id, content)}
         />
       </ComponentCard>
 
@@ -67,14 +116,14 @@ export function CollaborationComponents() {
         title="Version History"
         description="Track changes over time"
       >
-        <VersionHistory 
+        <VersionHistory
           versions={[
-            { id: "v1", author: "Alice", message: "Initial draft", timestamp: new Date("2024-01-01T08:00:00") },
-            { id: "v2", author: "Bob", message: "Refined prompt", timestamp: new Date("2024-01-01T09:00:00") },
-            { id: "v3", author: "Alice", message: "Final polish", timestamp: new Date("2024-01-01T10:00:00") }
+            { id: "v1", author: sampleCollaborators[0], message: "Initial draft", timestamp: new Date("2024-01-01T08:00:00") },
+            { id: "v2", author: sampleCollaborators[1], message: "Refined prompt", timestamp: new Date("2024-01-01T09:00:00") },
+            { id: "v3", author: sampleCollaborators[0], message: "Final polish", timestamp: new Date("2024-01-01T10:00:00") },
           ]}
-          onSelect={(id) => console.log("Selected version:", id)}
-          onRevert={(id) => console.log("Revert to:", id)}
+          onSelect={(id: string) => console.log("Selected version:", id)}
+          onRevert={(id: string) => console.log("Revert to:", id)}
         />
       </ComponentCard>
 
@@ -83,8 +132,9 @@ export function CollaborationComponents() {
         description="Invite collaborators"
       >
         <CollaborationShareDialog
+          collaborators={sampleCollaborators}
           onInvite={(email, role) => console.log("Invite:", email, role)}
-          trigger={<Button variant="outline">Share</Button>}
+          onCopyLink={() => console.log("Copy link")}
         />
       </ComponentCard>
 

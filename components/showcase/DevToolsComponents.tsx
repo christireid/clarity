@@ -7,10 +7,10 @@ import { EnvVariablesManager } from "@/components/ai/env-variables";
 import { ErrorPage, NotFoundPage, ServerErrorPage } from "@/components/ai/error-pages";
 import { ErrorBoundary, ErrorFallback } from "@/components/ai/error-boundary";
 import { DebugPanel, TraceViewer } from "@/components/ai/trace-viewer";
-import { SnippetManager, QuickSnippet } from "@/components/ai/snippet-manager";
+import { SnippetManager } from "@/components/ai/snippet-manager";
 import { BrowserFrame, URLBar, DevToolsPanel } from "@/components/ai/web-browser";
 import { PluginManager, PluginCard } from "@/components/ai/plugin-manager";
-import { MCPManager, MCPServerCard } from "@/components/ai/mcp-manager";
+import { MCPManager } from "@/components/ai/mcp-manager";
 import { BranchPicker, BranchTree, ForkButton, MessageBranchIndicator } from "@/components/ai/branch-picker";
 import { SDKDevTools } from "@/components/ai/devtools/SDKDevTools";
 import { ComponentCard } from "./ComponentCard";
@@ -133,10 +133,10 @@ export function DevToolsComponents() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <div className="border rounded-lg p-4 h-[200px] flex items-center justify-center">
-            <NotFoundPage compact onGoHome={() => console.log("Go home")} />
+            <NotFoundPage onGoHome={() => console.log("Go home")} />
           </div>
           <div className="border rounded-lg p-4 h-[200px] flex items-center justify-center">
-            <ServerErrorPage compact onRetry={() => console.log("Retry")} />
+            <ServerErrorPage onRetry={() => console.log("Retry")} />
           </div>
         </div>
       </ComponentCard>
@@ -147,8 +147,8 @@ export function DevToolsComponents() {
         description="Graceful error handling"
       >
         <ErrorFallback
-          error={new Error("Something went wrong")}
-          resetErrorBoundary={() => console.log("Reset")}
+          error={{ message: "Something went wrong", name: "Error" }}
+          onReset={() => console.log("Reset")}
         />
       </ComponentCard>
 
@@ -159,10 +159,10 @@ export function DevToolsComponents() {
       >
         <DebugPanel
           logs={[
-            { id: "1", level: "info", message: "Application started", timestamp: new Date(Date.now() - 5000) },
-            { id: "2", level: "debug", message: "Fetching user data...", timestamp: new Date(Date.now() - 4000) },
-            { id: "3", level: "warn", message: "Cache miss for key: user_123", timestamp: new Date(Date.now() - 3000) },
-            { id: "4", level: "error", message: "Failed to connect to database", timestamp: new Date(Date.now() - 2000) },
+            { level: "info", message: "Application started", timestamp: new Date(Date.now() - 5000) },
+            { level: "debug", message: "Fetching user data...", timestamp: new Date(Date.now() - 4000) },
+            { level: "warn", message: "Cache miss for key: user_123", timestamp: new Date(Date.now() - 3000) },
+            { level: "error", message: "Failed to connect to database", timestamp: new Date(Date.now() - 2000) },
           ]}
           onClear={() => console.log("Clear logs")}
         />
@@ -175,8 +175,8 @@ export function DevToolsComponents() {
       >
         <SnippetManager
           snippets={[
-            { id: "1", title: "API Request", language: "typescript", code: "const res = await fetch('/api/data');" },
-            { id: "2", title: "React Component", language: "tsx", code: "export function Component() { return <div>Hello</div>; }" },
+            { id: "1", title: "API Request", language: "typescript", code: "const res = await fetch('/api/data');", tags: ["api", "fetch"], createdAt: new Date(), updatedAt: new Date() },
+            { id: "2", title: "React Component", language: "tsx", code: "export function Component() { return <div>Hello</div>; }", tags: ["react"], createdAt: new Date(), updatedAt: new Date() },
           ]}
           onSelect={(snippet) => console.log("Selected:", snippet)}
           onCreate={() => console.log("Create new")}
@@ -192,8 +192,7 @@ export function DevToolsComponents() {
         <div className="h-[300px] border rounded-lg overflow-hidden">
           <BrowserFrame
             url="https://example.com"
-            onUrlChange={(url: string) => console.log("Navigate:", url)}
-            onRefresh={() => console.log("Refresh")}
+            title="Example Website"
           />
         </div>
       </ComponentCard>
@@ -205,9 +204,9 @@ export function DevToolsComponents() {
       >
         <PluginManager
           plugins={[
-            { id: "1", name: "Code Formatter", description: "Auto-format code on save", enabled: true, version: "1.2.0" },
-            { id: "2", name: "Git Integration", description: "Git commands in chat", enabled: true, version: "2.0.1" },
-            { id: "3", name: "Image Generator", description: "DALL-E integration", enabled: false, version: "0.9.0" },
+            { id: "1", name: "Code Formatter", description: "Auto-format code on save", enabled: true, version: "1.2.0", author: "Developer", category: "tools", installed: true, verified: true },
+            { id: "2", name: "Git Integration", description: "Git commands in chat", enabled: true, version: "2.0.1", author: "Developer", category: "integrations", installed: true, verified: true },
+            { id: "3", name: "Image Generator", description: "DALL-E integration", enabled: false, version: "0.9.0", author: "Developer", category: "media", installed: true, verified: false },
           ]}
           onToggle={(id) => console.log("Toggle:", id)}
           onConfigure={(id) => console.log("Configure:", id)}
@@ -222,9 +221,9 @@ export function DevToolsComponents() {
       >
         <MCPManager
           servers={[
-            { id: "1", name: "File System", status: "connected", tools: ["read_file", "write_file", "list_dir"] },
-            { id: "2", name: "Database", status: "connected", tools: ["query", "insert", "update"] },
-            { id: "3", name: "Browser", status: "disconnected", tools: ["navigate", "screenshot", "click"] },
+            { id: "1", name: "File System", url: "http://localhost:3001", status: "connected", enabled: true, tools: [{ name: "read_file" }, { name: "write_file" }, { name: "list_dir" }] },
+            { id: "2", name: "Database", url: "http://localhost:3002", status: "connected", enabled: true, tools: [{ name: "query" }, { name: "insert" }, { name: "update" }] },
+            { id: "3", name: "Browser", url: "http://localhost:3003", status: "disconnected", enabled: false, tools: [{ name: "navigate" }, { name: "screenshot" }, { name: "click" }] },
           ]}
           onConnect={(id) => console.log("Connect:", id)}
           onDisconnect={(id) => console.log("Disconnect:", id)}
