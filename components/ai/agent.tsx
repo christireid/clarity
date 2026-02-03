@@ -347,7 +347,7 @@ function AgentStepItem({ step, index }: { step: AgentStep; index: number }) {
         <p className="text-sm">{step.content}</p>
 
         {/* Tool details */}
-        {step.toolName && (
+        {step.toolName !== undefined ? (
           <button
             onClick={() => setExpanded(!expanded)}
             className="mt-2 flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
@@ -360,11 +360,11 @@ function AgentStepItem({ step, index }: { step: AgentStep; index: number }) {
               <ChevronRight className="w-3 h-3" />
             )}
           </button>
-        )}
+        ) : null}
 
-        {expanded && (step.toolInput || step.toolOutput) && (
+        {expanded && (step.toolInput !== undefined || step.toolOutput !== undefined) ? (
           <div className="mt-2 space-y-2 text-xs">
-            {step.toolInput && (
+            {step.toolInput !== undefined && (
               <div>
                 <span className="text-muted-foreground">Input:</span>
                 <pre className="mt-1 p-2 rounded bg-muted font-mono overflow-x-auto">
@@ -372,7 +372,7 @@ function AgentStepItem({ step, index }: { step: AgentStep; index: number }) {
                 </pre>
               </div>
             )}
-            {step.toolOutput && (
+            {step.toolOutput !== undefined && (
               <div>
                 <span className="text-muted-foreground">Output:</span>
                 <pre className="mt-1 p-2 rounded bg-muted font-mono overflow-x-auto">
@@ -383,7 +383,7 @@ function AgentStepItem({ step, index }: { step: AgentStep; index: number }) {
               </div>
             )}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

@@ -407,7 +407,8 @@ export function FileCard({
   className?: string;
 }) {
   const extension = file.name.split(".").pop()?.toLowerCase() || "";
-  const FileIcon = fileIcons[extension] || File;
+  const fileIconData = fileIcons[extension];
+  const FileIcon = fileIconData?.icon || File;
 
   return (
     <div className={cn(

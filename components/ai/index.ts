@@ -2,17 +2,20 @@
 export * from "./message";
 export * from "./thinking-indicator";
 export * from "./tool-call";
+// Note: citation-chip conflicts with sources (LinkPreview, SourcesList) - keeping citation-chip
 export * from "./citation-chip";
 export * from "./markdown-renderer";
 
 // Code & Preview Components
+// Note: code-block conflicts with code-diff (CodeDiff) - keeping code-block
 export * from "./code-block";
+// Note: sandbox conflicts with test-results (StackTrace, TestResults) - keeping sandbox
 export * from "./sandbox";
 export * from "./file-tree";
 export * from "./artifact";
 export * from "./terminal";
-export * from "./web-preview";
-export * from "./code-diff";
+// Note: code-diff conflicts with code-block (CodeDiff) and branch-picker (BranchSelector) - skipping
+// export * from "./code-diff";
 
 // Input Components
 export * from "./chat-input";
@@ -26,22 +29,27 @@ export * from "./workflow-nodes";
 export * from "./mind-map";
 
 // Agent & Tools
+// Note: agent conflicts with plan (Plan) and queue (Queue) - keeping agent
 export * from "./agent";
-export * from "./sources";
+// Note: sources conflicts with citation-chip (LinkPreview, SourcesList) - skipping
+// export * from "./sources";
 export * from "./media";
 
 // Settings & Management
 export * from "./settings-panel";
 export * from "./chat-sidebar";
 export * from "./mcp-manager";
-export * from "./skeletons";
+// Note: skeletons conflicts with message (MessageSkeleton) - skipping
+// export * from "./skeletons";
 export * from "./confirmation-dialog";
 export * from "./prompt-manager";
-export * from "./queue";
+// Note: queue conflicts with agent (Queue) - skipping
+// export * from "./queue";
 export * from "./conversation-manager";
 
 // Test & Dev Components
-export * from "./test-results";
+// Note: test-results conflicts with sandbox (StackTrace, TestResults) - skipping
+// export * from "./test-results";
 export * from "./git-components";
 export * from "./env-variables";
 
@@ -61,9 +69,6 @@ export * from "./chat-clones";
 
 // Diagrams & Visualization
 export * from "./mermaid-diagram";
-
-// Links & Previews
-export * from "./link-preview";
 
 // Tooltips
 export * from "./rich-tooltip";
@@ -158,15 +163,6 @@ export * from "./status";
 // Animations
 export * from "./animations";
 
-// Chain of Thought
-export * from "./chain-of-thought";
-
-// Draggable Panels
-export * from "./draggable-panels";
-
-// Message Archive
-export * from "./message-archive";
-
 // Rich Embeds
 export * from "./rich-embeds";
 
@@ -198,7 +194,8 @@ export * from "./confirmation";
 export * from "./inline-citation";
 
 // Plan & Task Components
-export * from "./plan";
+// Note: plan conflicts with agent (Plan) - skipping
+// export * from "./plan";
 
 // Message Draft
 export * from "./message-draft";
@@ -254,143 +251,143 @@ export * from "./streaming";
 // Context Management
 export * from "./context-management";
 
-// Bubble System (Enhanced - superior to Ant Design X)
+// Bubble System
 export * from "./bubble";
 
-// Welcome & Prompts (Superior to Ant Design X Welcome/Prompts)
+// Welcome & Prompts
 export * from "./welcome";
 
-// Chat Container & Sender (Superior to Prompt-Kit/NLUX)
+// Chat Container & Sender
 export * from "./chat-container";
 
-// Actions & Feedback (Superior to Ant Design X Actions)
+// Actions & Feedback
 export * from "./actions";
 
-// Attachments & File Cards (Superior to Ant Design X Attachments)
+// Attachments & File Cards
 export * from "./attachments";
 
-// Steps & Reasoning (Superior to Prompt-Kit Steps)
+// Steps & Reasoning
 export * from "./steps";
 
-// Conversations List (Superior to Ant Design X Conversations)
+// Conversations List
 export * from "./conversations-list";
 
-// Composer/Sender (Superior to Ant Design X Sender with slots, skills, speech)
+// Composer/Sender
 export * from "./composer";
 
-// Text Effects (Superior to Magic UI/Prompt-Kit animations)
+// Text Effects
 export * from "./text-effects";
 
-// Loaders (Superior to Prompt-Kit Loader variants)
+// Loaders
 export * from "./loaders";
 
-// Scroll Button (Superior to Prompt-Kit ScrollButton)
+// Scroll Button
 export * from "./scroll-button";
 
-// Copy Button (Superior to LangUI copy functionality)
+// Copy Button
 export * from "./copy-button";
 
-// Audio Player (Superior to Ant Design X Audio Actions)
+// Audio Player
 export * from "./audio-player";
 
-// System Messages & Notifications (Superior to Ant Design X Notification)
+// System Messages & Notifications
 export * from "./system-message";
 
-// Branch Picker (Superior to Assistant-UI BranchPicker)
+// Branch Picker
 export * from "./branch-picker";
 
-// Expandable Chat Widget (Superior to CopilotKit/shadcn-chat)
+// Expandable Chat Widget
 export * from "./expandable-chat";
 
-// AI Textarea with Autocomplete (Superior to CopilotKit CopilotTextarea)
+// AI Textarea with Autocomplete
 export * from "./ai-textarea";
 
-// Persona System (Superior to NLUX Personas)
+// Persona System
 export * from "./persona";
 
-// Suggestion Chips (Superior to Ant Design X Suggestions)
+// Suggestion Chips
 export * from "./suggestion-chips";
 
-// Presets Manager (Superior to LibreChat Presets)
+// Presets Manager
 export * from "./presets";
 
-// Bookmarks (Superior to LibreChat Bookmarks)
+// Bookmarks
 export * from "./bookmarks";
 
-// Human-in-the-Loop (Superior to CopilotKit Human-in-the-Loop)
+// Human-in-the-Loop
 export * from "./human-in-loop";
 
-// Animated Beam (Superior to Magic UI Animated Beam)
+// Animated Beam
 export * from "./animated-beam";
 
-// AI Prompt Panel (Superior to Telerik AIPrompt)
+// AI Prompt Panel
 export * from "./ai-prompt-panel";
 
-// Share & Embed (Superior to LibreChat Shareable Links)
+// Share & Embed
 export * from "./share";
 
-// Content Parts Renderer (Superior to Assistant-UI ContentPart)
+// Content Parts Renderer
 export * from "./content-parts";
 
-// Voice Button & TTS (Superior to LangUI Voice/ElevenLabs integration)
+// Voice Button & TTS
 export * from "./voice-button";
 
-// Particles & Visual Effects (Superior to Magic UI Particles)
+// Particles & Visual Effects
 export * from "./particles";
 
-// Message Actions Bar (Comprehensive action toolbar)
+// Message Actions Bar
 export * from "./message-actions";
 
-// Message Editor (Inline editing capability)
+// Message Editor
 export * from "./message-editor";
 
-// Reactions (Message reactions with emoji)
+// Reactions
 export * from "./reactions";
 
-// Read Receipts (Delivery and read status)
+// Read Receipts
 export * from "./read-receipts";
 
-// Thread Replies (Nested replies to messages)
+// Thread Replies
 export * from "./thread-replies";
 
-// Pinned Messages (Important message highlighting)
+// Pinned Messages
 export * from "./pinned-messages";
 
-// Search Messages (Search with highlights)
+// Search Messages
 export * from "./search-messages";
 
-// Mentions (@ mentions with autocomplete)
+// Mentions
 export * from "./mentions";
 
-// Image Generation (AI image generation preview)
+// Image Generation
 export * from "./image-generation";
 
-// Quick Replies (Canned responses)
+// Quick Replies
 export * from "./quick-replies";
 
-// Message Forwarding (Forward to other chats)
+// Message Forwarding
 export * from "./message-forwarding";
 
-// Scheduled Messages (Delayed sending)
+// Scheduled Messages
 export * from "./scheduled-messages";
 
-// Presence & Online Status (Superior to Stream/PubNub presence)
+// Presence & Online Status
 export * from "./presence";
 
-// Error Boundary & Error Handling (Comprehensive error management)
+// Error Boundary & Error Handling
 export * from "./error-boundary";
 
-// Message Grouping & Date Separators (Superior to TalkJS/Stream grouping)
+// Message Grouping & Date Separators
 export * from "./message-grouping";
 
-// Retry Logic & Offline Queue (Superior to PubNub retry)
+// Retry Logic & Offline Queue
 export * from "./retry-logic";
 
-// Translation & Language Detection (Multi-language support)
+// Translation & Language Detection
 export * from "./translation";
 
-// Unread Indicators & Badges (Superior to Stream unread tracking)
+// Unread Indicators & Badges
 export * from "./unread-indicator";
 
-// Dashboards (Complete management dashboards)
+// Dashboards
 export * from "./dashboards";
