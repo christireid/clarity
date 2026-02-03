@@ -11,9 +11,9 @@ import { Actions, CopyButton, FeedbackButtons, MessageActionBar, FeedbackBar, Qu
 import { StatusBadge, StatusDot, OnlineStatus, ConnectionStatus, SystemHealth, ActivityIndicator } from "@/components/ai/status";
 import { Timestamp, DurationDisplay, LiveTimer, LastUpdated, MessageTimestamp } from "@/components/ai/timestamp";
 import { ScrollButton, ScrollToBottom, NewMessagesIndicator } from "@/components/ai/scroll-button";
-import { DatePicker, DateRangePicker, TimeAgo } from "@/components/ai/date-picker";
-import { EmojiPicker, EmojiReaction, EmojiInput } from "@/components/ai/emoji-picker";
-import { ColorPicker, ColorSwatch, GradientPicker } from "@/components/ai/color-picker";
+import { DatePicker, TimeAgo } from "@/components/ai/date-picker";
+import { EmojiPicker, EmojiReaction } from "@/components/ai/emoji-picker";
+import { ColorPicker, ColorSwatch } from "@/components/ai/color-picker";
 import { ComponentCard } from "./ComponentCard";
 import { Button } from "@/components/ui/button";
 import { Search, Wifi, Server } from "lucide-react";
@@ -145,7 +145,7 @@ export function UIComponents() {
         description="Display multiple avatars in a group"
       >
         <AvatarGroup
-          users={[
+          avatars={[
             { name: "Alice", status: "online" },
             { name: "Bob", status: "busy" },
             { name: "Charlie" },
@@ -164,12 +164,12 @@ export function UIComponents() {
       >
         <div className="space-y-4">
           <SenderDisplay
-            type="user"
+            role="user"
             name="John Doe"
             timestamp={new Date("2024-01-01T10:00:00")}
           />
           <SenderDisplay
-            type="assistant"
+            role="assistant"
             name="Claude"
             model="claude"
             timestamp={new Date("2024-01-01T10:01:00")}
@@ -181,7 +181,7 @@ export function UIComponents() {
         title="Typing Indicator"
         description="Show when AI is typing"
       >
-        <TypingAvatar model="gpt" label="GPT-4 is thinking..." />
+        <TypingAvatar model="gpt" name="GPT-4" />
       </ComponentCard>
 
       <ComponentCard
@@ -190,8 +190,7 @@ export function UIComponents() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <EmptyChatState
-            title="Start a conversation"
-            description="Type a message to begin chatting with AI"
+            onNewChat={() => console.log("New chat")}
           />
           <EmptyState
             icon={<Search className="h-12 w-12" />}
@@ -208,11 +207,11 @@ export function UIComponents() {
       >
         <WelcomeScreen
           title="Welcome to AI Chat"
-          description="Your intelligent assistant for coding, writing, and more"
+          subtitle="Your intelligent assistant for coding, writing, and more"
           suggestions={[
-            { label: "Write code", description: "Generate, explain, or debug code", onClick: () => {} },
-            { label: "Analyze data", description: "Get insights from your data", onClick: () => {} },
-            { label: "Create content", description: "Write articles, emails, and more", onClick: () => {} },
+            { text: "Write code - Generate, explain, or debug code", onClick: () => {} },
+            { text: "Analyze data - Get insights from your data", onClick: () => {} },
+            { text: "Create content - Write articles, emails, and more", onClick: () => {} },
           ]}
         />
       </ComponentCard>
@@ -237,11 +236,9 @@ export function UIComponents() {
         title="Feedback Buttons"
         description="Collect user feedback on AI responses"
       >
-        <FeedbackButtons
+        <FeedbackBtns
           onLike={() => console.log("Liked")}
           onDislike={() => console.log("Disliked")}
-          onCopy={() => console.log("Copied")}
-          onRegenerate={() => console.log("Regenerate")}
         />
       </ComponentCard>
 
@@ -251,9 +248,9 @@ export function UIComponents() {
       >
         <ActionButtonGroup
           actions={[
-            { label: "Copy", onClick: () => console.log("Copy"), icon: "copy" },
-            { label: "Share", onClick: () => console.log("Share"), icon: "share" },
-            { label: "Download", onClick: () => console.log("Download"), icon: "download" },
+            { id: "copy", label: "Copy", onClick: () => console.log("Copy"), icon: <span>📋</span> },
+            { id: "share", label: "Share", onClick: () => console.log("Share"), icon: <span>📤</span> },
+            { id: "download", label: "Download", onClick: () => console.log("Download"), icon: <span>⬇️</span> },
           ]}
         />
       </ComponentCard>
@@ -264,13 +261,12 @@ export function UIComponents() {
         description="Visual status indicators"
       >
         <div className="flex flex-wrap gap-3">
-          <StatusBadge status="online" label="Online" />
-          <StatusBadge status="offline" label="Offline" />
-          <StatusBadge status="busy" label="Busy" />
-          <StatusBadge status="away" label="Away" />
+          <StatusBadge status="success" label="Success" />
           <StatusBadge status="error" label="Error" />
           <StatusBadge status="warning" label="Warning" />
-          <StatusBadge status="success" label="Success" />
+          <StatusBadge status="info" label="Info" />
+          <StatusBadge status="pending" label="Pending" />
+          <StatusBadge status="idle" label="Idle" />
         </div>
       </ComponentCard>
 
@@ -280,20 +276,20 @@ export function UIComponents() {
       >
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <StatusDot status="online" />
-            <span className="text-sm">Online</span>
+            <StatusDot status="success" />
+            <span className="text-sm">Success</span>
           </div>
           <div className="flex items-center gap-2">
-            <StatusDot status="busy" />
-            <span className="text-sm">Busy</span>
+            <StatusDot status="error" />
+            <span className="text-sm">Error</span>
           </div>
           <div className="flex items-center gap-2">
-            <StatusDot status="away" pulse />
-            <span className="text-sm">Away (pulse)</span>
+            <StatusDot status="warning" pulse />
+            <span className="text-sm">Warning (pulse)</span>
           </div>
           <div className="flex items-center gap-2">
-            <StatusDot status="offline" />
-            <span className="text-sm">Offline</span>
+            <StatusDot status="pending" />
+            <span className="text-sm">Pending</span>
           </div>
         </div>
       </ComponentCard>
@@ -315,10 +311,10 @@ export function UIComponents() {
       >
         <SystemHealth
           services={[
-            { name: "API Server", status: "healthy", latency: 45 },
-            { name: "Database", status: "healthy", latency: 12 },
-            { name: "Cache", status: "degraded", latency: 234 },
-            { name: "AI Model", status: "healthy", latency: 890 },
+            { name: "API Server", status: "healthy" },
+            { name: "Database", status: "healthy" },
+            { name: "Cache", status: "degraded" },
+            { name: "AI Model", status: "down" },
           ]}
         />
       </ComponentCard>
@@ -328,8 +324,8 @@ export function UIComponents() {
         description="Show ongoing activity"
       >
         <div className="flex items-center gap-4">
-          <ActivityIndicator active={true} label="Processing" />
-          <ActivityIndicator active={false} label="Idle" />
+          <ActivityIndicator isActive={true} label="Processing" />
+          <ActivityIndicator isActive={false} label="Idle" />
         </div>
       </ComponentCard>
 
@@ -373,15 +369,12 @@ export function UIComponents() {
         title="Date Picker"
         description="Select dates with calendar"
       >
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-wrap">
           <DatePicker
             value={new Date()}
             onChange={(date) => console.log("Date:", date)}
           />
-          <TimePicker
-            value="14:30"
-            onChange={(time) => console.log("Time:", time)}
-          />
+          <TimeAgo date={new Date(Date.now() - 3600000)} />
         </div>
       </ComponentCard>
 
@@ -390,11 +383,15 @@ export function UIComponents() {
         title="Emoji Picker"
         description="Select emojis and reactions"
       >
-        <div className="flex gap-4">
-          <EmojiButton onSelect={(emoji) => console.log("Emoji:", emoji)} />
-          <ReactionPicker
-            onSelect={(emoji) => console.log("Reaction:", emoji)}
-            reactions={["👍", "❤️", "😂", "😮", "😢", "😡"]}
+        <div className="flex gap-4 items-center">
+          <EmojiPicker onSelect={(emoji) => console.log("Emoji:", emoji)} />
+          <EmojiReaction
+            reactions={[
+              { emoji: "👍", count: 5, reacted: true },
+              { emoji: "❤️", count: 3, reacted: false },
+              { emoji: "🎉", count: 2, reacted: false }
+            ]}
+            onReact={(emoji) => console.log("React:", emoji)}
           />
         </div>
       </ComponentCard>
@@ -409,10 +406,10 @@ export function UIComponents() {
             value="#3b82f6"
             onChange={(color) => console.log("Color:", color)}
           />
-          <ColorPalette
+          <ColorSwatch
             colors={["#ef4444", "#f97316", "#eab308", "#22c55e", "#3b82f6", "#8b5cf6"]}
-            value="#3b82f6"
-            onChange={(color) => console.log("Palette color:", color)}
+            selected="#3b82f6"
+            onSelect={(color) => console.log("Swatch color:", color)}
           />
         </div>
       </ComponentCard>
@@ -423,7 +420,7 @@ export function UIComponents() {
         description="Jump to bottom of chat"
       >
         <div className="relative h-20 border rounded flex items-center justify-center">
-          <ScrollToBottomButton onClick={() => console.log("Scroll to bottom")} visible />
+          <ScrollToBottom onClick={() => console.log("Scroll to bottom")} />
         </div>
       </ComponentCard>
 

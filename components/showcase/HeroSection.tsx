@@ -33,12 +33,11 @@ export function HeroSection() {
         </h1>
 
         <div className="text-lg md:text-xl text-muted-foreground h-12 mb-4">
-          <Typewriter 
-            text={["Streaming Chat SDK", "Generative UI System", "Token Optimization", "RAG Integration"]} 
+          <Typewriter
+            text={["Streaming Chat SDK", "Generative UI System", "Token Optimization", "RAG Integration"]}
             speed={50}
-            loop
-            waitTime={2000}
-            cursorChar="|"
+            delay={2000}
+            cursor
           />
         </div>
 

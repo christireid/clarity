@@ -135,19 +135,22 @@ export function GenerativeComponents() {
         <div className="space-y-4">
           <ContentPartRenderer
             part={{
+              id: "text-1",
               type: "text",
-              content: "This is a text content part with **markdown** support."
+              text: "This is a text content part with **markdown** support."
             }}
           />
           <ContentPartRenderer
             part={{
+              id: "code-1",
               type: "code",
               language: "typescript",
-              content: `function hello() {\n  console.log("Hello!");\n}`
+              code: `function hello() {\n  console.log("Hello!");\n}`
             }}
           />
           <ContentPartRenderer
             part={{
+              id: "image-1",
               type: "image",
               url: "https://picsum.photos/400/200",
               alt: "Sample image"
@@ -162,12 +165,12 @@ export function GenerativeComponents() {
         description="Multi-step process visualization"
       >
         <Steps
-          steps={[
-            { id: "1", title: "Setup", status: "completed" },
-            { id: "2", title: "Configure", status: "current" },
-            { id: "3", title: "Deploy", status: "pending" },
+          items={[
+            { key: "1", title: "Setup", status: "complete" },
+            { key: "2", title: "Configure", status: "active" },
+            { key: "3", title: "Deploy", status: "pending" },
           ]}
-          currentStep={1}
+          current={1}
         />
       </ComponentCard>
 
@@ -177,10 +180,10 @@ export function GenerativeComponents() {
       >
         <ReasoningSteps
           steps={[
-            { id: "1", text: "Analyzing the user's request", status: "completed" },
-            { id: "2", text: "Gathering relevant context", status: "completed" },
-            { id: "3", text: "Formulating response", status: "active" },
-            { id: "4", text: "Validating output", status: "pending" },
+            { key: "1", title: "Analyzing the user's request", status: "complete" },
+            { key: "2", title: "Gathering relevant context", status: "complete" },
+            { key: "3", title: "Formulating response", status: "active" },
+            { key: "4", title: "Validating output", status: "pending" },
           ]}
         />
       </ComponentCard>
@@ -190,11 +193,11 @@ export function GenerativeComponents() {
         description="Chain of thought visualization"
       >
         <ThoughtChain
-          thoughts={[
-            { id: "1", content: "The user is asking about React hooks", type: "observation" },
-            { id: "2", content: "Hooks allow state in functional components", type: "reasoning" },
-            { id: "3", content: "I should explain useState and useEffect first", type: "plan" },
-            { id: "4", content: "Provide a practical example", type: "action" },
+          items={[
+            { key: "1", title: "Observation", description: "The user is asking about React hooks" },
+            { key: "2", title: "Reasoning", description: "Hooks allow state in functional components" },
+            { key: "3", title: "Plan", description: "I should explain useState and useEffect first" },
+            { key: "4", title: "Action", description: "Provide a practical example" },
           ]}
         />
       </ComponentCard>
@@ -205,9 +208,10 @@ export function GenerativeComponents() {
         description="AI-powered code generation"
       >
         <CodeGenerator
-          onGenerate={(prompt) => console.log("Generate code:", prompt)}
-          languages={["typescript", "python", "javascript"]}
-          selectedLanguage="typescript"
+          onGenerate={async (prompt, options) => {
+            console.log("Generate code:", prompt, options);
+            return `// Generated code for: ${prompt}`;
+          }}
         />
       </ComponentCard>
 
@@ -216,8 +220,10 @@ export function GenerativeComponents() {
         description="AI-powered email composition"
       >
         <EmailGenerator
-          onGenerate={(params) => console.log("Generate email:", params)}
-          tones={["professional", "friendly", "formal"]}
+          onGenerate={async (params) => {
+            console.log("Generate email:", params);
+            return `Generated email for: ${params.purpose}`;
+          }}
         />
       </ComponentCard>
 
@@ -226,8 +232,10 @@ export function GenerativeComponents() {
         description="AI-powered content writing"
       >
         <WritingGenerator
-          onGenerate={(params) => console.log("Generate writing:", params)}
-          styles={["blog", "article", "social"]}
+          onGenerate={async (params) => {
+            console.log("Generate writing:", params);
+            return `Generated content for: ${params.topic}`;
+          }}
         />
       </ComponentCard>
 
@@ -240,22 +248,22 @@ export function GenerativeComponents() {
           questions={[
             {
               id: "1",
-              text: "What type of project are you building?",
-              type: "single",
+              question: "What type of project are you building?",
+              type: "single-choice",
               options: [
-                { id: "web", label: "Web Application" },
-                { id: "mobile", label: "Mobile App" },
-                { id: "api", label: "API Service" },
+                { value: "web", label: "Web Application" },
+                { value: "mobile", label: "Mobile App" },
+                { value: "api", label: "API Service" },
               ],
             },
             {
               id: "2",
-              text: "Which framework do you prefer?",
-              type: "single",
+              question: "Which framework do you prefer?",
+              type: "single-choice",
               options: [
-                { id: "react", label: "React" },
-                { id: "vue", label: "Vue" },
-                { id: "angular", label: "Angular" },
+                { value: "react", label: "React" },
+                { value: "vue", label: "Vue" },
+                { value: "angular", label: "Angular" },
               ],
             },
           ]}

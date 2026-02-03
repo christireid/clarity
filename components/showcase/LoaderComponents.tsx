@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { MessageSkeleton, CodeBlockSkeleton, ShimmerText, CardSkeleton, TableSkeleton } from "@/components/ai/skeletons";
+import { MessageSkeleton, CodeBlockSkeleton, ShimmerText, CardSkeleton, TableSkeleton, StreamingText, ProgressLoader } from "@/components/ai/skeletons";
 import { LoadingDots, TypingCursor, PulseRing } from "@/components/ai/animations";
-import { Loader, MessageLoading, ProgressLoader, StreamingLoader } from "@/components/ai/loaders";
-import { RetryLogic, RetryIndicator, OfflineQueue } from "@/components/ai/retry-logic";
-import { StreamingResponse, StreamStatus, WordStream } from "@/components/ai/streaming";
+import { Loader, MessageLoading } from "@/components/ai/loaders";
+import { RetryIndicator, OfflineQueue } from "@/components/ai/retry-logic";
+import { StreamStatus, WordStream } from "@/components/ai/streaming";
 import { ComponentCard } from "./ComponentCard";
 
 export function LoaderComponents() {
@@ -17,7 +17,7 @@ export function LoaderComponents() {
       >
         <div className="space-y-4">
           <MessageSkeleton />
-          <MessageSkeleton variant="assistant" />
+          <MessageSkeleton />
         </div>
       </ComponentCard>
 
@@ -25,7 +25,7 @@ export function LoaderComponents() {
         title="Code Block Skeleton"
         description="Loading placeholder for code"
       >
-        <CodeBlockSkeleton lines={8} />
+        <CodeBlockSkeleton />
       </ComponentCard>
 
       <ComponentCard
@@ -33,8 +33,8 @@ export function LoaderComponents() {
         description="Animated text loading effect"
       >
         <div className="space-y-4">
-          <ShimmerText text="Generating response..." />
-          <ShimmerText text="Analyzing your query and preparing a detailed answer..." />
+          <ShimmerText lines={2} />
+          <ShimmerText lines={4} />
         </div>
       </ComponentCard>
 
@@ -44,8 +44,8 @@ export function LoaderComponents() {
       >
         <div className="flex items-center gap-8">
           <LoadingDots />
-          <LoadingDots size="lg" />
-          <LoadingDots color="accent" />
+          <LoadingDots size={12} />
+          <LoadingDots color="hsl(var(--primary))" />
         </div>
       </ComponentCard>
 
@@ -68,8 +68,8 @@ export function LoaderComponents() {
         description="AI is generating response"
       >
         <MessageLoading
-          label="Claude is thinking..."
-          showDots
+          text="Claude is thinking..."
+          variant="dots"
         />
       </ComponentCard>
 
@@ -115,14 +115,14 @@ export function LoaderComponents() {
         <TableSkeleton rows={4} columns={4} />
       </ComponentCard>
 
-      {/* Streaming Indicator */}
+      {/* Stream Status */}
       <ComponentCard
-        title="Streaming Indicator"
+        title="Stream Status"
         description="Shows active streaming state"
       >
         <div className="flex items-center gap-4">
-          <StreamingIndicator active label="Receiving data..." />
-          <StreamingIndicator active={false} label="Complete" />
+          <StreamStatus status="streaming" tokensPerSecond={45} />
+          <StreamStatus status="complete" totalTokens={256} />
         </div>
       </ComponentCard>
 
@@ -133,7 +133,7 @@ export function LoaderComponents() {
       >
         <StreamingText
           text="This text appears character by character, simulating a streaming AI response..."
-          speed={30}
+          isStreaming
         />
       </ComponentCard>
 
@@ -143,9 +143,13 @@ export function LoaderComponents() {
         description="Shows retry attempts"
       >
         <RetryIndicator
-          attempt={2}
-          maxAttempts={3}
-          message="Connection failed, retrying..."
+          state={{
+            status: "retrying",
+            attempt: 2,
+            maxAttempts: 3,
+            nextRetryIn: 3000,
+            error: new Error("Connection failed, retrying...")
+          }}
           onCancel={() => console.log("Cancel retry")}
         />
       </ComponentCard>
@@ -156,12 +160,11 @@ export function LoaderComponents() {
         description="Messages queued while offline"
       >
         <OfflineQueue
-          items={[
-            { id: "1", message: "First queued message", timestamp: new Date(Date.now() - 60000) },
-            { id: "2", message: "Second queued message", timestamp: new Date(Date.now() - 30000) },
+          messages={[
+            { id: "1", content: "First queued message", timestamp: new Date(Date.now() - 60000), status: "queued" },
+            { id: "2", content: "Second queued message", timestamp: new Date(Date.now() - 30000), status: "queued" },
           ]}
-          onRetry={() => console.log("Retry all")}
-          onClear={() => console.log("Clear queue")}
+          onRetryAll={() => console.log("Retry all")}
         />
       </ComponentCard>
     </div>

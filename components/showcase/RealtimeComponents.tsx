@@ -14,15 +14,17 @@ export function RealtimeComponents() {
         description="Emoji reactions to messages"
       >
         <div className="space-y-4">
-          <MessageReactions 
+          <MessageReactions
+            messageId="msg-1"
             reactions={[
-              { emoji: "👍", count: 3, userReacted: true },
-              { emoji: "❤️", count: 1, userReacted: false },
-              { emoji: "🚀", count: 5, userReacted: false }
+              { emoji: "👍", count: 3, users: ["Alice", "Bob", "Charlie"], reacted: true },
+              { emoji: "❤️", count: 1, users: ["Diana"], reacted: false },
+              { emoji: "🚀", count: 5, users: ["Eve", "Frank", "Grace", "Henry", "Ivy"], reacted: false }
             ]}
-            onReact={(emoji) => console.log("React:", emoji)}
+            onAddReaction={(messageId, emoji) => console.log("Add reaction:", messageId, emoji)}
+            onRemoveReaction={(messageId, emoji) => console.log("Remove reaction:", messageId, emoji)}
           />
-          <QuickReactionBar onReact={(emoji) => console.log("Quick React:", emoji)} />
+          <QuickReactionBar onSelect={(emoji) => console.log("Quick React:", emoji)} />
         </div>
       </ComponentCard>
 
@@ -34,10 +36,10 @@ export function RealtimeComponents() {
           <MessageStatusIndicator status="sent" />
           <MessageStatusIndicator status="delivered" />
           <MessageStatusIndicator status="read" />
-          <ReadReceiptAvatars 
-            users={[
-              { name: "Alice", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice" },
-              { name: "Bob", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob" }
+          <ReadReceiptAvatars
+            receipts={[
+              { id: "r1", userId: "u1", userName: "Alice", userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice", readAt: new Date("2024-01-01T10:00:00") },
+              { id: "r2", userId: "u2", userName: "Bob", userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob", readAt: new Date("2024-01-01T10:01:00") }
             ]}
           />
         </div>
@@ -48,8 +50,8 @@ export function RealtimeComponents() {
         description="Real-time typing indicators"
       >
         <div className="space-y-4">
-          <TypingStatus users={[{ name: "Alice" }]} />
-          <TypingStatus users={[{ name: "Bob" }, { name: "Charlie" }]} />
+          <TypingStatus users={["Alice"]} />
+          <TypingStatus users={["Bob", "Charlie"]} />
         </div>
       </ComponentCard>
 
@@ -60,15 +62,15 @@ export function RealtimeComponents() {
         <div className="space-y-4">
           <div className="flex gap-4 items-center">
             <PresenceDot status="online" />
-            <PresenceDot status="idle" />
-            <PresenceDot status="dnd" />
+            <PresenceDot status="away" />
+            <PresenceDot status="busy" />
             <PresenceDot status="offline" />
           </div>
-          <UserPresence user={{ name: "Alice", status: "online", lastSeen: new Date("2024-01-01T10:00:00") }} />
-          <WhosHere 
+          <UserPresence user={{ id: "u1", name: "Alice", status: "online", lastSeen: new Date("2024-01-01T10:00:00") }} />
+          <WhosHere
             users={[
-              { id: "1", name: "Alice", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice" },
-              { id: "2", name: "Bob", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob" }
+              { id: "1", name: "Alice", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice", status: "online" },
+              { id: "2", name: "Bob", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob", status: "online" }
             ]}
           />
         </div>

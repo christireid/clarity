@@ -4,10 +4,11 @@ import * as React from "react";
 import { SourcesList, WebSearchResults, LinkPreview } from "@/components/ai/sources";
 import { AudioPlayer, MicrophoneInput, ImageGallery } from "@/components/ai/media";
 import { DownloadButton, DownloadCard, DownloadManager } from "@/components/ai/download";
-import { ShareButton, ShareDialog, QRCodeShare, EmbedCode } from "@/components/ai/share";
-import { ImageGenerationCard, ImageGenerationPreview, ImageGenerationGrid } from "@/components/ai/image-generation";
-import { FilePreview, FileAttachmentCard, FileList, FileIcon } from "@/components/ai/file-viewer";
-import { Attachments, AttachmentCard, AttachmentPreview } from "@/components/ai/attachments";
+import { ShareButton, ShareCard, QRCodeShare, EmbedCode } from "@/components/ai/share";
+import { ImageGenerationCard, ImageGenerationPreview, ImageGenerationGrid, ImagePromptInput } from "@/components/ai/image-generation";
+import { FileAttachmentCard, FileList, FileIcon } from "@/components/ai/file-viewer";
+import { FilePreview } from "@/components/ai/rich-embeds";
+import { Attachments } from "@/components/ai/attachments";
 import { URLPreview, TweetEmbed, YouTubeEmbed, GitHubRepoEmbed } from "@/components/ai/rich-embeds";
 import { Carousel, ItemCarousel, HeroCarousel } from "@/components/ai/carousel";
 import { ComponentCard } from "./ComponentCard";
@@ -21,9 +22,9 @@ export function MediaComponents() {
       >
         <SourcesList
           sources={[
-            { id: "1", title: "React Documentation", url: "https://react.dev", description: "Official React documentation", favicon: "https://react.dev/favicon.ico" },
-            { id: "2", title: "Next.js Guide", url: "https://nextjs.org", description: "The React Framework for the Web" },
-            { id: "3", title: "TypeScript Handbook", url: "https://typescriptlang.org", description: "Learn TypeScript from the ground up" },
+            { id: "1", title: "React Documentation", url: "https://react.dev", snippet: "Official React documentation", favicon: "https://react.dev/favicon.ico" },
+            { id: "2", title: "Next.js Guide", url: "https://nextjs.org", snippet: "The React Framework for the Web" },
+            { id: "3", title: "TypeScript Handbook", url: "https://typescriptlang.org", snippet: "Learn TypeScript from the ground up" },
           ]}
           onSourceClick={(source) => console.log("Clicked:", source)}
         />
@@ -39,7 +40,7 @@ export function MediaComponents() {
             { id: "1", title: "React Best Practices 2024", url: "https://example.com/react", snippet: "Learn the latest React patterns and best practices for building modern applications..." },
             { id: "2", title: "Clean Code in React", url: "https://example.com/clean", snippet: "Discover how to write maintainable and scalable React code..." },
           ]}
-          isLoading={false}
+          isSearching={false}
         />
       </ComponentCard>
 
@@ -67,10 +68,14 @@ export function MediaComponents() {
         description="Music-style audio playback"
       >
         <AudioPlayer
-          src="https://example.com/audio.mp3"
-          title="Sample Track"
-          artist="AI Generated"
-          coverArt="https://via.placeholder.com/300"
+          track={{
+            id: "1",
+            title: "Sample Track",
+            artist: "AI Generated",
+            audioUrl: "https://example.com/audio.mp3",
+            duration: 180,
+            coverUrl: "https://via.placeholder.com/300"
+          }}
         />
       </ComponentCard>
 
@@ -80,8 +85,8 @@ export function MediaComponents() {
       >
         <MicrophoneInput
           onTranscript={(text) => console.log("Transcript:", text)}
-          onRecordingStart={() => console.log("Recording started")}
-          onRecordingStop={() => console.log("Recording stopped")}
+          onStart={() => console.log("Recording started")}
+          onStop={() => console.log("Recording stopped")}
         />
       </ComponentCard>
 
@@ -126,16 +131,26 @@ export function MediaComponents() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <DownloadCard
-            filename="project-report.pdf"
-            size="2.4 MB"
-            type="PDF Document"
-            onDownload={() => console.log("Download")}
+            item={{
+              id: "1",
+              name: "project-report.pdf",
+              url: "/downloads/report.pdf",
+              size: 2457600,
+              type: "application/pdf",
+              status: "completed",
+              progress: 100
+            }}
           />
           <DownloadCard
-            filename="dataset.csv"
-            size="15.8 MB"
-            type="CSV Spreadsheet"
-            onDownload={() => console.log("Download")}
+            item={{
+              id: "2",
+              name: "dataset.csv",
+              url: "/downloads/data.csv",
+              size: 16567296,
+              type: "text/csv",
+              status: "downloading",
+              progress: 45
+            }}
           />
         </div>
       </ComponentCard>
@@ -153,15 +168,12 @@ export function MediaComponents() {
       </ComponentCard>
 
       <ComponentCard
-        title="Share Dialog"
-        description="Full share dialog with options"
+        title="Share Card"
+        description="Full share card with options"
       >
-        <ShareDialog
+        <ShareCard
           url="https://example.com/conversation/123"
           title="AI Chat Conversation"
-          description="An interesting discussion about React patterns"
-          onCopyLink={() => console.log("Link copied")}
-          onShare={(platform) => console.log("Share to:", platform)}
         />
       </ComponentCard>
 
@@ -170,53 +182,56 @@ export function MediaComponents() {
         description="Copy embed code for websites"
       >
         <EmbedCode
-          code={`<iframe src="https://example.com/embed/123" width="600" height="400"></iframe>`}
-          onCopy={() => console.log("Copied embed code")}
+          url="https://example.com/embed/123"
+          width={600}
+          height={400}
         />
       </ComponentCard>
 
       {/* Image Generation */}
       <ComponentCard
-        title="Image Generation"
+        title="Image Prompt Input"
         description="AI image generation interface"
       >
-        <ImageGeneration
-          onGenerate={(prompt, options) => console.log("Generate:", prompt, options)}
-          isGenerating={false}
+        <ImagePromptInput
+          value=""
+          onChange={(value) => console.log("Value:", value)}
+          onGenerate={() => console.log("Generate")}
         />
       </ComponentCard>
 
       <ComponentCard
-        title="Generated Image Card"
+        title="Image Generation Card"
         description="Display generated images"
       >
         <div className="grid gap-4 md:grid-cols-2">
-          <GeneratedImageCard
-            src="https://picsum.photos/400/400?10"
-            prompt="A futuristic city at sunset"
-            model="DALL-E 3"
-            createdAt={new Date()}
-            onDownload={() => {}}
-            onVariation={() => {}}
-            onUpscale={() => {}}
+          <ImageGenerationCard
+            image={{
+              id: "1",
+              url: "https://picsum.photos/400/400?10",
+              prompt: "A futuristic city at sunset",
+              model: "DALL-E 3",
+              createdAt: new Date(),
+              width: 1024,
+              height: 1024,
+              status: "complete"
+            }}
+            onDownload={() => console.log("Download")}
           />
         </div>
       </ComponentCard>
 
-      {/* File Viewer */}
+      {/* File Preview */}
       <ComponentCard
-        title="File Viewer"
+        title="File Preview"
         description="Preview different file types"
       >
         <div className="h-[300px] border rounded-lg overflow-hidden">
-          <FileViewer
-            file={{
-              name: "example.ts",
-              type: "text/typescript",
-              content: `export function greet(name: string): string {
-  return \`Hello, \${name}!\`;
-}`,
-            }}
+          <FilePreview
+            name="example.ts"
+            type="code"
+            size="1 KB"
+            url="/files/example.ts"
           />
         </div>
       </ComponentCard>
@@ -243,12 +258,14 @@ export function MediaComponents() {
         description="Embed external content"
       >
         <div className="space-y-4">
-          <RichEmbed
+          <URLPreview
             url="https://youtube.com/watch?v=example"
             title="Introduction to AI"
             description="Learn the basics of artificial intelligence"
-            thumbnail="https://picsum.photos/480/270"
-            provider="YouTube"
+          />
+          <GitHubRepoEmbed
+            owner="vercel"
+            repo="next.js"
           />
         </div>
       </ComponentCard>
@@ -259,15 +276,11 @@ export function MediaComponents() {
         description="Swipeable media carousel"
       >
         <Carousel>
-          <CarouselItem>
-            <img src="https://picsum.photos/600/300?20" alt="Slide 1" className="rounded-lg" />
-          </CarouselItem>
-          <CarouselItem>
-            <img src="https://picsum.photos/600/300?21" alt="Slide 2" className="rounded-lg" />
-          </CarouselItem>
-          <CarouselItem>
-            <img src="https://picsum.photos/600/300?22" alt="Slide 3" className="rounded-lg" />
-          </CarouselItem>
+          {[
+            <img key="1" src="https://picsum.photos/600/300?20" alt="Slide 1" className="rounded-lg" />,
+            <img key="2" src="https://picsum.photos/600/300?21" alt="Slide 2" className="rounded-lg" />,
+            <img key="3" src="https://picsum.photos/600/300?22" alt="Slide 3" className="rounded-lg" />
+          ]}
         </Carousel>
       </ComponentCard>
     </div>

@@ -178,9 +178,8 @@ export function DevToolsComponents() {
             { id: "1", title: "API Request", language: "typescript", code: "const res = await fetch('/api/data');", tags: ["api", "fetch"], createdAt: new Date(), updatedAt: new Date() },
             { id: "2", title: "React Component", language: "tsx", code: "export function Component() { return <div>Hello</div>; }", tags: ["react"], createdAt: new Date(), updatedAt: new Date() },
           ]}
-          onSelect={(snippet) => console.log("Selected:", snippet)}
-          onCreate={() => console.log("Create new")}
-          onDelete={(id) => console.log("Delete:", id)}
+          onUse={(snippet) => console.log("Using:", snippet)}
+          onDelete={(id: string) => console.log("Delete:", id)}
         />
       </ComponentCard>
 
@@ -225,9 +224,10 @@ export function DevToolsComponents() {
             { id: "2", name: "Database", url: "http://localhost:3002", status: "connected", enabled: true, tools: [{ name: "query" }, { name: "insert" }, { name: "update" }] },
             { id: "3", name: "Browser", url: "http://localhost:3003", status: "disconnected", enabled: false, tools: [{ name: "navigate" }, { name: "screenshot" }, { name: "click" }] },
           ]}
-          onConnect={(id) => console.log("Connect:", id)}
-          onDisconnect={(id) => console.log("Disconnect:", id)}
-          onConfigure={(id) => console.log("Configure:", id)}
+          onAddServer={(url: string, name: string) => console.log("Add:", url, name)}
+          onRemoveServer={(id: string) => console.log("Remove:", id)}
+          onToggleServer={(id: string, enabled: boolean) => console.log("Toggle:", id, enabled)}
+          onRefreshServer={(id: string) => console.log("Refresh:", id)}
         />
       </ComponentCard>
 

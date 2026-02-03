@@ -122,8 +122,7 @@ export function CollaborationComponents() {
             { id: "v2", name: "Version 2", description: "Refined prompt", author: sampleCollaborators[1], createdAt: new Date("2024-01-01T09:00:00"), changes: 12 },
             { id: "v3", name: "Version 3", description: "Final polish", author: sampleCollaborators[0], createdAt: new Date("2024-01-01T10:00:00"), changes: 3, isCurrent: true },
           ]}
-          onSelect={(id: string) => console.log("Selected version:", id)}
-          onRevert={(id: string) => console.log("Revert to:", id)}
+          onVersionSelect={(version) => console.log("Selected version:", version.id)}
         />
       </ComponentCard>
 
