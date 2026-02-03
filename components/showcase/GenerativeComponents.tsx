@@ -6,8 +6,9 @@ import { ContentPartRenderer, ContentPartsList, ImageGallery as ContentGallery }
 import { Steps, ReasoningSteps, ThoughtChain } from "@/components/ai/steps";
 import { CodeGenerator, EmailGenerator, WritingGenerator, ImagePromptGenerator } from "@/components/ai/generators";
 import { QuestionFlow, Question, QuestionOption } from "@/components/ai/question-flow";
-import { AIPromptPanel, PromptInput, PromptHistory } from "@/components/ai/ai-prompt-panel";
+import { AIPromptPanel, AIPromptMinimal } from "@/components/ai/ai-prompt-panel";
 import { ComponentCard } from "./ComponentCard";
+import { Copy, RefreshCw, Share2, Save } from "lucide-react";
 
 export function GenerativeComponents() {
   return (
@@ -16,7 +17,7 @@ export function GenerativeComponents() {
         title="Streaming Text"
         description="Typewriter effect for AI responses"
       >
-        <StreamingText 
+        <StreamingText
           text="This text is being streamed character by character to simulate an AI generating a response in real-time."
           speed={30}
         />
@@ -26,7 +27,7 @@ export function GenerativeComponents() {
         title="Suggestion Chips"
         description="Quick follow-up actions"
       >
-        <SuggestionChips 
+        <SuggestionChips
           suggestions={[
             "Tell me more",
             "Give an example",
@@ -41,11 +42,11 @@ export function GenerativeComponents() {
         title="Generated Form"
         description="AI-generated input form"
       >
-        <GeneratedForm 
+        <GeneratedForm
           fields={[
-            { name: "title", label: "Project Title", type: "text", required: true },
-            { name: "description", label: "Description", type: "textarea" },
-            { name: "type", label: "Type", type: "select", options: ["Web", "Mobile", "Desktop"] }
+            { id: "title", label: "Project Title", type: "text", required: true },
+            { id: "description", label: "Description", type: "textarea" },
+            { id: "type", label: "Type", type: "select", options: [{ label: "Web", value: "web" }, { label: "Mobile", value: "mobile" }, { label: "Desktop", value: "desktop" }] }
           ]}
           onSubmit={(data) => console.log(data)}
         />
@@ -55,11 +56,11 @@ export function GenerativeComponents() {
         title="Process Steps"
         description="Visualizing multi-step processes"
       >
-        <ProcessSteps 
+        <ProcessSteps
           steps={[
-            { title: "Analysis", status: "completed", description: "Analyzing requirements" },
-            { title: "Design", status: "active", description: "Generating component structure" },
-            { title: "Implementation", status: "pending", description: "Writing code" }
+            { id: "1", title: "Analysis", status: "completed", description: "Analyzing requirements" },
+            { id: "2", title: "Design", status: "in-progress", description: "Generating component structure" },
+            { id: "3", title: "Implementation", status: "pending", description: "Writing code" }
           ]}
         />
       </ComponentCard>
@@ -68,12 +69,12 @@ export function GenerativeComponents() {
         title="Predictive Action"
         description="Anticipating user needs"
       >
-        <PredictiveAction 
+        <PredictiveAction
           title="Create Unit Tests?"
           description="I noticed you just wrote a new component. Would you like me to generate tests for it?"
           confidence={0.85}
-          onConfirm={() => console.log("Confirmed")}
-          onDismiss={() => console.log("Dismissed")}
+          onAccept={() => console.log("Accepted")}
+          onReject={() => console.log("Rejected")}
         />
       </ComponentCard>
 
@@ -81,16 +82,16 @@ export function GenerativeComponents() {
         title="Approval Request"
         description="Human-in-the-loop verification"
       >
-        <ApprovalRequest 
+        <ApprovalRequest
           title="Deploy to Production"
           description="Ready to deploy version 1.2.0 to production environment."
-          changes={[
-            "Updated API endpoints",
-            "Fixed login bug",
-            "Improved performance"
+          details={[
+            { label: "Updated API endpoints", value: "3 files" },
+            { label: "Fixed login bug", value: "auth.ts" },
+            { label: "Improved performance", value: "20% faster" }
           ]}
           onApprove={() => console.log("Approved")}
-          onReject={() => console.log("Rejected")}
+          onDeny={() => console.log("Denied")}
         />
       </ComponentCard>
 
@@ -98,9 +99,9 @@ export function GenerativeComponents() {
         title="Collapsible Output"
         description="Hiding verbose content"
       >
-        <CollapsibleOutput 
+        <CollapsibleOutput
           title="Analysis Logs"
-          preview="Found 3 potential issues in the codebase..."
+          badge="3 issues"
         >
           <div className="p-4 bg-muted rounded-md font-mono text-xs">
             [INFO] Scanning src/components...
@@ -117,11 +118,12 @@ export function GenerativeComponents() {
       >
         <QuickActions
           actions={[
-            { icon: "copy", label: "Copy", onClick: () => {} },
-            { icon: "refresh", label: "Regenerate", onClick: () => {} },
-            { icon: "share", label: "Share", onClick: () => {} },
-            { icon: "save", label: "Save", onClick: () => {} }
+            { id: "copy", label: "Copy", icon: <Copy className="h-4 w-4" /> },
+            { id: "refresh", label: "Regenerate", icon: <RefreshCw className="h-4 w-4" /> },
+            { id: "share", label: "Share", icon: <Share2 className="h-4 w-4" /> },
+            { id: "save", label: "Save", icon: <Save className="h-4 w-4" /> }
           ]}
+          onSelect={(action) => console.log("Selected:", action.label)}
         />
       </ComponentCard>
 
@@ -131,13 +133,25 @@ export function GenerativeComponents() {
         description="Render different content types"
       >
         <div className="space-y-4">
-          <TextPart content="This is a text content part with **markdown** support." />
-          <CodePart language="typescript" code={`function hello() {\n  console.log("Hello!");\n}`} />
-          <FilePart name="document.pdf" size="2.4 MB" type="application/pdf" />
-          <ToolResultPart
-            tool="web_search"
-            result={{ found: 5, query: "React hooks" }}
-            status="success"
+          <ContentPartRenderer
+            part={{
+              type: "text",
+              content: "This is a text content part with **markdown** support."
+            }}
+          />
+          <ContentPartRenderer
+            part={{
+              type: "code",
+              language: "typescript",
+              content: `function hello() {\n  console.log("Hello!");\n}`
+            }}
+          />
+          <ContentPartRenderer
+            part={{
+              type: "image",
+              url: "https://picsum.photos/400/200",
+              alt: "Sample image"
+            }}
           />
         </div>
       </ComponentCard>
@@ -147,76 +161,128 @@ export function GenerativeComponents() {
         title="Steps Indicator"
         description="Multi-step process visualization"
       >
-        <Steps current={2}>
-          <Step title="Setup" description="Configure your environment" />
-          <Step title="Install" description="Install dependencies" />
-          <Step title="Build" description="Build your project" />
-          <Step title="Deploy" description="Deploy to production" />
-        </Steps>
+        <Steps
+          steps={[
+            { id: "1", title: "Setup", status: "completed" },
+            { id: "2", title: "Configure", status: "current" },
+            { id: "3", title: "Deploy", status: "pending" },
+          ]}
+          currentStep={1}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Reasoning Steps"
+        description="AI thinking process"
+      >
+        <ReasoningSteps
+          steps={[
+            { id: "1", text: "Analyzing the user's request", status: "completed" },
+            { id: "2", text: "Gathering relevant context", status: "completed" },
+            { id: "3", text: "Formulating response", status: "active" },
+            { id: "4", text: "Validating output", status: "pending" },
+          ]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Thought Chain"
+        description="Chain of thought visualization"
+      >
+        <ThoughtChain
+          thoughts={[
+            { id: "1", content: "The user is asking about React hooks", type: "observation" },
+            { id: "2", content: "Hooks allow state in functional components", type: "reasoning" },
+            { id: "3", content: "I should explain useState and useEffect first", type: "plan" },
+            { id: "4", content: "Provide a practical example", type: "action" },
+          ]}
+        />
+      </ComponentCard>
+
+      {/* Generators */}
+      <ComponentCard
+        title="Code Generator"
+        description="AI-powered code generation"
+      >
+        <CodeGenerator
+          onGenerate={(prompt) => console.log("Generate code:", prompt)}
+          languages={["typescript", "python", "javascript"]}
+          selectedLanguage="typescript"
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Email Generator"
+        description="AI-powered email composition"
+      >
+        <EmailGenerator
+          onGenerate={(params) => console.log("Generate email:", params)}
+          tones={["professional", "friendly", "formal"]}
+        />
+      </ComponentCard>
+
+      <ComponentCard
+        title="Writing Generator"
+        description="AI-powered content writing"
+      >
+        <WritingGenerator
+          onGenerate={(params) => console.log("Generate writing:", params)}
+          styles={["blog", "article", "social"]}
+        />
       </ComponentCard>
 
       {/* Question Flow */}
       <ComponentCard
         title="Question Flow"
-        description="Interactive questionnaire"
+        description="Interactive question wizard"
       >
         <QuestionFlow
           questions={[
             {
               id: "1",
               text: "What type of project are you building?",
+              type: "single",
               options: [
-                { label: "Web Application", value: "web" },
-                { label: "Mobile App", value: "mobile" },
-                { label: "API/Backend", value: "api" },
+                { id: "web", label: "Web Application" },
+                { id: "mobile", label: "Mobile App" },
+                { id: "api", label: "API Service" },
+              ],
+            },
+            {
+              id: "2",
+              text: "Which framework do you prefer?",
+              type: "single",
+              options: [
+                { id: "react", label: "React" },
+                { id: "vue", label: "Vue" },
+                { id: "angular", label: "Angular" },
               ],
             },
           ]}
-          currentQuestion={0}
-          onAnswer={(q, a) => console.log("Answer:", q, a)}
-          onComplete={(answers) => console.log("Complete:", answers)}
+          onComplete={(answers) => console.log("Answers:", answers)}
         />
       </ComponentCard>
 
       {/* AI Prompt Panel */}
       <ComponentCard
         title="AI Prompt Panel"
-        description="Dedicated prompt interface"
+        description="Full-featured prompt interface"
       >
-        <AIPromptPanel
-          placeholder="Describe what you want to create..."
-          suggestions={[
-            "Generate a landing page",
-            "Create a dashboard",
-            "Build an API endpoint",
-          ]}
-          onSubmit={(prompt) => console.log("Prompt:", prompt)}
-          showHistory
-        />
+        <div className="h-[300px] border rounded-lg overflow-hidden">
+          <AIPromptPanel
+            onSubmit={(prompt) => console.log("Submit:", prompt)}
+            placeholder="Ask me anything..."
+          />
+        </div>
       </ComponentCard>
 
-      {/* Text Generator */}
       <ComponentCard
-        title="Text Generator"
-        description="Generate text content"
+        title="AI Prompt Minimal"
+        description="Compact prompt input"
       >
-        <TextGenerator
-          placeholder="Enter a topic or prompt..."
-          modes={["creative", "professional", "casual"]}
-          onGenerate={(prompt, mode) => console.log("Generate:", prompt, mode)}
-          isGenerating={false}
-        />
-      </ComponentCard>
-
-      {/* Code Generator */}
-      <ComponentCard
-        title="Code Generator"
-        description="Generate code snippets"
-      >
-        <CodeGenerator
-          languages={["typescript", "python", "rust", "go"]}
-          onGenerate={(prompt, language) => console.log("Generate code:", prompt, language)}
-          isGenerating={false}
+        <AIPromptMinimal
+          onSubmit={(prompt) => console.log("Submit:", prompt)}
+          placeholder="Quick question..."
         />
       </ComponentCard>
     </div>

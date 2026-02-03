@@ -195,7 +195,7 @@ export function EffectsComponents() {
             title="Text Reveal"
             description="Animated text reveal on load"
           >
-            <TextReveal text="Reveal your text with style." />
+            <TextReveal>Reveal your text with style.</TextReveal>
           </ComponentCard>
 
           <ComponentCard
@@ -346,7 +346,7 @@ export function EffectsComponents() {
             <div className="h-40 rounded-lg overflow-hidden">
               <AnimatedGradient
                 colors={["#3b82f6", "#8b5cf6", "#ec4899"]}
-                speed={3}
+                speed="normal"
               />
             </div>
           </ComponentCard>
@@ -378,9 +378,9 @@ export function EffectsComponents() {
             description="Loading shimmer animation"
           >
             <div className="space-y-2">
-              <ShimmerEffect className="h-4 w-3/4 rounded" />
-              <ShimmerEffect className="h-4 w-1/2 rounded" />
-              <ShimmerEffect className="h-4 w-2/3 rounded" />
+              <ShimmerEffect><div className="h-4 w-3/4 rounded bg-muted" /></ShimmerEffect>
+              <ShimmerEffect><div className="h-4 w-1/2 rounded bg-muted" /></ShimmerEffect>
+              <ShimmerEffect><div className="h-4 w-2/3 rounded bg-muted" /></ShimmerEffect>
             </div>
           </ComponentCard>
         </div>
