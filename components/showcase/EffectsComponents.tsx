@@ -68,7 +68,7 @@ export function EffectsComponents() {
             description="Masked grid background"
           >
             <div className="relative h-40 w-full overflow-hidden border rounded-md bg-background">
-              <GridPattern width={40} height={40} x={-1} y={-1} strokeDasharray={"4 2"} className="[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]" />
+              <GridPattern width={40} height={40} className="[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]" />
             </div>
           </ComponentCard>
 
@@ -133,12 +133,13 @@ export function EffectsComponents() {
             title="Spotlight Cursor"
             description="Spotlight follows cursor position"
           >
-            <div className="relative h-40 w-full overflow-hidden rounded-md border bg-zinc-950">
-              <SpotlightCursor />
-              <div className="absolute inset-0 flex items-center justify-center text-white font-bold">
-                Move Cursor Here
+            <SpotlightCursor>
+              <div className="relative h-40 w-full overflow-hidden rounded-md border bg-zinc-950">
+                <div className="absolute inset-0 flex items-center justify-center text-white font-bold">
+                  Move Cursor Here
+                </div>
               </div>
-            </div>
+            </SpotlightCursor>
           </ComponentCard>
 
           <ComponentCard
@@ -156,9 +157,14 @@ export function EffectsComponents() {
             title="Gooey Effect"
             description="SVG filter for blob merging"
           >
-            <div className="h-40 flex items-center justify-center bg-black rounded-md relative overflow-hidden">
-              <Gooey />
-            </div>
+            <Gooey>
+              <div className="h-40 flex items-center justify-center bg-black rounded-md relative overflow-hidden">
+                <div className="flex gap-4">
+                  <div className="w-16 h-16 bg-blue-500 rounded-full" />
+                  <div className="w-16 h-16 bg-purple-500 rounded-full" />
+                </div>
+              </div>
+            </Gooey>
           </ComponentCard>
 
           <ComponentCard

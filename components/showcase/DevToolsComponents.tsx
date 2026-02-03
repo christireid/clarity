@@ -238,14 +238,13 @@ export function DevToolsComponents() {
       >
         <BranchPicker
           branches={[
-            { id: "main", name: "Main conversation", messageCount: 12, createdAt: new Date() },
-            { id: "alt-1", name: "Alternative approach", messageCount: 5, createdAt: new Date(Date.now() - 3600000) },
-            { id: "alt-2", name: "Different solution", messageCount: 8, createdAt: new Date(Date.now() - 7200000) },
+            { id: "main", messageId: "msg-1", content: "Main conversation path", createdAt: new Date() },
+            { id: "alt-1", messageId: "msg-5", content: "Alternative approach", createdAt: new Date(Date.now() - 3600000), parentId: "main" },
+            { id: "alt-2", messageId: "msg-8", content: "Different solution", createdAt: new Date(Date.now() - 7200000), parentId: "main" },
           ]}
-          currentBranchId="main"
-          onBranchSelect={(id) => console.log("Select branch:", id)}
-          onBranchCreate={() => console.log("Create branch")}
-          onBranchDelete={(id) => console.log("Delete:", id)}
+          currentBranchIndex={0}
+          onBranchChange={(index: number) => console.log("Select branch:", index)}
+          onCreateBranch={() => console.log("Create branch")}
         />
       </ComponentCard>
 
@@ -254,8 +253,13 @@ export function DevToolsComponents() {
         description="Create a new conversation branch"
       >
         <div className="flex items-center gap-4">
-          <ForkButton onClick={() => console.log("Fork")} />
-          <MessageBranchIndicator branchCount={3} currentBranch={1} onNavigate={(idx) => console.log("Navigate to:", idx)} />
+          <ForkButton onFork={() => console.log("Fork")} />
+          <MessageBranchIndicator
+            branchCount={3}
+            currentBranch={1}
+            onPrevious={() => console.log("Previous")}
+            onNext={() => console.log("Next")}
+          />
         </div>
       </ComponentCard>
 
@@ -267,10 +271,10 @@ export function DevToolsComponents() {
         <div className="h-[400px] border rounded-lg overflow-hidden">
           <SDKDevTools
             config={{
-              apiKey: "sk-***",
+              systemPrompt: "You are a helpful assistant.",
               model: "gpt-4",
               temperature: 0.7,
-              maxTokens: 4096,
+              provider: "openai",
             }}
             onConfigChange={(config) => console.log("Config:", config)}
           />

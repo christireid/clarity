@@ -16,14 +16,14 @@ export function DiagramComponents() {
       >
         <div className="space-y-4">
           <MermaidDiagram
-            chart={`graph TD
+            code={`graph TD
   A[Start] --> B{Is it working?}
   B -- Yes --> C[Great!]
   B -- No --> D[Debug]
   D --> B`}
           />
           <MermaidDiagram
-            chart={`sequenceDiagram
+            code={`sequenceDiagram
   participant User
   participant AI
   User->>AI: Ask question
@@ -39,11 +39,15 @@ export function DiagramComponents() {
         description="Embed content from URLs"
       >
         <RichLinkEmbed
-          url="https://github.com/facebook/react"
-          title="facebook/react"
-          description="A declarative, efficient, and flexible JavaScript library for building user interfaces."
-          siteName="GitHub"
-          image="https://opengraph.githubassets.com/1/facebook/react"
+          links={[
+            {
+              url: "https://github.com/facebook/react",
+              title: "facebook/react",
+              description: "A declarative, efficient, and flexible JavaScript library for building user interfaces.",
+              siteName: "GitHub",
+              image: "https://opengraph.githubassets.com/1/facebook/react",
+            },
+          ]}
         />
       </ComponentCard>
 
@@ -52,9 +56,9 @@ export function DiagramComponents() {
         description="Compact source citation"
       >
         <div className="flex flex-wrap gap-2">
-          <SourceChip index={1} domain="react.dev" url="https://react.dev" />
-          <SourceChip index={2} domain="github.com" url="https://github.com" />
-          <SourceChip index={3} domain="stackoverflow.com" url="https://stackoverflow.com" />
+          <SourceChip index={1} title="React Documentation" url="https://react.dev" />
+          <SourceChip index={2} title="GitHub" url="https://github.com" />
+          <SourceChip index={3} title="Stack Overflow" url="https://stackoverflow.com" />
         </div>
       </ComponentCard>
 
@@ -66,27 +70,28 @@ export function DiagramComponents() {
           <SimpleTooltip content="This is a simple tooltip">
             <Button variant="outline">Simple</Button>
           </SimpleTooltip>
-          
-          <InfoTooltip content="This provides additional information about a feature or setting.">
-            <Button variant="outline">Info</Button>
-          </InfoTooltip>
-          
-          <RichTooltip 
-            title="Rich Tooltip" 
-            content="Tooltips can contain rich content like bold text, lists, and more."
-            footer="Click to learn more"
+
+          <InfoTooltip content="This provides additional information about a feature or setting." />
+
+          <RichTooltip
+            title="Rich Tooltip"
+            description="Tooltips can contain rich content like formatted text and metadata."
+            metadata={[
+              { label: "Type", value: "Info" },
+              { label: "Version", value: "1.0" },
+            ]}
           >
             <Button variant="outline">Rich</Button>
           </RichTooltip>
-          
-          <CodeTooltip 
-            language="typescript" 
+
+          <CodeTooltip
+            language="typescript"
             code="const sum = (a, b) => a + b;"
           >
             <Button variant="outline">Code</Button>
           </CodeTooltip>
-          
-          <ShortcutTooltip shortcut={["⌘", "K"]} description="Open command palette">
+
+          <ShortcutTooltip label="Open command palette" shortcut={["⌘", "K"]}>
             <Button variant="outline">Shortcut</Button>
           </ShortcutTooltip>
         </div>
