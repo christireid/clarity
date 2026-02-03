@@ -5,11 +5,13 @@
 import type { ContextWindow, TokenStats } from './types';
 
 interface Message {
-  role: 'system' | 'user' | 'assistant';
+  id: string;
+  role: 'system' | 'user' | 'assistant' | 'tool';
   content: string;
-  tokenCount?: number;
+  tokenCount?: number | { input?: number; output?: number; total: number };
   importance?: number;
-  timestamp?: number;
+  timestamp: Date;
+  createdAt?: Date;
 }
 
 export class ContextManager {
@@ -25,6 +27,19 @@ export class ContextManager {
   private estimateTokens(text: string): number {
     // Rough estimate: 1 token ≈ 4 characters
     return Math.ceil(text.length / 4);
+  }
+
+  /**
+   * Get token count from message (handles both number and object formats)
+   */
+  private getTokenCount(message: Message): number {
+    if (message.tokenCount === undefined) {
+      return this.estimateTokens(message.content);
+    }
+    if (typeof message.tokenCount === 'number') {
+      return message.tokenCount;
+    }
+    return message.tokenCount.total;
   }
 
   /**
@@ -71,7 +86,7 @@ export class ContextManager {
       const systemMessages = messages.filter(m => m.role === 'system');
       result.push(...systemMessages);
       totalTokens = systemMessages.reduce((sum, m) => {
-        const tokens = m.tokenCount || this.estimateTokens(m.content);
+        const tokens = this.getTokenCount(m);
         return sum + tokens;
       }, 0);
     }
@@ -81,7 +96,7 @@ export class ContextManager {
       const message = messages[i];
       if (message.role === 'system' && this.config.keepSystemMessages) continue;
 
-      const tokens = message.tokenCount || this.estimateTokens(message.content);
+      const tokens = this.getTokenCount(message);
       if (totalTokens + tokens <= this.config.maxTokens) {
         result.unshift(message);
         totalTokens += tokens;
@@ -107,7 +122,7 @@ export class ContextManager {
     );
 
     let totalTokens = systemMessages.reduce((sum, m) => {
-      return sum + (m.tokenCount || this.estimateTokens(m.content));
+      return sum + (this.getTokenCount(m));
     }, 0);
 
     const windowSize = Math.floor((this.config.maxTokens - totalTokens) / 2);
@@ -116,7 +131,7 @@ export class ContextManager {
     // Get recent messages
     for (let i = conversationMessages.length - 1; i >= 0; i--) {
       const message = conversationMessages[i];
-      const tokens = message.tokenCount || this.estimateTokens(message.content);
+      const tokens = this.getTokenCount(message);
       
       if (totalTokens + tokens <= this.config.maxTokens) {
         recentMessages.unshift(message);
@@ -137,7 +152,7 @@ export class ContextManager {
     const scored = messages.map((msg, index) => ({
       message: msg,
       importance: this.calculateImportance(msg, index, messages.length),
-      tokens: msg.tokenCount || this.estimateTokens(msg.content),
+      tokens: this.getTokenCount(msg),
     }));
 
     // Sort by importance
@@ -171,7 +186,7 @@ export class ContextManager {
       : [];
     
     let totalTokens = systemMessages.reduce((sum, m) => {
-      return sum + (m.tokenCount || this.estimateTokens(m.content));
+      return sum + (this.getTokenCount(m));
     }, 0);
 
     const conversationMessages = messages.filter(m => 
@@ -184,7 +199,7 @@ export class ContextManager {
 
     // Add recent messages
     for (const msg of recentMessages) {
-      const tokens = msg.tokenCount || this.estimateTokens(msg.content);
+      const tokens = this.getTokenCount(msg);
       totalTokens += tokens;
     }
 
@@ -193,7 +208,7 @@ export class ContextManager {
     const scored = remainingMessages.map((msg, index) => ({
       message: msg,
       importance: this.calculateImportance(msg, index, remainingMessages.length),
-      tokens: msg.tokenCount || this.estimateTokens(msg.content),
+      tokens: this.getTokenCount(msg),
     }));
 
     scored.sort((a, b) => b.importance - a.importance);
@@ -220,7 +235,7 @@ export class ContextManager {
    */
   optimize(messages: Message[]): { messages: Message[]; stats: TokenStats } {
     const originalTokens = messages.reduce((sum, m) => {
-      return sum + (m.tokenCount || this.estimateTokens(m.content));
+      return sum + (this.getTokenCount(m));
     }, 0);
 
     let optimized: Message[];
@@ -243,7 +258,7 @@ export class ContextManager {
     }
 
     const optimizedTokens = optimized.reduce((sum, m) => {
-      return sum + (m.tokenCount || this.estimateTokens(m.content));
+      return sum + (this.getTokenCount(m));
     }, 0);
 
     return {

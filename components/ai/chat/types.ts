@@ -5,7 +5,7 @@
 
 export interface Message {
   id: string;
-  role: 'user' | 'assistant' | 'system';
+  role: 'user' | 'assistant' | 'system' | 'tool';
   content: string;
   timestamp: Date;
   status?: 'sending' | 'sent' | 'error' | 'streaming';
@@ -13,7 +13,7 @@ export interface Message {
   metadata?: Record<string, any>;
   thinkingSteps?: ThinkingStep[]; // New field
   citations?: Citation[];
-  tokenCount?: { total: number };
+  tokenCount?: number | { input?: number; output?: number; total: number };
   toolCalls?: ToolCall[];
   model?: string;
   createdAt?: Date;
@@ -21,9 +21,9 @@ export interface Message {
 
 export interface ThinkingStep {
   id: string;
-  type: string;
+  type: "thinking" | "planning" | "searching" | "analyzing" | "writing";
   content: string;
-  status: 'pending' | 'active' | 'complete';
+  status: "pending" | "active" | "complete";
   duration?: number;
 }
 

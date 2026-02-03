@@ -67,7 +67,7 @@ export function DraftEditor({
     draft?.updatedAt || null
   );
   const [isSaving, setIsSaving] = React.useState(false);
-  const autoSaveTimerRef = React.useRef<ReturnType<typeof setTimeout>>();
+  const autoSaveTimerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   React.useEffect(() => {
     if (autoSave && content) {

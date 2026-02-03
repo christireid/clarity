@@ -655,7 +655,7 @@ export function DebugPanel({ logs, onClear, className }: DebugPanelProps) {
                 [{log.level}]
               </span>
               <span>{log.message}</span>
-              {log.data && (
+              {log.data !== undefined && log.data !== null && (
                 <pre className="mt-1 pl-4 text-muted-foreground">
                   {JSON.stringify(log.data, null, 2)}
                 </pre>

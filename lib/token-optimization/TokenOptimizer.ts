@@ -73,8 +73,13 @@ export class TokenOptimizer {
     let processedPrompt = prompt;
     // ... logic to optimize prompt ...
 
-    const optimizedTokens = this.estimateTokens(processedPrompt) + 
-      optimizedContext.messages.reduce((sum, m) => sum + (m.tokenCount || 0), 0);
+    const optimizedTokens = this.estimateTokens(processedPrompt) +
+      optimizedContext.messages.reduce((sum, m) => {
+        const tc = m.tokenCount;
+        if (tc === undefined) return sum;
+        if (typeof tc === 'number') return sum + tc;
+        return sum + tc.total;
+      }, 0);
 
     return {
       data: { prompt: processedPrompt, context: optimizedContext.messages },

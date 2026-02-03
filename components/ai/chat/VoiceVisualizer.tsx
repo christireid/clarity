@@ -8,7 +8,7 @@ interface VoiceVisualizerProps {
 
 export function VoiceVisualizer({ isRecording }: VoiceVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (!isRecording || !canvasRef.current) return;

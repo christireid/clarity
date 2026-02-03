@@ -54,14 +54,16 @@ export * from "./git-components";
 export * from "./env-variables";
 
 // Data & Visualization
-export * from "./charts";
+// Note: charts conflicts with mcp-manager (TokenUsage) - skipping
+// export * from "./charts";
 export * from "./data-table";
 
 // UI Components
 export * from "./empty-states";
 export * from "./notifications";
 export * from "./dynamic-form";
-export * from "./hotkeys";
+// Note: hotkeys conflicts with command-palette (useHotkey) - skipping
+// export * from "./hotkeys";
 export * from "./avatars";
 
 // Chatbot Clones
@@ -74,10 +76,12 @@ export * from "./mermaid-diagram";
 export * from "./rich-tooltip";
 
 // Generative UI
-export * from "./generative-ui";
+// Note: generative-ui conflicts with message (StreamingText) - skipping
+// export * from "./generative-ui";
 
 // Plugin Management
-export * from "./plugin-manager";
+// Note: plugin-manager conflicts with mcp-manager (PluginManager) - skipping
+// export * from "./plugin-manager";
 
 // Token Optimization
 export * from "./token-optimizer";
@@ -86,7 +90,8 @@ export * from "./token-optimizer";
 export * from "./v0-clone";
 
 // Speech & Voice
-export * from "./speech";
+// Note: speech conflicts with media (VoiceSelector) - skipping
+// export * from "./speech";
 
 // Web Search
 export * from "./web-search";
@@ -125,7 +130,8 @@ export * from "./generators";
 export * from "./social-posts";
 
 // Stats Display
-export * from "./stats-display";
+// Note: stats-display conflicts with charts (StatCard) - skipping
+// export * from "./stats-display";
 
 // Carousel
 export * from "./carousel";
@@ -149,7 +155,8 @@ export * from "./filters";
 export * from "./sortable-list";
 
 // Timestamp
-export * from "./timestamp";
+// Note: timestamp conflicts with date-picker (Timestamp) - skipping
+// export * from "./timestamp";
 
 // Buttons
 export * from "./buttons";
@@ -164,7 +171,8 @@ export * from "./status";
 export * from "./animations";
 
 // Rich Embeds
-export * from "./rich-embeds";
+// Note: rich-embeds conflicts with file-viewer (FilePreview) - skipping
+// export * from "./rich-embeds";
 
 // Schema Display
 export * from "./schema-display";
@@ -179,19 +187,23 @@ export * from "./web-browser";
 export * from "./memory";
 
 // Feedback Components
-export * from "./feedback";
+// Note: feedback conflicts with buttons (FeedbackButtons) - skipping
+// export * from "./feedback";
 
 // Conversation Components
-export * from "./conversation";
+// Note: conversation conflicts with conversation-manager (Conversation) - skipping
+// export * from "./conversation";
 
 // Thread Management
 export * from "./threads";
 
 // Confirmation/Approval Workflows
-export * from "./confirmation";
+// Note: confirmation conflicts with confirmation-dialog (ConfirmationDialog) - skipping
+// export * from "./confirmation";
 
 // Inline Citations
-export * from "./inline-citation";
+// Note: inline-citation conflicts with citation-chip (CitationChip, InlineCitation) - skipping
+// export * from "./inline-citation";
 
 // Plan & Task Components
 // Note: plan conflicts with agent (Plan) - skipping
@@ -210,7 +222,8 @@ export * from "./dashboard";
 export * from "./blog";
 
 // Password Components
-export * from "./password";
+// Note: password conflicts with auth (PasswordStrength) - skipping
+// export * from "./password";
 
 // Error Pages (404, 500, etc.)
 export * from "./error-pages";
@@ -231,7 +244,8 @@ export * from "./rate-limiting";
 export * from "./cost-tracking";
 
 // RAG & Knowledge Base
-export * from "./rag";
+// Note: rag conflicts with token-optimizer (ContextWindowVisualizer) - skipping
+// export * from "./rag";
 
 // Guardrails & Safety
 export * from "./guardrails";
@@ -240,13 +254,15 @@ export * from "./guardrails";
 export * from "./trace-viewer";
 
 // Collaboration
-export * from "./collaboration";
+// Note: collaboration conflicts with participants (PresenceIndicator, TypingIndicator) - skipping
+// export * from "./collaboration";
 
 // Model Fallback & Retry
 export * from "./model-fallback";
 
 // Streaming
-export * from "./streaming";
+// Note: streaming conflicts with message (StreamingText), text-effects (TextShimmer, TypingAnimation) - skipping
+// export * from "./streaming";
 
 // Context Management
 export * from "./context-management";
@@ -255,19 +271,23 @@ export * from "./context-management";
 export * from "./bubble";
 
 // Welcome & Prompts
-export * from "./welcome";
+// Note: welcome conflicts with empty-states (WelcomeScreen) - skipping
+// export * from "./welcome";
 
 // Chat Container & Sender
 export * from "./chat-container";
 
 // Actions & Feedback
-export * from "./actions";
+// Note: actions conflicts with generative-ui (QuickActions, QuickActionsProps) - skipping
+// export * from "./actions";
 
 // Attachments & File Cards
-export * from "./attachments";
+// Note: attachments conflicts with file-tree (FileCard), file-viewer (FilePreview) - skipping
+// export * from "./attachments";
 
 // Steps & Reasoning
-export * from "./steps";
+// Note: steps conflicts with thinking-indicator (ReasoningDisplay), streaming (TextShimmerProps) - skipping
+// export * from "./steps";
 
 // Conversations List
 export * from "./conversations-list";
@@ -276,22 +296,27 @@ export * from "./conversations-list";
 export * from "./composer";
 
 // Text Effects
-export * from "./text-effects";
+// Note: text-effects conflicts with message (StreamingText), streaming (TextShimmer, TypingAnimation) - skipping
+// export * from "./text-effects";
 
 // Loaders
-export * from "./loaders";
+// Note: loaders conflicts with conversation (Loader, LoaderProps, MessageLoading, MessageLoadingProps) - skipping
+// export * from "./loaders";
 
 // Scroll Button
 export * from "./scroll-button";
 
 // Copy Button
-export * from "./copy-button";
+// Note: copy-button conflicts with buttons (CopyButton, CopyButtonProps) - skipping
+// export * from "./copy-button";
 
 // Audio Player
-export * from "./audio-player";
+// Note: audio-player conflicts with media (AudioPlayer) - skipping
+// export * from "./audio-player";
 
 // System Messages & Notifications
-export * from "./system-message";
+// Note: system-message conflicts with participants (TypingIndicator) - skipping
+// export * from "./system-message";
 
 // Branch Picker
 export * from "./branch-picker";
@@ -306,7 +331,8 @@ export * from "./ai-textarea";
 export * from "./persona";
 
 // Suggestion Chips
-export * from "./suggestion-chips";
+// Note: suggestion-chips conflicts with generative-ui (SuggestionChips) - skipping
+// export * from "./suggestion-chips";
 
 // Presets Manager
 export * from "./presets";
@@ -315,7 +341,8 @@ export * from "./presets";
 export * from "./bookmarks";
 
 // Human-in-the-Loop
-export * from "./human-in-loop";
+// Note: human-in-loop conflicts with generative-ui (ApprovalRequest) - skipping
+// export * from "./human-in-loop";
 
 // Animated Beam
 export * from "./animated-beam";
@@ -324,19 +351,23 @@ export * from "./animated-beam";
 export * from "./ai-prompt-panel";
 
 // Share & Embed
-export * from "./share";
+// Note: share conflicts with buttons (ShareButton), collaboration (ShareDialog) - skipping
+// export * from "./share";
 
 // Content Parts Renderer
-export * from "./content-parts";
+// Note: content-parts conflicts with media (ImageGallery) - skipping
+// export * from "./content-parts";
 
 // Voice Button & TTS
-export * from "./voice-button";
+// Note: voice-button conflicts with buttons (VoiceButton) - skipping
+// export * from "./voice-button";
 
 // Particles & Visual Effects
 export * from "./particles";
 
 // Message Actions Bar
-export * from "./message-actions";
+// Note: message-actions conflicts with generative-ui (QuickActions) - skipping
+// export * from "./message-actions";
 
 // Message Editor
 export * from "./message-editor";
@@ -345,22 +376,26 @@ export * from "./message-editor";
 export * from "./reactions";
 
 // Read Receipts
-export * from "./read-receipts";
+// Note: read-receipts conflicts with status (OnlineStatus) - skipping
+// export * from "./read-receipts";
 
 // Thread Replies
-export * from "./thread-replies";
+// Note: thread-replies conflicts with threads (Thread) - skipping
+// export * from "./thread-replies";
 
 // Pinned Messages
 export * from "./pinned-messages";
 
 // Search Messages
-export * from "./search-messages";
+// Note: search-messages conflicts with web-search (SearchResult, SearchResultsList) - skipping
+// export * from "./search-messages";
 
 // Mentions
 export * from "./mentions";
 
 // Image Generation
-export * from "./image-generation";
+// Note: image-generation conflicts with media (ImageGallery) - skipping
+// export * from "./image-generation";
 
 // Quick Replies
 export * from "./quick-replies";
@@ -372,13 +407,15 @@ export * from "./message-forwarding";
 export * from "./scheduled-messages";
 
 // Presence & Online Status
-export * from "./presence";
+// Note: presence conflicts with participants (PresenceIndicator), status (OnlineStatus, ConnectionStatus) - skipping
+// export * from "./presence";
 
 // Error Boundary & Error Handling
 export * from "./error-boundary";
 
 // Message Grouping & Date Separators
-export * from "./message-grouping";
+// Note: message-grouping conflicts with conversation (MessageGroup), timestamp (MessageTimestamp, MessageTimestampProps) - skipping
+// export * from "./message-grouping";
 
 // Retry Logic & Offline Queue
 export * from "./retry-logic";
@@ -387,7 +424,8 @@ export * from "./retry-logic";
 export * from "./translation";
 
 // Unread Indicators & Badges
-export * from "./unread-indicator";
+// Note: unread-indicator conflicts with read-receipts (UnreadBadge) - skipping
+// export * from "./unread-indicator";
 
 // Dashboards
 export * from "./dashboards";

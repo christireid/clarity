@@ -45,7 +45,7 @@ export interface ThinkingStep {
   id: string;
   type: "thinking" | "planning" | "searching" | "analyzing" | "writing";
   content: string;
-  status: "active" | "complete";
+  status: "pending" | "active" | "complete";
   duration?: number;
 }
 
@@ -64,9 +64,9 @@ export interface Message {
   branchId?: string;
   metadata?: Record<string, unknown>;
   model?: string;
-  tokenCount?: {
-    input: number;
-    output: number;
+  tokenCount?: number | {
+    input?: number;
+    output?: number;
     total: number;
   };
 }

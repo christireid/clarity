@@ -227,9 +227,12 @@ export function MessageBubble({
         )}
 
         {/* Token Count */}
-        {message.tokenCount && !isUser && (
+        {message.tokenCount !== undefined && !isUser && (
           <div className="text-xs text-muted-foreground/60">
-            {message.tokenCount.total.toLocaleString()} tokens
+            {(typeof message.tokenCount === 'number'
+              ? message.tokenCount
+              : message.tokenCount.total
+            ).toLocaleString()} tokens
           </div>
         )}
       </div>

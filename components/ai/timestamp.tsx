@@ -33,11 +33,12 @@ function formatRelativeTime(date: Date): string {
 }
 
 function formatAbsoluteTime(date: Date, format: "short" | "medium" | "long" = "medium"): string {
-  const options: Intl.DateTimeFormatOptions = {
+  const optionsMap: Record<"short" | "medium" | "long", Intl.DateTimeFormatOptions> = {
     short: { month: "short", day: "numeric" },
     medium: { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" },
     long: { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" },
-  }[format];
+  };
+  const options = optionsMap[format];
 
   return date.toLocaleDateString("en-US", options);
 }

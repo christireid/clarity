@@ -36,7 +36,8 @@ export default function AdvancedAIShowcase() {
     initialConfig: {
       systemPrompt: 'You are a helpful assistant. Current date is {{date}}.',
       temperature: 0.7,
-      model: 'gpt-4o'
+      model: 'gpt-4o',
+      provider: 'mock' as const
     },
     // Middleware injection
     middleware: [

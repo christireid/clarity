@@ -157,7 +157,7 @@ export function SystemMessage({
     >
       {/* Icon */}
       <span className={cn("flex-shrink-0 mt-0.5", config.color)}>
-        {icon || React.cloneElement(config.icon as React.ReactElement, {
+        {icon || React.cloneElement(config.icon as React.ReactElement<{ className?: string }>, {
           className: iconSizes[size],
         })}
       </span>
