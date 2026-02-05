@@ -58,7 +58,7 @@ export function ComponentCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden transition-shadow hover:shadow-md",
+        "rounded-xl border border-border bg-card text-card-foreground shadow-sm transition-shadow hover:shadow-md font-sans",
         className
       )}
     >
@@ -67,7 +67,7 @@ export function ComponentCard({
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-lg font-semibold leading-none tracking-tight">
+              <h3 className="text-lg font-semibold leading-none tracking-tight font-sans">
                 {title}
               </h3>
               {componentName && (
@@ -76,7 +76,7 @@ export function ComponentCard({
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-muted-foreground mt-2">{description}</p>
+            <p className="text-sm text-muted-foreground mt-2 font-sans">{description}</p>
             {tags && tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {tags.map((tag) => (
@@ -167,8 +167,8 @@ export function ComponentCard({
       {/* Component Preview */}
       <div
         className={cn(
-          "mx-6 mb-6 rounded-lg border border-border bg-background/50 relative overflow-hidden transition-all",
-          expanded ? "p-8 min-h-[400px]" : "p-4 md:p-6 min-h-[150px]",
+          "mx-6 mb-6 rounded-lg border border-border bg-background/50 relative transition-all",
+          expanded ? "p-8 min-h-[400px] max-h-[80vh] overflow-auto" : "p-4 md:p-6 min-h-[150px] max-h-[500px] overflow-auto",
           fullWidth && "mx-0 rounded-none border-x-0"
         )}
       >
@@ -208,11 +208,11 @@ export function SimpleCard({
   return (
     <div
       className={cn(
-        "rounded-lg border border-border bg-card p-4 space-y-3",
+        "rounded-lg border border-border bg-card p-4 space-y-3 max-h-[400px] overflow-auto font-sans",
         className
       )}
     >
-      <h4 className="text-sm font-medium text-muted-foreground">{title}</h4>
+      <h4 className="text-sm font-medium text-muted-foreground font-sans">{title}</h4>
       <div>{children}</div>
     </div>
   );
