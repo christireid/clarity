@@ -115,7 +115,12 @@ function ConversationItemComponent({
   const [editValue, setEditValue] = React.useState(
     typeof item.label === "string" ? item.label : ""
   );
+  const [isMounted, setIsMounted] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   React.useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -242,8 +247,8 @@ function ConversationItemComponent({
         )}
       </div>
 
-      {/* Timestamp */}
-      {showTimestamp && item.timestamp && !isEditing && variant !== "minimal" && (
+      {/* Timestamp - only render on client to avoid hydration mismatch */}
+      {showTimestamp && item.timestamp && !isEditing && variant !== "minimal" && isMounted && (
         <span className="text-xs text-muted-foreground flex-shrink-0">
           {formatTimestamp(item.timestamp)}
         </span>
