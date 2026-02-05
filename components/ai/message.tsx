@@ -184,10 +184,10 @@ export function MessageBubble({
         ) : (
           <div
             className={cn(
-              "rounded-2xl px-4 py-3",
+              "rounded-2xl px-4 py-3 font-sans",
               isUser
-                ? "bg-primary text-primary-foreground" // Use bg-primary for user messages
-                : "bg-muted text-foreground", // Use bg-muted for assistant messages
+                ? "bg-[hsl(var(--chat-bubble-user))] text-[hsl(var(--chat-bubble-user-foreground))]"
+                : "bg-[hsl(var(--chat-bubble-assistant))] text-[hsl(var(--chat-bubble-assistant-foreground))]",
               isStreaming && "animate-pulse-subtle"
             )}
           >

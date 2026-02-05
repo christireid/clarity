@@ -109,10 +109,10 @@ export function ChatBubble({ message, className, onCopy, onRegenerate, onFeedbac
 
         <div
           className={cn(
-            "rounded-lg p-3 text-sm relative group/bubble",
-            isAssistant && "glass-medium bg-secondary",
-            isUser && "bg-neutral-900 text-neutral-50 dark:bg-neutral-50 dark:text-neutral-900",
-            isSystem && "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+            "rounded-lg p-3 text-sm relative group/bubble font-sans",
+            isAssistant && "bg-[hsl(var(--chat-bubble-assistant))] text-[hsl(var(--chat-bubble-assistant-foreground))]",
+            isUser && "bg-[hsl(var(--chat-bubble-user))] text-[hsl(var(--chat-bubble-user-foreground))]",
+            isSystem && "bg-muted text-muted-foreground"
           )}
         >
           {message.content}

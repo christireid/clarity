@@ -10,16 +10,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 // ============================================================================
 
 const bubbleVariants = cva(
-  "relative max-w-[85%] transition-all duration-200",
+  "relative max-w-[85%] transition-all duration-200 font-sans",
   {
     variants: {
       variant: {
-        filled: "bg-muted",
+        filled: "",
         outlined: "bg-transparent border border-border",
-        shadow: "bg-background shadow-md",
-        borderless: "bg-transparent",
-        gradient: "bg-gradient-to-br from-primary/10 to-primary/5",
-        glass: "bg-background/80 backdrop-blur-sm border border-border/50",
+        shadow: "bg-background shadow-md text-foreground",
+        borderless: "bg-transparent text-foreground",
+        gradient: "bg-gradient-to-br from-primary/10 to-primary/5 text-foreground",
+        glass: "glass-medium text-foreground",
       },
       shape: {
         default: "rounded-2xl",
@@ -53,12 +53,12 @@ const bubbleVariants = cva(
       {
         placement: "start",
         variant: "filled",
-        className: "bg-muted text-foreground",
+        className: "bg-[hsl(var(--chat-bubble-assistant))] text-[hsl(var(--chat-bubble-assistant-foreground))]",
       },
       {
         placement: "end",
         variant: "filled",
-        className: "bg-primary text-primary-foreground",
+        className: "bg-[hsl(var(--chat-bubble-user))] text-[hsl(var(--chat-bubble-user-foreground))]",
       },
     ],
     defaultVariants: {
