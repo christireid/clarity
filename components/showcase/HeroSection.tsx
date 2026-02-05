@@ -34,7 +34,7 @@ function Typewriter({ words }: { words: string[] }) {
   }, [currentText, isDeleting, currentWord, words]);
 
   return (
-    <span className="text-primary">
+    <span className="text-primary font-sans">
       {currentText}
       <span className="animate-pulse">|</span>
     </span>
@@ -62,43 +62,44 @@ const features = [
 
 export function HeroSection() {
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden border border-border bg-gradient-to-b from-background to-muted/30 mb-12">
-      {/* Background Effects */}
+    <div className="relative w-full rounded-2xl overflow-hidden glass-panel mb-12">
+      {/* Background Effects - Glassmorphism */}
       <div className="absolute inset-0 z-0">
         <Particles
-          quantity={80}
-          staticity={40}
-          ease={50}
-          className="h-full w-full opacity-50"
-          color="#a855f7"
+          quantity={60}
+          staticity={50}
+          ease={60}
+          className="h-full w-full opacity-40"
+          color="#3b82f6"
         />
-        {/* Gradient overlays */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+        {/* Soft gradient overlays for depth */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/8 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-sky-500/8 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px]" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 px-6 py-16 md:px-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg">
-            <Sparkles className="w-4 h-4 text-violet-500" />
-            <span className="text-sm font-medium">Production Ready</span>
-            <Badge variant="secondary" className="text-xs">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium font-sans">Production Ready</span>
+            <Badge variant="secondary" className="text-xs font-sans">
               v2.0
             </Badge>
           </div>
 
           {/* Heading */}
           <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight font-sans">
               Build{" "}
-              <span className="bg-gradient-to-r from-violet-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-500 to-sky-500 bg-clip-text text-transparent">
                 Intelligent
               </span>{" "}
               Chat Interfaces
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-sans">
               A comprehensive React component library for{" "}
               <Typewriter
                 words={[
@@ -116,7 +117,7 @@ export function HeroSection() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Button
               size="lg"
-              className="h-12 px-8 rounded-full bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 shadow-lg shadow-violet-500/25"
+              className="h-12 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg font-sans"
               onClick={() => (window.location.href = "/advanced-ai")}
             >
               <Zap className="w-4 h-4 mr-2" />
@@ -125,7 +126,7 @@ export function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="h-12 px-8 rounded-full bg-background/50 backdrop-blur-sm hover:bg-background/80"
+              className="h-12 px-8 rounded-full glass-button font-sans"
               onClick={() =>
                 document
                   .getElementById("components")
@@ -142,13 +143,13 @@ export function HeroSection() {
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-background/50 backdrop-blur-sm border border-border/50 hover:border-border hover:bg-background/80 transition-all"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl glass-card"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10">
-                  <feature.icon className="h-5 w-5 text-violet-500" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <feature.icon className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="font-semibold">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground text-center">
+                <h3 className="font-semibold font-sans">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground text-center font-sans">
                   {feature.description}
                 </p>
               </div>
@@ -156,7 +157,7 @@ export function HeroSection() {
           </div>
 
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-8 pt-4 text-sm">
+          <div className="flex flex-wrap justify-center gap-8 pt-4 text-sm font-sans">
             <div className="text-center">
               <div className="text-2xl font-bold text-foreground">35+</div>
               <div className="text-muted-foreground">Categories</div>

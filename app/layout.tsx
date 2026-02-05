@@ -1,9 +1,22 @@
 import React from "react"
 import type { Metadata, Viewport } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "AI Chat Components - Advanced React Library",
@@ -45,7 +58,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="bg-background">
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} bg-background`}>
       <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"

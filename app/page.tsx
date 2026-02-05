@@ -243,12 +243,12 @@ export default function ComponentShowcase() {
         <div className="flex h-full flex-col">
           {/* Logo */}
           <div className="flex items-center gap-3 border-b border-border p-6 shrink-0">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/20">
-              <Sparkles className="h-5 w-5 text-white" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+              <Sparkles className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h1 className="font-semibold">Clarity</h1>
-              <p className="text-xs text-muted-foreground">AI Components</p>
+              <h1 className="font-semibold font-sans">Clarity</h1>
+              <p className="text-xs text-muted-foreground font-sans">AI Components</p>
             </div>
           </div>
 
@@ -273,7 +273,7 @@ export default function ComponentShowcase() {
                   <button
                     type="button"
                     onClick={() => toggleGroup(group)}
-                    className="flex items-center justify-between w-full px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground transition-colors"
+                    className="flex items-center justify-between w-full px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground transition-colors font-sans"
                   >
                     {group}
                     <ChevronRight className={cn(
@@ -294,9 +294,9 @@ export default function ComponentShowcase() {
                             }
                           }}
                           className={cn(
-                            "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors",
+                            "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-all font-sans",
                             activeCategory === category.id
-                              ? "bg-accent text-accent-foreground"
+                              ? "bg-primary/10 text-primary"
                               : "hover:bg-muted text-foreground"
                           )}
                         >
@@ -315,20 +315,20 @@ export default function ComponentShowcase() {
               <div className="space-y-1">
                 <a
                   href="/advanced-ai"
-                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted text-foreground group"
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-all hover:bg-primary/5 text-foreground group font-sans"
                 >
-                  <div className="flex h-6 w-6 items-center justify-center rounded bg-amber-500/10">
-                    <Zap className="h-3.5 w-3.5 text-amber-500" />
+                  <div className="flex h-6 w-6 items-center justify-center rounded bg-primary/10">
+                    <Zap className="h-3.5 w-3.5 text-primary" />
                   </div>
                   <span className="font-medium text-sm flex-1">Advanced AI Demo</span>
                   <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity" />
                 </a>
                 <a
                   href="/design-system"
-                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted text-foreground group"
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-all hover:bg-primary/5 text-foreground group font-sans"
                 >
-                  <div className="flex h-6 w-6 items-center justify-center rounded bg-violet-500/10">
-                    <Sparkles className="h-3.5 w-3.5 text-violet-500" />
+                  <div className="flex h-6 w-6 items-center justify-center rounded bg-primary/10">
+                    <Sparkles className="h-3.5 w-3.5 text-primary" />
                   </div>
                   <span className="font-medium text-sm flex-1">Design System</span>
                   <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-50 transition-opacity" />
@@ -336,10 +336,10 @@ export default function ComponentShowcase() {
               </div>
             </nav>
 
-            <div className="mt-6 rounded-lg border border-border bg-card p-4">
+            <div className="mt-6 rounded-lg glass-card p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Package className="h-4 w-4 text-primary" />
-                <span className="font-medium text-sm">Quick Install</span>
+                <span className="font-medium text-sm font-sans">Quick Install</span>
               </div>
               <code className="text-xs text-muted-foreground block break-all font-mono bg-muted/50 p-2 rounded">
                 npx clarity-ai init
@@ -380,17 +380,17 @@ export default function ComponentShowcase() {
 
           {/* Breadcrumb & Header */}
           <header id="components" className="mb-8 pt-12 lg:pt-0">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 font-sans">
               <span>Components</span>
               <ChevronRight className="h-4 w-4" />
               <span>{activeItem?.group}</span>
               <ChevronRight className="h-4 w-4" />
-              <Badge variant="secondary">{activeItem?.label}</Badge>
+              <Badge variant="secondary" className="font-sans">{activeItem?.label}</Badge>
             </div>
-            <h2 className="text-3xl font-bold tracking-tight mb-2">
+            <h2 className="text-3xl font-bold tracking-tight mb-2 font-sans">
               {activeItem?.label} Components
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-muted-foreground font-sans">
               {activeItem?.description}
             </p>
           </header>
