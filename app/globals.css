@@ -11,9 +11,9 @@
  * ============================================================================= */
 
 @theme inline {
-  /* Font Family - Sans-Serif Only */
+  /* Font Family - Sans-Serif Only with Light Weight */
   --font-sans: var(--font-inter), 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  --font-mono: var(--font-fira-code), 'Fira Code', 'SF Mono', 'Consolas', monospace;
 
   /* Primary Colors - Sophisticated Neutrals with Blue Tint */
   --color-primary-50: #f8fafc;
@@ -231,10 +231,28 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    font-weight: 300;
     font-feature-settings: "rlig" 1, "calt" 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Ensure all text uses sans-serif */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+  
+  p, span, div, label, a, li {
+    font-family: var(--font-sans);
+  }
+  
+  /* Code elements use Fira Code with light weight */
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+    font-weight: 300;
   }
   
   /* Enhanced Focus Styles */

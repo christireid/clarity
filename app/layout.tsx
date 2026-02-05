@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, Fira_Code } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -10,12 +10,14 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  weight: ["300", "400", "500", "600"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const firaCode = Fira_Code({
   subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-fira-code",
   display: "swap",
+  weight: ["300", "400"],
 });
 
 export const metadata: Metadata = {
@@ -58,8 +60,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} bg-background`}>
-      <body className="font-sans antialiased">
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${firaCode.variable} bg-background`}>
+      <body className="font-sans antialiased font-light">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
