@@ -16,14 +16,15 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
-.env*
+# env files (all directories)
+.env
+.env.*
+**/.env
+**/.env.*
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-next-env.d.tsnode_modules/@next/swc-linux-arm64-gnu/next-swc.linux-arm64-gnu.node
-node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
-node_modules/@next/swc-linux-arm64-gnu/next-swc.linux-arm64-gnu.node
+next-env.d.ts

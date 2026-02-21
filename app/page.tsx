@@ -339,10 +339,10 @@ export default function ComponentShowcase() {
             <div className="mt-6 rounded-lg border border-border bg-card p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Package className="h-4 w-4 text-primary" />
-                <span className="font-medium text-sm">Quick Install</span>
+                <span className="font-medium text-sm">Get Started</span>
               </div>
               <code className="text-xs text-muted-foreground block break-all font-mono bg-muted/50 p-2 rounded">
-                npx clarity-ai init
+                git clone &amp; npm install
               </code>
             </div>
           </div>
@@ -352,7 +352,7 @@ export default function ComponentShowcase() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="text-xs">
-                  {componentCategories.length} components
+                  {componentCategories.length} categories
                 </Badge>
               </div>
               <Button

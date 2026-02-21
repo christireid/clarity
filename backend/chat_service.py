@@ -12,7 +12,8 @@ async def chat_stream_endpoint(request: Request):
         body = await request.json()
         messages = body.get("messages", [])
         config = body.get("config", {})
-    except:
+    except Exception as e:
+        logger.warning(f"Failed to parse request body: {e}")
         messages = []
         config = {}
 

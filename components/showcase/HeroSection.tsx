@@ -5,7 +5,6 @@ import { Particles } from "@/components/ai/particles";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Zap, Code, MessageSquare, Bot } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 // Typewriter effect component
 function Typewriter({ words }: { words: string[] }) {
@@ -45,18 +44,18 @@ function Typewriter({ words }: { words: string[] }) {
 const features = [
   {
     icon: MessageSquare,
-    title: "Chat SDK",
-    description: "Full-featured chat with streaming",
+    title: "Chat Components",
+    description: "Messages, bubbles, threads, and more",
   },
   {
     icon: Bot,
-    title: "Agent UI",
-    description: "Tool calling & workflows",
+    title: "Agent UI Patterns",
+    description: "Tool calling, workflows, and status",
   },
   {
     icon: Code,
-    title: "Code Blocks",
-    description: "Syntax highlighting & diffs",
+    title: "Developer Tools",
+    description: "Code blocks, diffs, and terminals",
   },
 ];
 
@@ -83,30 +82,29 @@ export function HeroSection() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg">
             <Sparkles className="w-4 h-4 text-violet-500" />
-            <span className="text-sm font-medium">Production Ready</span>
+            <span className="text-sm font-medium">Open Source</span>
             <Badge variant="secondary" className="text-xs">
-              v2.0
+              MIT
             </Badge>
           </div>
 
           {/* Heading */}
           <div className="space-y-4">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
-              Build{" "}
+              AI Chat UI{" "}
               <span className="bg-gradient-to-r from-violet-500 to-purple-600 bg-clip-text text-transparent">
-                Intelligent
+                Components
               </span>{" "}
-              Chat Interfaces
+              for React
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              A comprehensive React component library for{" "}
+              A showcase of React components for building{" "}
               <Typewriter
                 words={[
-                  "AI Chat Applications",
-                  "Token Optimization",
-                  "Generative UI",
-                  "Agent Workflows",
-                  "RAG Systems",
+                  "AI Chat Interfaces",
+                  "Agent Dashboards",
+                  "Developer Tools",
+                  "Streaming UIs",
                 ]}
               />
             </p>
@@ -158,11 +156,11 @@ export function HeroSection() {
           {/* Stats */}
           <div className="flex flex-wrap justify-center gap-8 pt-4 text-sm">
             <div className="text-center">
-              <div className="text-2xl font-bold text-foreground">35+</div>
+              <div className="text-2xl font-bold text-foreground">34</div>
               <div className="text-muted-foreground">Categories</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-foreground">200+</div>
+              <div className="text-2xl font-bold text-foreground">150+</div>
               <div className="text-muted-foreground">Components</div>
             </div>
             <div className="text-center">

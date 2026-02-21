@@ -1,97 +1,86 @@
-# Advanced AI SDK & Component Library
+# Clarity — AI Component Library
 
-A production-ready, full-stack AI SDK for React (Next.js) and Python (FastAPI), featuring client-side token optimization, streaming generative UI, and a polished glassmorphism design system.
+A showcase of AI chat UI components built with React, TypeScript, and Tailwind CSS. Browse 150+ components across 34 categories including chat interfaces, agent workflows, code blocks, streaming UIs, and more.
 
-## 🚀 Features
+Built on [shadcn/ui](https://ui.shadcn.com/) primitives with a glassmorphism design system.
 
-### 1. Advanced Chat SDK (`useAdvancedChat`)
-A drop-in React hook that powers the entire chat experience.
-- **Streaming**: Supports a custom protocol (`0:text`, `7:ui_json`) for mixing text and UI components.
-- **Generative UI**: Render React components (Charts, Forms) directly from the AI stream.
-- **RAG Integration**: Built-in context retrieval (mockable or real).
-- **Token Optimization**: Client-side context window management (Hybrid strategy: LRU + Semantic).
-- **Middleware**: Inject logic before request (e.g., PII Redaction) and after response.
-- **Multimodal**: Drag & Drop file attachments.
-- **Voice**: Speech-to-Text and Text-to-Speech support.
-
-### 2. Component Library (`/components`)
-A comprehensive set of 30+ AI-focused UI components.
-- **Glassmorphism**: Minimal, sophisticated aesthetic with frosted glass effects.
-- **Animations**: Framer Motion-style entry/exit animations.
-- **Visualizations**: Animated Beams, Particles, and Thread views.
-- **DevTools**: Floating inspector for debugging tokens and streams.
-
-### 3. Backend Engine (`/backend`)
-A FastAPI service optimized for streaming.
-- **Stream Protocol**: Custom generator for chunked responses.
-- **Structured Output**: Zod-validated JSON generation.
-
-## 📦 Installation
+## Getting Started
 
 ```bash
-# Frontend
-cd app
-yarn install
+# Clone the repository
+git clone <repo-url>
+cd clarity
 
-# Backend
+# Install dependencies
+npm install
+
+# Start the dev server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the component showcase.
+
+## Project Structure
+
+```
+clarity/
+├── app/                    # Next.js App Router pages
+├── backend/                # FastAPI backend (Python)
+├── components/
+│   ├── ai/                 # AI-focused components (150+ files)
+│   ├── showcase/           # Showcase/demo wrappers
+│   └── ui/                 # shadcn/ui primitives
+├── lib/
+│   ├── token-optimization/ # Token management utilities
+│   └── streaming/          # Stream parsing utilities
+├── hooks/                  # React hooks
+└── tests/                  # Test files
+```
+
+## Tech Stack
+
+- **Frontend:** Next.js 16, React 19, TypeScript
+- **Styling:** Tailwind CSS 4, shadcn/ui (New York)
+- **Backend:** FastAPI, MongoDB (optional)
+- **Icons:** Lucide React
+
+## Component Categories
+
+The showcase includes components for:
+
+- **Chat:** Messages, bubbles, threads, composer, reactions
+- **AI/Agents:** Tool calling, workflows, generative UI, memory
+- **Code:** Syntax highlighting, diffs, terminals, sandboxes
+- **Data:** Charts, tables, dashboards
+- **Media:** Audio, images, citations, file viewers
+- **Safety:** Guardrails, rate limiting, cost tracking
+- **And more:** Auth, collaboration, search, theming
+
+## Backend Setup (Optional)
+
+The backend provides a mock chat streaming endpoint:
+
+```bash
 cd backend
 pip install -r requirements.txt
+
+# Create a .env file
+echo 'MONGO_URL=mongodb://localhost:27017' > .env
+echo 'DB_NAME=clarity_dev' >> .env
+
+# Start the server
+uvicorn server:app --reload
 ```
 
-## 🛠️ Usage
+## Scripts
 
-### Basic Chat
-```tsx
-import { useAdvancedChat } from '@/components/ai/chat/useAdvancedChat';
-
-export function Chat() {
-  const { messages, input, setInput, handleSubmit } = useAdvancedChat({
-    api: '/api/chat/stream',
-    initialConfig: { systemPrompt: 'You are helpful.' }
-  });
-
-  return (
-    <div>
-      {messages.map(m => <div key={m.id}>{m.content}</div>)}
-      <input value={input} onChange={e => setInput(e.target.value)} />
-      <button onClick={handleSubmit}>Send</button>
-    </div>
-  );
-}
-```
-
-### Token Optimization
-```typescript
-import { TokenOptimizer } from '@/lib/token-optimization';
-
-const optimizer = new TokenOptimizer({
-  contextWindow: { maxTokens: 4000, strategy: 'hybrid' }
-});
-
-const { messages, stats } = optimizer.context.optimize(fullHistory);
-console.log(`Saved ${stats.saved} tokens!`);
-```
-
-### Stream Protocol
-The SDK uses a custom line-delimited protocol:
-- `0:Text Content` - Standard text chunks.
-- `7:{"component": "Chart", "props": {...}}` - UI render instructions.
-- `5:Error Message` - Error reporting.
-
-## 🎨 Design System
-The project uses Tailwind CSS with custom variables for the glassmorphism look.
-- **Colors**: Define `--primary`, `--muted`, `--accent` in `globals.css`.
-- **Glass**: Use `.glass`, `.glass-medium`, `.glass-heavy` utilities.
-
-## 🧪 Testing
-Run the test suite to verify token logic:
 ```bash
-npx ts-node tests/token-optimizer.test.ts
+npm run dev        # Start development server
+npm run build      # Production build
+npm run lint       # Run ESLint
+npm run typecheck  # Run TypeScript type checking
 ```
 
-## 📂 Project Structure
-- `/app/app` - Next.js App Router (Frontend)
-- `/app/backend` - FastAPI (Backend)
-- `/app/lib` - Core logic (Optimizer, Streaming)
-- `/app/components/ai` - AI UI Components
-- `/app/components/showcase` - Demo Pages
+## License
+
+MIT

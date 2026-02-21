@@ -6,10 +6,9 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Chat Components - Advanced React Library",
+  title: "Clarity — AI Component Library",
   description:
-    "Production-ready AI chat components with tool calling, canvas, code blocks, and more",
-  generator: "v0.app",
+    "AI chat UI components built with React, TypeScript, and Tailwind CSS",
   icons: {
     icon: [
       {
