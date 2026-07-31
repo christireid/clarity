@@ -79,6 +79,7 @@ export function DataComponents() {
       <ComponentCard
         title="Bar Chart"
         description="Visualize data with bar charts"
+        stretch
       >
         <BarChartCard
           title="Monthly Usage"
@@ -91,6 +92,7 @@ export function DataComponents() {
       <ComponentCard
         title="Line Chart"
         description="Track trends with line charts"
+        stretch
       >
         <LineChartCard
           title="Response Times"

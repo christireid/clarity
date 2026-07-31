@@ -36,6 +36,7 @@ export function EffectsComponents() {
           <ComponentCard
             title="Particles"
             description="Animated floating particles"
+            stretch
           >
             <div className="relative h-40 bg-black rounded-md overflow-hidden">
               <Particles quantity={100} staticity={50} ease={50} />
@@ -342,6 +343,7 @@ export function EffectsComponents() {
           <ComponentCard
             title="Animated Gradient"
             description="Smoothly transitioning color gradient"
+            stretch
           >
             <div className="h-40 rounded-lg overflow-hidden">
               <AnimatedGradient
@@ -354,6 +356,7 @@ export function EffectsComponents() {
           <ComponentCard
             title="Mesh Gradient"
             description="Multi-point organic gradient"
+            stretch
           >
             <div className="h-40 rounded-lg overflow-hidden">
               <MeshGradient
@@ -376,6 +379,7 @@ export function EffectsComponents() {
           <ComponentCard
             title="Shimmer Effect"
             description="Loading shimmer animation"
+            stretch
           >
             <div className="space-y-2">
               <ShimmerEffect><div className="h-4 w-3/4 rounded bg-muted" /></ShimmerEffect>

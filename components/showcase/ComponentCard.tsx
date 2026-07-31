@@ -27,6 +27,14 @@ interface ComponentCardProps {
   componentName?: string;
   tags?: string[];
   fullWidth?: boolean;
+  /**
+   * Let the preview content fill the available width instead of shrinking to
+   * fit. The default centered layout makes children flex items, which are
+   * sized by their content — so anything that measures its own parent
+   * (charts, canvases, background effects) collapses to zero width.
+   * Unlike `fullWidth`, this keeps the padded, bordered preview box.
+   */
+  stretch?: boolean;
 }
 
 export function ComponentCard({
@@ -38,6 +46,7 @@ export function ComponentCard({
   componentName,
   tags,
   fullWidth = false,
+  stretch = false,
 }: ComponentCardProps) {
   const [copied, setCopied] = React.useState(false);
   const [showCode, setShowCode] = React.useState(false);
@@ -175,8 +184,8 @@ export function ComponentCard({
         <div
           className={cn(
             "relative z-10",
-            !fullWidth && "flex items-center justify-center",
-            fullWidth && "w-full"
+            !fullWidth && !stretch && "flex items-center justify-center",
+            (fullWidth || stretch) && "w-full"
           )}
         >
           {children}

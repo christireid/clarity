@@ -177,88 +177,89 @@ function TaskCard({
           task.status === "paused" && "border-amber-500/50 bg-amber-500/5"
         )}
       >
-        <CollapsibleTrigger asChild>
-          <button
-            type="button"
-            className="flex w-full items-center gap-4 p-4 text-left"
-          >
-            <ChevronRight
-              className={cn(
-                "h-4 w-4 text-muted-foreground transition-transform",
-                expanded && "rotate-90"
-              )}
-            />
-            <AgentAvatar type={task.agent} size="sm" />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="font-medium truncate">{task.name}</p>
-                <StatusBadge status={task.status} />
+        {/* The row is a flex container rather than one big button: the actions
+            dropdown must not be nested inside the collapsible trigger, or it
+            renders a <button> inside a <button> and breaks hydration. */}
+        <div className="flex w-full items-center gap-4 p-4">
+          <CollapsibleTrigger asChild>
+            <button
+              type="button"
+              className="flex flex-1 min-w-0 items-center gap-4 text-left"
+            >
+              <ChevronRight
+                className={cn(
+                  "h-4 w-4 text-muted-foreground transition-transform",
+                  expanded && "rotate-90"
+                )}
+              />
+              <AgentAvatar type={task.agent} size="sm" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="font-medium truncate">{task.name}</p>
+                  <StatusBadge status={task.status} />
+                </div>
+                <p className="text-sm text-muted-foreground truncate">
+                  {task.description}
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground truncate">
-                {task.description}
-              </p>
-            </div>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              {task.duration && (
-                <span className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {task.duration}s
-                </span>
-              )}
-              {task.tokens && (
-                <span className="flex items-center gap-1">
-                  <Zap className="h-3 w-3" />
-                  {task.tokens.toLocaleString()}
-                </span>
-              )}
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                {task.duration && (
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {task.duration}s
+                  </span>
+                )}
+                {task.tokens && (
+                  <span className="flex items-center gap-1">
+                    <Zap className="h-3 w-3" />
+                    {task.tokens.toLocaleString()}
+                  </span>
+                )}
+              </div>
+            </button>
+          </CollapsibleTrigger>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>
+                <Eye className="mr-2 h-4 w-4" />
+                View Details
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Copy className="mr-2 h-4 w-4" />
+                Copy ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {task.status === "running" && (
                 <DropdownMenuItem>
-                  <Eye className="mr-2 h-4 w-4" />
-                  View Details
+                  <Pause className="mr-2 h-4 w-4" />
+                  Pause
                 </DropdownMenuItem>
+              )}
+              {task.status === "paused" && (
                 <DropdownMenuItem>
-                  <Copy className="mr-2 h-4 w-4" />
-                  Copy ID
+                  <Play className="mr-2 h-4 w-4" />
+                  Resume
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {task.status === "running" && (
-                  <DropdownMenuItem>
-                    <Pause className="mr-2 h-4 w-4" />
-                    Pause
-                  </DropdownMenuItem>
-                )}
-                {task.status === "paused" && (
-                  <DropdownMenuItem>
-                    <Play className="mr-2 h-4 w-4" />
-                    Resume
-                  </DropdownMenuItem>
-                )}
-                {task.status === "failed" && (
-                  <DropdownMenuItem>
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    Retry
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuItem className="text-red-500">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Cancel
+              )}
+              {task.status === "failed" && (
+                <DropdownMenuItem>
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Retry
                 </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </button>
-        </CollapsibleTrigger>
+              )}
+              <DropdownMenuItem className="text-red-500">
+                <Trash2 className="mr-2 h-4 w-4" />
+                Cancel
+              </DropdownMenuItem>
+          </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
 
         {task.status === "running" && task.progress > 0 && (
           <div className="px-4 pb-2">

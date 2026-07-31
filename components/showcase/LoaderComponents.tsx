@@ -31,6 +31,7 @@ export function LoaderComponents() {
       <ComponentCard
         title="Shimmer Text"
         description="Animated text loading effect"
+        stretch
       >
         <div className="space-y-4">
           <ShimmerText lines={2} />

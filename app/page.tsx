@@ -137,6 +137,11 @@ export default function ComponentShowcase() {
   const [collapsedGroups, setCollapsedGroups] = React.useState<Record<string, boolean>>({});
   const { theme, setTheme } = useTheme();
 
+  // The resolved theme is only known in the browser, so the toggle's icon
+  // cannot be rendered during SSR without causing a hydration mismatch.
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+
   // Filter categories based on search
   const filteredCategories = React.useMemo(() => {
     if (!searchQuery.trim()) return componentCategories;
@@ -360,8 +365,11 @@ export default function ComponentShowcase() {
                 size="icon"
                 className="h-8 w-8"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label="Toggle theme"
               >
-                {theme === "dark" ? (
+                {!mounted ? (
+                  <span className="h-4 w-4" />
+                ) : theme === "dark" ? (
                   <Sun className="h-4 w-4" />
                 ) : (
                   <Moon className="h-4 w-4" />

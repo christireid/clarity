@@ -295,6 +295,12 @@ Tool calls, sub-agent cards, human-in-the-loop approvals, and execution plans.
 
 Node-based editors and diagram surfaces for visual agent building.
 
+<div align="center">
+
+<img src="docs/assets/img/canvas.png" alt="Node-based canvas editor" width="860" />
+
+</div>
+
 <table>
 <tr>
 <td width="50%"><img src="docs/assets/img/workflow-nodes.png" alt="Workflow node types" /></td>
@@ -317,7 +323,13 @@ Node-based editors and diagram surfaces for visual agent building.
 
 ### Data & dashboards
 
-Sortable tables, stat tiles, and pre-built AI metric overviews.
+Recharts-backed charts, sortable tables, stat tiles, and pre-built AI metric overviews.
+
+<div align="center">
+
+<img src="docs/assets/img/line-chart.png" alt="Line chart" width="860" />
+
+</div>
 
 <table>
 <tr>

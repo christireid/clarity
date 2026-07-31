@@ -73,9 +73,9 @@ export function SimpleFooter({
 
           {links.length > 0 && (
             <nav className="flex items-center gap-6">
-              {links.map((link) => (
+              {links.map((link, index) => (
                 <a
-                  key={link.href}
+                  key={`${link.href}-${index}`}
                   href={link.href}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
@@ -213,8 +213,8 @@ export function FullFooter({
             <div key={section.title}>
               <h4 className="font-semibold mb-4">{section.title}</h4>
               <ul className="space-y-2">
-                {section.links.map((link) => (
-                  <li key={link.href}>
+                {section.links.map((link, index) => (
+                  <li key={`${link.href}-${index}`}>
                     <a
                       href={link.href}
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -296,9 +296,9 @@ export function FullFooter({
           </p>
           {bottomLinks.length > 0 && (
             <nav className="flex items-center gap-6">
-              {bottomLinks.map((link) => (
+              {bottomLinks.map((link, index) => (
                 <a
-                  key={link.href}
+                  key={`${link.href}-${index}`}
                   href={link.href}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
@@ -336,9 +336,9 @@ export function MinimalFooter({
             <>
               <span className="hidden sm:inline">·</span>
               <nav className="flex items-center gap-4">
-                {links.map((link) => (
+                {links.map((link, index) => (
                   <a
-                    key={link.href}
+                    key={`${link.href}-${index}`}
                     href={link.href}
                     className="hover:text-foreground transition-colors"
                   >
