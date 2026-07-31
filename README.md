@@ -315,6 +315,47 @@ Node-based editors and diagram surfaces for visual agent building.
 </tr>
 </table>
 
+### Data & dashboards
+
+Sortable tables, stat tiles, and pre-built AI metric overviews.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/assets/img/dash-stats.png" alt="AI dashboard stats" /></td>
+<td width="50%"><img src="docs/assets/img/dash-quick.png" alt="Quick stat cards" /></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/assets/img/data-table.png" alt="Sortable, searchable data table" /></td>
+<td width="50%"><img src="docs/assets/img/stats-grid.png" alt="Stats grid" /></td>
+</tr>
+</table>
+
+### Memory & context
+
+Long-term memory with facts, preferences, and a chronological timeline.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/assets/img/memory-manager.png" alt="Memory manager" /></td>
+<td width="50%"><img src="docs/assets/img/memory-timeline.png" alt="Memory timeline" /></td>
+</tr>
+</table>
+
+### Real-time, voice & layout
+
+Presence, reactions, audio playback, and bento layouts.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/assets/img/presence.png" alt="Presence indicators" /></td>
+<td width="50%"><img src="docs/assets/img/reactions.png" alt="Emoji message reactions" /></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/assets/img/audio-player.png" alt="Audio player" /></td>
+<td width="50%"><img src="docs/assets/img/bento.png" alt="Bento grid layout" /></td>
+</tr>
+</table>
+
 ### Safety & observability
 
 Guardrails on the way in, traces on the way out.
