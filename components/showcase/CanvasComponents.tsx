@@ -16,6 +16,7 @@ export function CanvasComponents() {
       <ComponentCard
         title="Canvas Editor"
         description="Visual node-based canvas for building workflows"
+        stretch
       >
         <div className="h-[400px] border rounded-lg overflow-hidden">
           <Canvas
@@ -107,6 +108,7 @@ export function CanvasComponents() {
       <ComponentCard
         title="Diagram"
         description="General-purpose diagram component"
+        stretch
       >
         <div className="h-[250px] border rounded-lg overflow-hidden">
           <Diagram

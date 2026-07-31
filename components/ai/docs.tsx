@@ -426,9 +426,9 @@ export function QuickLinks({ links, title = "Quick Links", className }: QuickLin
     <div className={cn("space-y-4", className)}>
       {title && <h3 className="font-semibold">{title}</h3>}
       <div className="grid gap-3 sm:grid-cols-2">
-        {links.map((link) => (
+        {links.map((link, index) => (
           <a
-            key={link.href}
+            key={`${link.href}-${index}`}
             href={link.href}
             className="flex items-start gap-3 p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
           >
